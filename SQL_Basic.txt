@@ -1,303 +1,597 @@
 1. What does SQL stand for, and what is its primary purpose?
-   - SQL stands for Structured Query Language, and its primary purpose is to manage and manipulate relational databases.
+   - SQL stands for Structured Query Language, and its primary purpose is to interact with databases to perform operations like querying, updating, inserting, and deleting data.
 
 2. Describe the structure of a SQL query.
-   - A SQL query generally has the structure: SELECT [columns] FROM [table] WHERE [conditions].
+   - A SQL query typically follows this structure: 
+   SELECT column1, column2 FROM table WHERE condition;
+   
+   Example:
+   SELECT name, age FROM employees WHERE age > 30;
 
 3. How do you retrieve unique records from a table?
-   - To retrieve unique records from a table, use the DISTINCT keyword: SELECT DISTINCT column_name FROM table_name.
+   - Use the DISTINCT keyword:
+   SELECT DISTINCT column FROM table;
+   
+   Example:
+   SELECT DISTINCT country FROM customers;
 
 4. Explain the difference between CHAR and VARCHAR.
    - CHAR is a fixed-length string, while VARCHAR is a variable-length string.
+   
+   Example:
+   CHAR(10) will always store 10 characters, padding with spaces if needed.
+   VARCHAR(10) will store up to 10 characters without padding.
 
 5. Can you store a number in a VARCHAR column? Why or why not?
-   - Yes, you can store numbers in a VARCHAR column, but it’s not ideal because VARCHAR is meant for strings. Numeric operations on it may fail or require conversion.
+   - Yes, but it's not recommended. VARCHAR is designed for text, while numbers should typically be stored in numeric data types for proper arithmetic operations.
 
 6. What happens if you try to insert a NULL value into a column defined as NOT NULL?
-   - If you try to insert a NULL value into a column defined as NOT NULL, the insert operation will fail, and an error will be thrown.
+   - You will get an error, as the NOT NULL constraint enforces that the column must have a value.
 
 7. Explain the role of the WHERE clause in a SQL query.
-   - The WHERE clause filters records that meet specific conditions.
+   - The WHERE clause filters records that meet the specified condition.
+   
+   Example:
+   SELECT * FROM employees WHERE department = 'HR';
 
 8. What is the function of the GROUP BY clause?
-   - GROUP BY groups rows sharing a property and aggregates results.
+   - GROUP BY groups rows that have the same values in specified columns, often used with aggregate functions.
+   
+   Example:
+   SELECT department, COUNT(*) FROM employees GROUP BY department;
 
 9. What does the HAVING clause do, and how is it different from WHERE?
-   - The HAVING clause filters groups after the GROUP BY, whereas WHERE filters rows before grouping.
+   - HAVING filters records after GROUP BY, while WHERE filters before aggregation.
+   
+   Example:
+   SELECT department, COUNT(*) FROM employees GROUP BY department HAVING COUNT(*) > 5;
 
 10. How do you sort the results of a query in ascending or descending order?
-   - Use ORDER BY to sort results in ascending (ASC) or descending (DESC) order.
+   - Use the ORDER BY clause with ASC (default) for ascending or DESC for descending.
+   
+   Example:
+   SELECT * FROM employees ORDER BY salary DESC;
 
 11. What is a primary key, and why is it important?
-   - A primary key uniquely identifies each record in a table and ensures uniqueness.
+   - A primary key uniquely identifies each record in a table and ensures that no two rows have the same key value.
 
 12. Can a table have more than one primary key? Why or why not?
-   - A table can only have one primary key, which may consist of multiple columns (composite key).
+   - No, a table can only have one primary key, but it can have a composite key (primary key with multiple columns).
 
 13. What is a foreign key, and how does it work?
-   - A foreign key links a column in one table to a primary key in another table, ensuring referential integrity.
+   - A foreign key is a column or set of columns that link one table to another, enforcing referential integrity.
+   
+   Example:
+   ALTER TABLE orders ADD FOREIGN KEY (customer_id) REFERENCES customers(id);
 
 14. What is the purpose of the AUTO_INCREMENT attribute?
-   - AUTO_INCREMENT automatically generates a unique number for each new record.
+   - AUTO_INCREMENT automatically generates a unique number for new rows.
+   
+   Example:
+   CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50));
 
 15. How do you retrieve the first record from a query result?
-   - Use LIMIT 1 or FETCH FIRST 1 ROW to retrieve the first record.
+   - Use the LIMIT clause to retrieve a specific number of records.
+   
+   Example:
+   SELECT * FROM employees LIMIT 1;
 
 16. What is a JOIN, and why would you use it?
-   - A JOIN combines rows from two or more tables based on related columns.
+   - A JOIN is used to combine rows from two or more tables based on a related column.
+   
+   Example:
+   SELECT employees.name, departments.name FROM employees 
+   JOIN departments ON employees.department_id = departments.id;
 
 17. How do you find the total number of rows in a table?
-   - To count rows, use SELECT COUNT(*) FROM table_name.
+   - Use the COUNT function.
+   
+   Example:
+   SELECT COUNT(*) FROM employees;
 
 18. Explain the difference between INNER JOIN and OUTER JOIN.
-   - An INNER JOIN returns rows when there's a match in both tables, while OUTER JOIN returns matched and unmatched rows.
+   - INNER JOIN returns rows that have matching values in both tables, while OUTER JOIN returns all rows from one or both tables even if there is no match.
 
 19. What is a self-join, and when would you use it?
-   - A self-join joins a table with itself, typically for hierarchical data.
+   - A self-join is when a table is joined with itself to compare rows.
+   
+   Example:
+   SELECT a.name, b.name FROM employees a, employees b WHERE a.manager_id = b.id;
 
 20. How do you filter records that match multiple conditions?
-   - Use AND and OR to filter records matching multiple conditions in the WHERE clause.
+   - Use AND or OR in the WHERE clause.
+   
+   Example:
+   SELECT * FROM employees WHERE department = 'HR' AND age > 30;
 
 21. What is a subquery, and how is it used?
-   - A subquery is a query within a query, used to fetch intermediate results.
+   - A subquery is a query inside another query, often used to retrieve data that will be used in the main query.
+   
+   Example:
+   SELECT * FROM employees WHERE department_id IN (SELECT id FROM departments WHERE name = 'HR');
 
 22. How can you update data in a table?
-   - Update data using the UPDATE statement: UPDATE table_name SET column1 = value1 WHERE condition.
+   - Use the UPDATE statement.
+   
+   Example:
+   UPDATE employees SET salary = salary * 1.1 WHERE department = 'HR';
 
 23. What is the difference between DELETE, TRUNCATE, and DROP?
-   - DELETE removes rows, TRUNCATE removes all rows but keeps structure, DROP removes the table entirely.
+   - DELETE removes rows one by one and can have conditions, TRUNCATE removes all rows quickly, and DROP deletes the entire table structure.
 
 24. How do you remove duplicate rows from a result set?
-   - Remove duplicates using SELECT DISTINCT.
+   - Use DISTINCT or GROUP BY.
+   
+   Example:
+   SELECT DISTINCT name FROM employees;
 
 25. What is the use of the DISTINCT keyword?
-   - DISTINCT ensures unique values in a query result.
+   - DISTINCT removes duplicate rows in the result set.
+   
+   Example:
+   SELECT DISTINCT city FROM customers;
 
 26. How do you perform a case-insensitive search in SQL?
-   - For case-insensitive search, use ILIKE in some databases or LOWER().
+   - Use functions like LOWER() or UPPER().
+   
+   Example:
+   SELECT * FROM employees WHERE LOWER(name) = 'john';
 
 27. Explain the difference between UNION and UNION ALL.
-   - UNION combines results of two queries, removing duplicates; UNION ALL keeps duplicates.
+   - UNION removes duplicates, while UNION ALL includes duplicates.
+   
+   Example:
+   SELECT name FROM employees UNION SELECT name FROM contractors;
 
 28. What is the purpose of the LIMIT clause?
-   - The LIMIT clause limits the number of records returned.
+   - LIMIT restricts the number of rows returned by a query.
+   
+   Example:
+   SELECT * FROM employees LIMIT 10;
 
 29. How do you calculate the average value of a column?
-   - Use AVG(column_name) to calculate the average.
+   - Use the AVG() function.
+   
+   Example:
+   SELECT AVG(salary) FROM employees;
 
 30. How do you find the maximum or minimum value in a column?
-   - Use MAX() or MIN() to find the maximum or minimum value.
+   - Use MAX() and MIN().
+   
+   Example:
+   SELECT MAX(salary), MIN(salary) FROM employees;
 
 31. What does the LIKE operator do?
-   - The LIKE operator searches for a specified pattern in a column.
+   - LIKE is used for pattern matching in a query.
+   
+   Example:
+   SELECT * FROM employees WHERE name LIKE 'J%';
 
 32. How do you implement pagination in a SQL query?
-   - Implement pagination with LIMIT and OFFSET in a SQL query.
+   - Use LIMIT and OFFSET.
+   
+   Example:
+   SELECT * FROM employees LIMIT 10 OFFSET 20;
 
 33. What is the IN operator, and how is it used?
-   - The IN operator filters records matching any value in a list.
+   - IN is used to filter rows that match any value in a list.
+   
+   Example:
+   SELECT * FROM employees WHERE department IN ('HR', 'IT');
 
 34. How do you check if a column contains a specific value?
-   - Use the WHERE clause to check if a column contains a specific value.
+   - Use the WHERE clause with a condition.
+   
+   Example:
+   SELECT * FROM employees WHERE name = 'John';
 
 35. What are aggregate functions, and can you name a few?
-   - Aggregate functions perform calculations on a set of values, e.g., COUNT, SUM, AVG.
+   - Aggregate functions perform calculations on a set of values. Examples include COUNT(), SUM(), AVG(), MAX(), MIN().
 
 36. How do you count the number of distinct entries in a column?
-   - Use COUNT(DISTINCT column) to count distinct entries.
+   - Use COUNT() with DISTINCT.
+   
+   Example:
+   SELECT COUNT(DISTINCT department) FROM employees;
 
 37. What is the function of the CASE statement in SQL?
-   - The CASE statement is used for conditional logic in SQL.
+   - CASE allows for conditional logic in a query.
+   
+   Example:
+   SELECT name, 
+   CASE WHEN salary > 50000 THEN 'High' ELSE 'Low' END AS salary_grade 
+   FROM employees;
 
 38. How can you convert data types in SQL?
-   - Use CAST() or CONVERT() to convert data types in SQL.
+   - Use CAST() or CONVERT().
+   
+   Example:
+   SELECT CAST(salary AS DECIMAL(10, 2)) FROM employees;
 
 39. What is the purpose of the COALESCE function?
-   - COALESCE returns the first non-NULL value in a list.
+   - COALESCE returns the first non-null value from a list.
+   
+   Example:
+   SELECT COALESCE(middle_name, first_name) FROM employees;
 
 40. How do you use the EXISTS keyword in a query?
-   - EXISTS returns true if a subquery returns any records.
+   - EXISTS checks if a subquery returns any rows.
+   
+   Example:
+   SELECT * FROM employees WHERE EXISTS (SELECT 1 FROM departments WHERE name = 'HR');
+
 41. What are temporary tables, and when would you use them?
-   - Temporary tables are used to store intermediate results temporarily for the duration of a session. They are useful in complex queries that need to break down processing steps.
+   - Temporary tables are used to store intermediate results temporarily during a session. They are automatically deleted when the session ends.
+   
+   Example:
+   CREATE TEMPORARY TABLE temp_employees AS SELECT * FROM employees;
 
 42. How do you create a view in SQL?
-   - Use the CREATE VIEW statement: CREATE VIEW view_name AS SELECT columns FROM table_name.
+   - A view is created using the CREATE VIEW statement, which stores a query as a virtual table.
+   
+   Example:
+   CREATE VIEW employee_view AS SELECT name, department FROM employees WHERE salary > 50000;
 
 43. What is the difference between a view and a table?
-   - A table is a stored dataset, while a view is a virtual table created from a SQL query.
+   - A table stores data physically, whereas a view is a virtual table based on a SQL query. Views do not store data but present data from one or more tables.
 
 44. Can you update a view? If so, how?
-   - Yes, a view can be updated if it is based on a single table and does not involve any aggregate functions or complex joins.
+   - Yes, a view can be updated if it meets certain conditions (e.g., no complex joins, no aggregations). You update it like a regular table.
+   
+   Example:
+   UPDATE employee_view SET department = 'HR' WHERE name = 'John';
 
 45. What are indexes, and how do they improve performance?
-   - Indexes are data structures that help speed up data retrieval by providing fast access to rows in a table.
+   - Indexes are used to speed up data retrieval. They work like a lookup table for the database to find rows faster.
 
 46. How do you create an index on a table?
-   - Use CREATE INDEX: CREATE INDEX index_name ON table_name (column_name).
+   - Use the CREATE INDEX statement.
+   
+   Example:
+   CREATE INDEX idx_employee_name ON employees(name);
 
 47. What is a composite key, and when would you use it?
-   - A composite key consists of two or more columns that together uniquely identify a record. It is used when no single column can serve as a unique identifier.
+   - A composite key is a primary key made up of two or more columns to uniquely identify a record.
+   
+   Example:
+   CREATE TABLE orders (
+      order_id INT,
+      product_id INT,
+      PRIMARY KEY (order_id, product_id)
+   );
 
 48. What is normalization, and why is it important?
-   - Normalization is the process of organizing data to reduce redundancy and improve data integrity.
+   - Normalization is the process of organizing data to reduce redundancy and improve data integrity. It is important for reducing data anomalies.
 
 49. What is denormalization, and when might you consider it?
-   - Denormalization is the process of combining tables to improve read performance, often used in analytical systems.
+   - Denormalization is the process of introducing redundancy into a database for performance reasons, such as faster query retrieval.
 
 50. How do you retrieve records from multiple tables?
-   - You can retrieve records from multiple tables using JOINs or UNIONs.
+   - Use JOINs to retrieve records from multiple tables.
+   
+   Example:
+   SELECT e.name, d.department_name 
+   FROM employees e 
+   JOIN departments d ON e.department_id = d.id;
 
 51. What does the NOW() function do in SQL?
-   - The NOW() function returns the current date and time.
+   - NOW() returns the current date and time.
+   
+   Example:
+   SELECT NOW();
 
 52. Explain the difference between ROUND() and FLOOR().
-   - ROUND() rounds a number to the nearest integer, while FLOOR() rounds down to the nearest integer.
+   - ROUND() rounds a number to the nearest integer, while FLOOR() rounds it down to the nearest whole number.
+   
+   Example:
+   SELECT ROUND(4.7);  -- Result: 5
+   SELECT FLOOR(4.7);  -- Result: 4
 
 53. What is a transaction in SQL, and why is it important?
-   - A transaction is a sequence of operations that are executed as a single unit of work, ensuring data integrity.
+   - A transaction is a sequence of operations that are executed as a single unit. It ensures consistency and integrity of the database.
+   
+   Example:
+   START TRANSACTION;
+   UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+   UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+   COMMIT;
 
 54. What are the properties of transactions (ACID)?
-   - ACID stands for Atomicity, Consistency, Isolation, Durability, which ensure reliable transactions.
+   - ACID stands for Atomicity, Consistency, Isolation, and Durability. These properties ensure reliable processing in databases.
 
 55. How do you roll back a transaction?
    - Use the ROLLBACK command to undo a transaction.
+   
+   Example:
+   ROLLBACK;
 
 56. How do you create a stored procedure in SQL?
-   - Use CREATE PROCEDURE: CREATE PROCEDURE proc_name AS BEGIN SQL_statements END.
+   - Use the CREATE PROCEDURE statement to define a stored procedure.
+   
+   Example:
+   CREATE PROCEDURE IncreaseSalary(IN percent INT)
+   BEGIN
+       UPDATE employees SET salary = salary * (1 + percent/100);
+   END;
 
 57. What is the purpose of a trigger in SQL?
-   - A trigger automatically executes a specified set of SQL commands when a certain event occurs on a table.
+   - A trigger is a database object that is automatically executed when certain events occur, such as INSERT, UPDATE, or DELETE.
+   
+   Example:
+   CREATE TRIGGER before_employee_update BEFORE UPDATE ON employees 
+   FOR EACH ROW SET NEW.updated_at = NOW();
 
 58. How do you handle errors in SQL?
-   - Use error handling mechanisms like TRY...CATCH blocks in databases like SQL Server.
+   - Use error-handling mechanisms like TRY...CATCH in SQL Server, or declare exception handlers in databases like MySQL.
+   
+   Example (SQL Server):
+   BEGIN TRY
+      -- SQL statements
+   END TRY
+   BEGIN CATCH
+      -- Handle error
+   END CATCH;
 
 59. What is a materialized view, and how does it differ from a regular view?
-   - A materialized view stores the result of a query physically, unlike a regular view which is just a stored query.
+   - A materialized view stores the result set of a query physically, whereas a regular view is just a virtual table that does not store data.
+   
+   Example:
+   CREATE MATERIALIZED VIEW sales_summary AS 
+   SELECT product_id, SUM(sales) FROM sales GROUP BY product_id;
 
 60. How do you determine the current database in SQL?
-   - Use SELECT DATABASE(); in MySQL or equivalent commands in other databases.
+   - Use a command like `SELECT DATABASE();` in MySQL or `SELECT current_database();` in PostgreSQL.
 
 61. What is the difference between GROUP BY and ORDER BY?
-   - GROUP BY groups rows with the same values into summary rows, while ORDER BY sorts the result set.
+   - GROUP BY groups rows based on column values, while ORDER BY sorts the result set based on column values.
+   
+   Example:
+   SELECT department, COUNT(*) FROM employees GROUP BY department ORDER BY department;
 
 62. What does the OFFSET keyword do in SQL?
-   - OFFSET skips a specified number of rows before returning the result set.
+   - OFFSET skips a specified number of rows before starting to return rows from the query.
+   
+   Example:
+   SELECT * FROM employees LIMIT 10 OFFSET 20;
 
 63. How do you convert a string to uppercase in SQL?
-   - Use the UPPER() function: SELECT UPPER(column_name) FROM table_name.
+   - Use the UPPER() function.
+   
+   Example:
+   SELECT UPPER(name) FROM employees;
 
 64. What is the TRIM() function used for?
    - TRIM() removes leading and trailing spaces from a string.
+   
+   Example:
+   SELECT TRIM('  John  ');
 
 65. How can you retrieve the last 10 records from a table?
-   - Use ORDER BY column DESC LIMIT 10 to retrieve the last 10 records.
+   - Use ORDER BY with DESC and LIMIT.
+   
+   Example:
+   SELECT * FROM employees ORDER BY id DESC LIMIT 10;
 
 66. How do you fetch records based on a date range?
-   - Use the WHERE clause with BETWEEN: SELECT * FROM table_name WHERE date_column BETWEEN 'start_date' AND 'end_date'.
+   - Use the BETWEEN clause with dates.
+   
+   Example:
+   SELECT * FROM orders WHERE order_date BETWEEN '2023-01-01' AND '2023-12-31';
 
 67. What does the CAST() function do?
    - CAST() converts a value from one data type to another.
+   
+   Example:
+   SELECT CAST(salary AS DECIMAL(10, 2)) FROM employees;
 
 68. Explain the use of the RANK() function.
-   - The RANK() function assigns a rank to each row within a partition, with possible gaps in the ranking.
+   - RANK() assigns a rank to each row within a partition of a result set.
+   
+   Example:
+   SELECT name, salary, RANK() OVER (ORDER BY salary DESC) FROM employees;
 
 69. What is the difference between RANK() and DENSE_RANK()?
-   - RANK() leaves gaps in the ranking when there are ties, while DENSE_RANK() does not.
+   - RANK() skips ranks if there are ties, while DENSE_RANK() does not.
+   
+   Example:
+   RANK(): 1, 2, 2, 4
+   DENSE_RANK(): 1, 2, 2, 3
 
 70. How do you implement error handling in stored procedures?
-   - Use TRY...CATCH blocks or other error-handling mechanisms supported by the database.
+   - In MySQL, use DECLARE ... HANDLER. In SQL Server, use TRY...CATCH.
+   
+   Example (MySQL):
+   DELIMITER //
+   CREATE PROCEDURE ExampleProc()
+   BEGIN
+       DECLARE EXIT HANDLER FOR SQLEXCEPTION
+       BEGIN
+           -- Handle error
+       END;
+   END//
 
 71. What is the difference between a local and a global temporary table?
-   - A local temporary table is visible only to the session that created it, while a global temporary table is visible to all sessions.
+   - Local temporary tables are only visible to the session that created them, while global temporary tables are visible to all sessions.
+   
+   Example:
+   CREATE TEMPORARY TABLE #local_temp AS SELECT * FROM employees;  -- Local
+   CREATE TABLE ##global_temp AS SELECT * FROM employees;          -- Global
 
 72. How do you calculate the percentage of total in SQL?
-   - Use a calculation like: SELECT (column_value / total_value) * 100 AS percentage.
+   - Use a combination of SUM() and division.
+   
+   Example:
+   SELECT name, (salary / (SELECT SUM(salary) FROM employees)) * 100 AS salary_percentage FROM employees;
 
 73. What is a derived table, and how is it created?
-   - A derived table is a subquery that is used in the FROM clause, and it behaves like a temporary table.
+   - A derived table is a subquery used in the FROM clause of a query.
+   
+   Example:
+   SELECT * FROM (SELECT name, salary FROM employees WHERE salary > 50000) AS high_earners;
 
 74. How can you use window functions in SQL?
-   - Window functions like ROW_NUMBER() and RANK() can be used to perform calculations across a set of rows related to the current row.
+   - Window functions like ROW_NUMBER(), RANK(), and SUM() OVER() provide calculations across a set of table rows related to the current row.
+   
+   Example:
+   SELECT name, salary, ROW_NUMBER() OVER (ORDER BY salary DESC) FROM employees;
 
 75. What is the purpose of the FIND_IN_SET() function in MySQL?
-   - FIND_IN_SET() returns the position of a string within a list of strings.
+   - FIND_IN_SET() returns the position of a string within a comma-separated list.
+   
+   Example:
+   SELECT FIND_IN_SET('apple', 'apple,banana,grape');
 
 76. How do you find the difference between two dates in SQL?
-   - Use the DATEDIFF() function to find the difference between two dates.
+   - Use the DATEDIFF() function.
+   
+   Example:
+   SELECT DATEDIFF('2024-01-01', '2023-01-01');
 
 77. What are some common SQL functions for string manipulation?
-   - Common functions include CONCAT(), SUBSTRING(), LENGTH(), and REPLACE().
+   - Common string functions include CONCAT(), SUBSTRING(), LENGTH(), UPPER(), LOWER().
+   
+   Example:
+   SELECT CONCAT(first_name, ' ', last_name) FROM employees;
 
 78. How do you check if a table exists in a database?
-   - Use a query like: SELECT * FROM information_schema.tables WHERE table_name = 'your_table'.
+   - Use queries that check system tables or information_schema.
+   
+   Example (MySQL):
+   SELECT * FROM information_schema.tables WHERE table_name = 'employees';
 
-79. What is a GROUP_CONCAT() function?
-   - GROUP_CONCAT() concatenates values from multiple rows into a single string.
+79. What is the purpose of the CASE statement in SQL?
+   - The CASE statement provides conditional logic in a query.
+   
+   Example:
+   SELECT name, 
+   CASE WHEN salary > 50000 THEN 'High' ELSE 'Low' END AS salary_grade 
+   FROM employees;
 
-80. How can you implement a full-text search in SQL?
-   - Use FULLTEXT indexes and queries like MATCH()...AGAINST() in databases that support full-text search.
+80. How do you rename a table in SQL?
+   - Use the RENAME TABLE statement.
+   
+   Example:
+   RENAME TABLE old_table TO new_table;
 
-81. How do you check for the existence of a record using a subquery?
-   - Use EXISTS with a subquery: SELECT 1 WHERE EXISTS (SELECT * FROM table_name WHERE condition).
+81. What is a cursor in SQL, and when would you use it?
+   - A cursor allows row-by-row processing of query results. It's used when processing each row individually is required.
+   
+   Example:
+   DECLARE cursor_name CURSOR FOR SELECT name FROM employees;
 
-82. What is a horizontal vs. vertical join?
-   - Horizontal joins combine rows, while vertical joins combine columns (e.g., UNION for vertical joins).
+82. What is an index scan?
+   - An index scan is when the database reads data directly from an index to retrieve the results of a query.
 
-83. How do you update records based on a condition?
-   - Use UPDATE with the WHERE clause: UPDATE table_name SET column_name = value WHERE condition.
+83. How can you delete duplicate rows in SQL?
+   - Use a combination of CTE and ROW_NUMBER() to identify and delete duplicates.
+   
+   Example:
+   WITH CTE AS (
+       SELECT *, ROW_NUMBER() OVER (PARTITION BY name ORDER BY id) AS rn FROM employees
+   )
+   DELETE FROM CTE WHERE rn > 1;
 
-84. What is a cross join, and how does it differ from other joins?
-   - A cross join returns the Cartesian product of two tables, without any condition or match, unlike inner or outer joins.
+84. What does the REPLACE() function do?
+   - REPLACE() replaces all occurrences of a substring within a string.
+   
+   Example:
+   SELECT REPLACE('hello world', 'world', 'SQL');
 
-85. How do you drop a table from a database?
-   - Use DROP TABLE table_name to remove a table from the database.
+85. How do you create a new database in SQL?
+   - Use the CREATE DATABASE statement.
+   
+   Example:
+   CREATE DATABASE my_database;
 
-86. What is a recursive query, and when would you use it?
-   - A recursive query repeatedly references itself, useful for hierarchical data such as organizational charts.
+86. How do you delete a database in SQL?
+   - Use the DROP DATABASE statement.
+   
+   Example:
+   DROP DATABASE my_database;
 
-87. How do you use the SUBSTRING() function?
-   - Use SUBSTRING() to extract a part of a string: SELECT SUBSTRING(column, start, length) FROM table_name.
+87. What is the purpose of the LIMIT clause?
+   - LIMIT restricts the number of rows returned by a query.
+   
+   Example:
+   SELECT * FROM employees LIMIT 5;
 
-88. How do you find duplicate rows based on multiple columns?
-   - Use GROUP BY with HAVING COUNT(*) > 1 to find duplicate rows.
+88. What is the purpose of the IFNULL() or COALESCE() functions?
+   - Both functions return the first non-null value.
+   
+   Example:
+   SELECT COALESCE(middle_name, first_name) FROM employees;
 
-89. What is a batch processing in SQL?
-   - Batch processing allows running a set of SQL commands in a sequence as part of a single job.
+89. What is a schema in SQL?
+   - A schema is a collection of database objects (tables, views, etc.) that are related to each other.
 
-90. How can you use the INDEX keyword in a query?
-   - You can use INDEX to hint the database engine to use a specific index for query optimization.
+90. How do you move a table to a different schema?
+   - Use the ALTER TABLE statement with the schema name.
+   
+   Example:
+   ALTER TABLE old_schema.table_name RENAME TO new_schema.table_name;
+91. How do you add a new column to an existing table?
+   - Use the ALTER TABLE statement with the ADD COLUMN clause.
+   
+   Example:
+   ALTER TABLE employees ADD COLUMN birth_date DATE;
 
-91. What is the difference between static and dynamic SQL?
-   - Static SQL is predefined and does not change, while dynamic SQL is generated and executed at runtime.
+92. How do you change the data type of a column in SQL?
+   - Use the ALTER TABLE statement with the MODIFY or ALTER COLUMN clause.
+   
+   Example:
+   ALTER TABLE employees MODIFY COLUMN salary DECIMAL(10, 2);
 
-92. How do you implement a check constraint in SQL?
-   - Use the CHECK constraint to enforce a condition on column values: CREATE TABLE table_name (column_name INT CHECK (column_name > 0)).
+93. How do you retrieve the first record from a query result?
+   - Use the LIMIT clause to fetch the first record.
+   
+   Example:
+   SELECT * FROM employees LIMIT 1;
 
-93. What is the significance of the EXEC keyword in SQL Server?
-   - EXEC is used to execute a stored procedure or dynamic SQL in SQL Server.
+94. What is a cross join, and how does it differ from other joins?
+   - A cross join returns the Cartesian product of two tables, meaning every row in the first table is paired with every row in the second table.
+   
+   Example:
+   SELECT * FROM employees CROSS JOIN departments;
 
-94. How do you list all the columns in a table?
-   - Use the query: SELECT column_name FROM information_schema.columns WHERE table_name = 'your_table'.
+95. How do you drop a column from a table?
+   - Use the ALTER TABLE statement with the DROP COLUMN clause.
+   
+   Example:
+   ALTER TABLE employees DROP COLUMN birth_date;
 
-95. What is a schema in SQL?
-   - A schema is a collection of database objects, such as tables and views, that define the structure of the database.
+96. What is a recursive query, and when would you use it?
+   - A recursive query is used to query hierarchical data, such as organizational charts. It calls itself to return a result set.
+   
+   Example (Common Table Expression in SQL):
+   WITH RECURSIVE EmployeeCTE AS (
+       SELECT id, name, manager_id FROM employees WHERE manager_id IS NULL
+       UNION ALL
+       SELECT e.id, e.name, e.manager_id
+       FROM employees e
+       INNER JOIN EmployeeCTE cte ON e.manager_id = cte.id
+   )
+   SELECT * FROM EmployeeCTE;
 
-96. How can you create a backup of a database?
-   - Use database-specific commands, such as mysqldump in MySQL or BACKUP DATABASE in SQL Server.
+97. How do you use the SUBSTRING() function?
+   - SUBSTRING() extracts a substring from a string based on specified starting position and length.
+   
+   Example:
+   SELECT SUBSTRING(name, 1, 3) FROM employees;  -- Extracts the first three characters
 
-97. What does the SET keyword do in an UPDATE statement?
-   - The SET keyword assigns new values to columns in an UPDATE statement.
+98. How do you find duplicate rows based on multiple columns?
+   - Use GROUP BY to group by the desired columns and HAVING to filter counts greater than 1.
+   
+   Example:
+   SELECT name, email, COUNT(*) 
+   FROM employees 
+   GROUP BY name, email 
+   HAVING COUNT(*) > 1;
 
-98. How do you create a function in SQL?
-   - Use CREATE FUNCTION: CREATE FUNCTION function_name (parameters) RETURNS data_type AS BEGIN SQL_statements END.
+99. What is batch processing in SQL?
+   - Batch processing is the execution of a series of SQL statements as a single batch to improve efficiency and performance.
 
-99. How can you store a list of values in a single column?
-   - You can store a list of values as a comma-separated string or use JSON or array types depending on the database.
-
-100. How do you delete a column from a table?
-   - To delete a column from a table, use the ALTER TABLE statement with the DROP COLUMN clause. For example:
-
-   ALTER TABLE table_name
-   DROP COLUMN column_name;
-
-   This will permanently remove the specified column from the table.
+100. How can you use the INDEX keyword in a query?
+   - The INDEX keyword is not used directly in SELECT statements; instead, it’s part of the CREATE INDEX statement to define an index.
+   
+   Example:
+   CREATE INDEX idx_employee_salary ON employees(salary);
