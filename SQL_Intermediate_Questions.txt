@@ -1,0 +1,568 @@
+"""
+1. What is the purpose of using a JOIN in SQL?
+   JOINs are used to combine rows from two or more tables based on a related column. 
+   Example: 
+   SELECT *
+   FROM employees e
+   JOIN departments d ON e.department_id = d.id;
+
+2. How do you identify and remove duplicate records efficiently?
+   You can use the ROW_NUMBER() window function to identify duplicates and then delete them.
+   Example:
+   WITH CTE AS (
+       SELECT *, ROW_NUMBER() OVER (PARTITION BY column1, column2 ORDER BY id) AS rn
+       FROM table_name
+   )
+   DELETE FROM CTE WHERE rn > 1;
+
+3. Explain the difference between CROSS JOIN and FULL OUTER JOIN.
+   CROSS JOIN returns the Cartesian product of two tables, while FULL OUTER JOIN returns all records from both tables, with NULLs where there are no matches.
+   Example of FULL OUTER JOIN:
+   SELECT *
+   FROM table1
+   FULL OUTER JOIN table2 ON table1.id = table2.id;
+
+4. What is the difference between a clustered and a non-clustered index?
+   A clustered index sorts and stores the data rows in the table based on the index key. A non-clustered index is a separate structure that points to the data rows.
+   Example:
+   CREATE CLUSTERED INDEX idx_name ON table_name(column_name);
+   CREATE NONCLUSTERED INDEX idx_name ON table_name(column_name);
+
+5. How do you optimize a query that is running slow?
+   You can optimize by analyzing the execution plan, creating indexes, or rewriting the query for efficiency.
+   Example:
+   EXPLAIN SELECT * FROM large_table WHERE column = 'value';
+
+6. Explain how a transaction works in SQL and its importance.
+   A transaction is a sequence of operations performed as a single logical unit of work. It ensures ACID properties.
+   Example:
+   BEGIN TRANSACTION;
+   INSERT INTO table_name (column) VALUES ('value');
+   COMMIT;
+
+7. How do you use a common table expression (CTE) in SQL?
+   A CTE provides temporary result sets that can be referenced within a SELECT, INSERT, UPDATE, or DELETE statement.
+   Example:
+   WITH CTE AS (
+       SELECT * FROM table_name WHERE condition
+   )
+   SELECT * FROM CTE;
+
+8. What is a pivot table, and how do you create one in SQL?
+   A pivot table summarizes data from a larger table, transforming unique values from one column into multiple columns.
+   Example:
+   SELECT *
+   FROM (SELECT column1, column2 FROM table_name) AS source
+   PIVOT (SUM(column2) FOR column1 IN ([value1], [value2])) AS pivot_table;
+
+9. How do you implement a recursive CTE?
+   A recursive CTE references itself to perform hierarchical queries.
+   Example:
+   WITH RECURSIVE CTE AS (
+       SELECT id, name FROM table_name WHERE condition
+       UNION ALL
+       SELECT t.id, t.name FROM table_name t
+       JOIN CTE ON t.parent_id = CTE.id
+   )
+   SELECT * FROM CTE;
+
+10. Explain the use of ROW_NUMBER() and its practical applications.
+    ROW_NUMBER() assigns a unique sequential integer to rows within a partition of a result set.
+    Example:
+    SELECT column1, ROW_NUMBER() OVER (ORDER BY column2) AS row_num
+    FROM table_name;
+
+11. What is the purpose of the WITH ROLLUP clause?
+    WITH ROLLUP is used to create subtotals and grand totals in GROUP BY queries.
+    Example:
+    SELECT department, SUM(salary)
+    FROM employees
+    GROUP BY department WITH ROLLUP;
+
+12. How do you convert data types when performing calculations?
+    You can use the CAST or CONVERT functions to change data types.
+    Example:
+    SELECT CAST(column_name AS INT) FROM table_name;
+
+13. Explain how you can use the EXISTS clause in a subquery.
+    EXISTS checks for the existence of rows returned by the subquery.
+    Example:
+    SELECT * FROM table1
+    WHERE EXISTS (SELECT 1 FROM table2 WHERE table2.id = table1.id);
+
+14. How do you perform a conditional aggregation?
+    You can use CASE statements inside aggregate functions to perform conditional aggregation.
+    Example:
+    SELECT 
+        SUM(CASE WHEN condition THEN value ELSE 0 END) AS total
+    FROM table_name;
+
+15. What is a stored procedure, and how does it differ from a function?
+    A stored procedure is a precompiled collection of SQL statements that can perform actions. A function returns a single value and can be used in SELECT statements.
+    Example:
+    CREATE PROCEDURE procedure_name AS BEGIN SELECT * FROM table_name; END;
+    CREATE FUNCTION function_name() RETURNS RETURN value;
+
+16. How do you handle exceptions in SQL?
+    You can use TRY...CATCH blocks to handle exceptions in SQL Server.
+    Example:
+    BEGIN TRY
+        -- SQL statements
+    END TRY
+    BEGIN CATCH
+        -- Handle error
+    END CATCH;
+
+17. What is the purpose of the TRY...CATCH block in SQL Server?
+    It is used to handle errors gracefully within SQL Server transactions.
+    Example:
+    BEGIN TRY
+        -- Code that may cause an error
+    END TRY
+    BEGIN CATCH
+        PRINT ERROR_MESSAGE();
+    END CATCH;
+
+18. Explain the concept of normalization and its forms.
+    Normalization is organizing data to minimize redundancy and dependency. The main forms are 1NF, 2NF, 3NF, and BCNF.
+    Example:
+    A table in 1NF will have all columns atomic, while in 2NF, it will have no partial dependency.
+
+19. What is denormalization, and when should it be applied?
+    Denormalization is the process of intentionally introducing redundancy into a database to improve read performance.
+    Example: 
+    Denormalize a table when query performance is more critical than data integrity.
+
+20. How do you implement row-level security in SQL?
+    You can use security policies to restrict access to rows in a table based on user roles.
+    Example:
+    CREATE SECURITY POLICY policy_name ADD FILTER PREDICATE predicate_function(column) ON table_name;
+
+21. What are window functions, and how do they differ from aggregate functions?
+    Window functions perform calculations across a set of rows related to the current row without collapsing them.
+    Example:
+    SELECT column1, SUM(column2) OVER (PARTITION BY column1) FROM table_name;
+
+22. Explain the use of the LEAD() and LAG() functions.
+    LEAD() retrieves data from the next row in the result set, while LAG() retrieves data from the previous row.
+    Example:
+    SELECT column1, LAG(column2) OVER (ORDER BY column1) AS prev_value FROM table_name;
+
+23. How can you create a dynamic SQL statement?
+    You can use the EXECUTE or sp_executesql functions to execute dynamic SQL.
+    Example:
+    DECLARE @sql NVARCHAR(MAX) = N'SELECT * FROM ' + QUOTENAME(@table_name);
+    EXEC sp_executesql @sql;
+
+24. What is the significance of the MERGE statement?
+    MERGE allows you to perform INSERT, UPDATE, or DELETE operations in a single statement based on conditions.
+    Example:
+    MERGE INTO target_table USING source_table ON (target_table.id = source_table.id)
+    WHEN MATCHED THEN UPDATE SET column1 = source_table.column1
+    WHEN NOT MATCHED THEN INSERT (column1) VALUES (source_table.column1);
+
+25. How do you use the CASE statement in an ORDER BY clause?
+    You can use the CASE statement to create conditional sorting in an ORDER BY clause.
+    Example:
+    SELECT * FROM table_name ORDER BY CASE WHEN condition THEN 1 ELSE 2 END;
+
+26. Explain the differences between UNION and UNION ALL.
+    UNION combines results from multiple SELECT statements and removes duplicates, while UNION ALL includes all duplicates.
+    Example:
+    SELECT column FROM table1 UNION SELECT column FROM table2;
+    SELECT column FROM table1 UNION ALL SELECT column FROM table2;
+
+27. How do you enforce foreign key constraints?
+    You can enforce foreign key constraints at table creation or using ALTER TABLE statements.
+    Example:
+    CREATE TABLE child_table (
+        parent_id INT,
+        FOREIGN KEY (parent_id) REFERENCES parent_table(id)
+    );
+
+28. How do you update multiple tables in a single transaction?
+    You can wrap multiple UPDATE statements within a single transaction.
+    Example:
+    BEGIN TRANSACTION;
+    UPDATE table1 SET column = value;
+    UPDATE table2 SET column = value;
+    COMMIT;
+
+29. What is the difference between horizontal and vertical partitioning?
+    Horizontal partitioning splits a table into smaller tables based on row conditions, while vertical partitioning splits based on columns.
+    Example:
+    Horizontal: table_name_part1, table_name_part2; Vertical: table_name_columns1, table_name_columns2;
+
+30. How do you implement error handling in a stored procedure?
+    You can use TRY...CATCH blocks within stored procedures for error handling.
+    Example:
+    CREATE PROCEDURE procedure_name AS BEGIN TRY -- SQL code END TRY BEGIN CATCH -- Error handling END CATCH;
+
+31. What are the performance implications of using indexes?
+    Indexes improve read performance but can slow down write operations due to the need for index maintenance.
+    Example:
+    CREATE INDEX idx_name ON table_name(column_name);
+
+32. How do you create a materialized view in SQL?
+    A materialized view stores the result of a query physically on the disk.
+    Example:
+    CREATE MATERIALIZED VIEW view_name AS SELECT * FROM table_name;
+
+33. Explain the differences between OLTP and OLAP.
+    OLTP (Online Transaction Processing) systems are optimized for transaction-oriented tasks, while OLAP (Online Analytical Processing) systems are optimized for complex queries and data analysis.
+    Example:
+    OLTP: e-commerce applications; OLAP: data warehousing and reporting.
+
+34. How do you perform a full-text search in SQL?
+    You can use the CONTAINS or FREETEXT functions for full-text searches in SQL Server.
+    Example:
+    SELECT * FROM table_name WHERE CONTAINS(column_name, 'search_term');
+
+35. What are the differences between a schema and a database?
+    A schema is a collection of database objects like tables and views, while a database is a complete set of data.
+    Example:
+    Schema: sales_schema; Database: sales_db.
+
+36. How do you list all indexes on a table?
+    You can query system catalogs to list all indexes.
+    Example:
+    SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID('table_name');
+
+37. What is the purpose of a trigger, and how do you create one?
+    A trigger automatically executes a specified action in response to certain events on a table.
+    Example:
+    CREATE TRIGGER trigger_name ON table_name AFTER INSERT AS BEGIN -- action END;
+
+38. How do you create a temporary table in SQL?
+    A temporary table stores data temporarily and is deleted when the session ends.
+    Example:
+    CREATE TABLE #temp_table (column1 INT, column2 VARCHAR(50));
+
+39. How do you prevent SQL injection attacks?
+    You can prevent SQL injection by using parameterized queries and stored procedures.
+    Example:
+    SELECT * FROM table_name WHERE column_name = @parameter;
+
+40. What is a foreign key constraint, and how does it function?
+    A foreign key constraint enforces a link between the data in two tables.
+    Example:
+    FOREIGN KEY (column) REFERENCES other_table(column);
+
+41. Explain the difference between ACID and BASE properties.
+    ACID (Atomicity, Consistency, Isolation, Durability) is a set of properties for reliable transactions. BASE (Basically Available, Soft state, Eventually consistent) is used for distributed systems.
+    Example: 
+    ACID is critical in banking systems; BASE is often used in NoSQL databases.
+
+42. How do you use the INTERSECT operator?
+    INTERSECT returns distinct rows from both queries.
+    Example:
+    SELECT column FROM table1 INTERSECT SELECT column FROM table2;
+
+43. What is the purpose of the SET NOCOUNT ON statement?
+    SET NOCOUNT ON prevents the message indicating the number of rows affected by a T-SQL statement from being returned.
+    Example:
+    SET NOCOUNT ON;
+
+44. How do you fetch rows based on a date range?
+    You can use the BETWEEN operator to filter rows based on a date range.
+    Example:
+    SELECT * FROM table_name WHERE date_column BETWEEN '2023-01-01' AND '2023-12-31';
+
+45. How do you generate a sequence of numbers in SQL?
+    You can use a recursive CTE or the SEQUENCE object in SQL Server.
+    Example:
+    WITH Numbers AS (
+        SELECT 1 AS Number
+        UNION ALL
+        SELECT Number + 1 FROM Numbers WHERE Number < 10
+    )
+    SELECT * FROM Numbers;
+
+46. What is the difference between a JOIN and a SUBQUERY?
+    A JOIN combines rows from two or more tables, while a subquery is a query nested inside another query.
+    Example of JOIN:
+    SELECT * FROM table1 JOIN table2 ON table1.id = table2.id;
+    Example of SUBQUERY:
+    SELECT * FROM table1 WHERE id IN (SELECT id FROM table2);
+
+47. How do you check if a table contains specific values?
+    You can use the EXISTS clause or a simple SELECT statement.
+    Example:
+    SELECT 1 FROM table_name WHERE column_name = 'value';
+
+48. What are user-defined functions, and how do you create one?
+    User-defined functions allow you to encapsulate reusable logic. You create them using the CREATE FUNCTION statement.
+    Example:
+    CREATE FUNCTION function_name(@param INT) RETURNS INT AS BEGIN RETURN @param * @param; END;
+
+49. How do you create a backup of a database in SQL Server?
+    You can use the BACKUP DATABASE command.
+    Example:
+    BACKUP DATABASE database_name TO DISK = 'C:\backup\database.bak';
+
+50. What is the purpose of the TRANSACTION keyword?
+    The TRANSACTION keyword is used to define a transaction block.
+    Example:
+    BEGIN TRANSACTION;
+    -- SQL statements
+    COMMIT;
+
+51. How do you handle large datasets efficiently in SQL?
+    You can use pagination, indexing, and batch processing to handle large datasets.
+    Example:
+    SELECT * FROM table_name ORDER BY id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY;
+
+52. Explain the role of an execution plan in SQL.
+    An execution plan shows how SQL Server intends to execute a query, helping to identify performance bottlenecks.
+    Example:
+    SET SHOWPLAN_TEXT ON; 
+    SELECT * FROM table_name;
+
+53. What is the difference between logical and physical data models?
+    A logical data model defines data structures and relationships without considering how they will be implemented, while a physical data model includes details on storage.
+    Example:
+    Logical: entity-relationship diagrams; Physical: database schema.
+
+54. How do you use the FIND_IN_SET() function in MySQL?
+    FIND_IN_SET() returns the index position of a value in a comma-separated string.
+    Example:
+    SELECT FIND_IN_SET('value', column_name) FROM table_name;
+
+55. What is the significance of the DATABASE keyword?
+    DATABASE sets the current database context in SQL Server.
+    Example:
+    USE database_name;
+
+56. How do you manage user permissions in SQL?
+    You can manage user permissions using GRANT, REVOKE, and DENY commands.
+    Example:
+    GRANT SELECT ON table_name TO user_name;
+
+57. What are the advantages of using stored procedures?
+    Stored procedures improve performance, reusability, and security.
+    Example:
+    CREATE PROCEDURE procedure_name AS BEGIN -- SQL code END;
+
+58. How do you delete records from multiple tables at once?
+    You can use DELETE statements within a transaction to delete from multiple tables.
+    Example:
+    BEGIN TRANSACTION;
+    DELETE FROM table1 WHERE condition;
+    DELETE FROM table2 WHERE condition;
+    COMMIT;
+
+59. How do you find the nth highest salary in a table?
+    You can use a subquery with the DISTINCT keyword to find the nth highest salary.
+    Example:
+    SELECT DISTINCT salary FROM employees ORDER BY salary DESC OFFSET n-1 ROWS FETCH NEXT 1 ROW ONLY;
+
+60. What is the difference between an index and a primary key?
+    An index improves the speed of data retrieval, while a primary key uniquely identifies each record in a table.
+    Example:
+    PRIMARY KEY (column_name);
+    CREATE INDEX idx_name ON table_name(column_name);
+
+61. How do you fetch records that match a specific pattern?
+    You can use the LIKE operator to search for records that match a specific pattern.
+    Example:
+    SELECT * FROM table_name WHERE column_name LIKE 'pattern%';
+
+62. What is the purpose of the ANALYZE TABLE statement?
+    ANALYZE TABLE updates the statistics of a table to optimize query performance.
+    Example:
+    ANALYZE TABLE table_name;
+
+63. How do you create a unique constraint on a column?
+    A unique constraint ensures that all values in a column are different.
+    Example:
+    ALTER TABLE table_name ADD CONSTRAINT unique_constraint_name UNIQUE (column_name);
+
+64. Explain the differences between SELECT INTO and INSERT INTO.
+    SELECT INTO creates a new table and inserts data into it, while INSERT INTO adds data to an existing table.
+    Example:
+    SELECT * INTO new_table FROM existing_table;
+    INSERT INTO existing_table (column1) VALUES (value);
+
+65. How do you implement a check constraint in SQL?
+    A check constraint limits the values that can be placed in a column.
+    Example:
+    ALTER TABLE table_name ADD CONSTRAINT check_constraint_name CHECK (column_name > 0);
+
+66. What is the significance of the EXISTS clause?
+    EXISTS checks for the existence of any record in a subquery and returns true if it finds at least one record.
+    Example:
+    SELECT * FROM table1 WHERE EXISTS (SELECT 1 FROM table2 WHERE table1.id = table2.id);
+
+67. How do you use GROUP BY with multiple columns?
+    You can specify multiple columns in the GROUP BY clause to group results.
+    Example:
+    SELECT column1, column2, COUNT(*) FROM table_name GROUP BY column1, column2;
+
+68. What is a schema-bound view, and how does it work?
+    A schema-bound view is a view that is bound to the schema of the underlying tables, preventing changes to those tables that would affect the view.
+    Example:
+    CREATE VIEW view_name WITH SCHEMABINDING AS SELECT * FROM dbo.table_name;
+
+69. How do you handle NULL values in a query?
+    You can use the IS NULL or COALESCE function to handle NULL values in queries.
+    Example:
+    SELECT * FROM table_name WHERE column_name IS NULL;
+    SELECT COALESCE(column_name, 'default_value') FROM table_name;
+
+70. Explain the concept of data lineage in SQL.
+    Data lineage tracks the flow of data through the various stages of processing, helping to understand data transformations.
+    Example: 
+    Document the source, transformations, and destination of data for compliance.
+
+71. How do you use the TRIM() function to clean data?
+    TRIM() removes leading and trailing spaces from a string.
+    Example:
+    SELECT TRIM(column_name) FROM table_name;
+
+72. What are the pros and cons of using VARCHAR vs. TEXT?
+    VARCHAR is suitable for shorter strings and has a defined maximum length, while TEXT can store larger amounts of data but has performance implications.
+    Example:
+    VARCHAR(255) vs. TEXT;
+
+73. How do you create an index on multiple columns?
+    You can create a composite index that includes multiple columns.
+    Example:
+    CREATE INDEX idx_name ON table_name(column1, column2);
+
+74. Explain the role of the ORDER BY clause in a query.
+    The ORDER BY clause sorts the result set based on one or more columns.
+    Example:
+    SELECT * FROM table_name ORDER BY column_name ASC;
+
+75. What is a composite primary key?
+    A composite primary key consists of two or more columns that uniquely identify a record in a table.
+    Example:
+    PRIMARY KEY (column1, column2);
+
+76. How do you fetch data from multiple tables using JOIN?
+    You can use JOIN to combine rows from multiple tables based on related columns.
+    Example:
+    SELECT * FROM table1 JOIN table2 ON table1.id = table2.id;
+
+77. How do you list all stored procedures in a database?
+    You can query the system catalogs to list all stored procedures.
+    Example:
+    SELECT * FROM sys.objects WHERE type = 'P';
+
+78. What is a temporary stored procedure, and how do you create one?
+    A temporary stored procedure is a stored procedure that is only accessible within the current session.
+    Example:
+    CREATE PROCEDURE #temp_procedure AS BEGIN -- SQL code END;
+
+79. How do you find out the size of a database in SQL Server?
+    You can use the sp_spaceused stored procedure.
+    Example:
+    EXEC sp_spaceused;
+
+80. How do you convert a string to a date in SQL?
+    You can use the CAST or CONVERT functions to change a string into a date.
+    Example:
+    SELECT CAST('2024-01-01' AS DATE);
+
+81. What is a database view, and why would you use one?
+    A database view is a virtual table based on the result of a query. Views simplify complex queries and enhance security.
+    Example:
+    CREATE VIEW view_name AS SELECT column1 FROM table_name;
+
+82. How do you implement a cascade delete in SQL?
+    A cascade delete automatically deletes related records in child tables when a record is deleted from a parent table.
+    Example:
+    CREATE TABLE child_table (parent_id INT, FOREIGN KEY (parent_id) REFERENCES parent_table(id) ON DELETE CASCADE);
+
+83. Explain how to use the UNPIVOT operator.
+    UNPIVOT transforms columns into rows, useful for converting data formats.
+    Example:
+    SELECT * FROM table_name UNPIVOT (value FOR column_name IN (col1, col2, col3)) AS unpvt;
+
+84. What is a surrogate key, and when should it be used?
+    A surrogate key is a unique identifier created for a record when a natural key is not appropriate or when a simpler identifier is needed.
+    Example:
+    CREATE TABLE table_name (id INT PRIMARY KEY IDENTITY, column_name VARCHAR(50));
+
+85. How do you optimize a query for better performance?
+    You can optimize a query by indexing, using efficient joins, and avoiding unnecessary columns in SELECT statements.
+    Example:
+    SELECT column1, column2 FROM table_name WHERE condition;
+
+86. What is a keyset-driven cursor in SQL?
+    A keyset-driven cursor maintains a set of keys that determine the rows returned by the cursor, allowing for dynamic updates.
+    Example:
+    DECLARE cursor_name CURSOR FOR SELECT id FROM table_name;
+
+87. How do you create a function to return the square of a number?
+    You can create a scalar user-defined function for this purpose.
+    Example:
+    CREATE FUNCTION square(@num INT) RETURNS INT AS BEGIN RETURN @num * @num; END;
+
+88. Explain the concept of sharding in databases.
+    Sharding is a database architecture pattern that partitions data across multiple databases or servers to improve scalability and performance.
+    Example:
+    Users are distributed across multiple databases based on user ID.
+
+89. How do you set the default value for a column?
+    You can set a default value using the DEFAULT keyword when creating or altering a table.
+    Example:
+    ALTER TABLE table_name ADD column_name INT DEFAULT 0;
+
+90. What is the difference between a local and a global temporary table?
+    A local temporary table is accessible only to the session that created it, while a global temporary table is accessible to all sessions.
+    Example:
+    CREATE TABLE #local_temp (column_name INT); -- local
+    CREATE TABLE ##global_temp (column_name INT); -- global
+
+91. How do you check the health of a database?
+    You can run consistency checks using DBCC commands in SQL Server.
+    Example:
+    DBCC CHECKDB('database_name');
+
+92. What is the significance of the SET keyword in SQL?
+    The SET keyword is used to assign values to variables or options in SQL.
+    Example:
+    SET @variable = value;
+
+93. How do you use the RANK() function with PARTITION BY?
+    RANK() assigns a rank to each row within a partition of a result set.
+    Example:
+    SELECT column_name, RANK() OVER (PARTITION BY column_name ORDER BY score DESC) AS rank FROM table_name;
+
+94. What are the limitations of using a view?
+    Views cannot be indexed directly and may have performance issues if based on complex queries.
+    Example: 
+    A view based on multiple joins may perform slower than a direct query.
+
+95. How do you execute a SQL statement dynamically?
+    You can use EXEC or sp_executesql to execute a dynamic SQL statement.
+    Example:
+    EXEC('SELECT * FROM table_name');
+
+96. What is the purpose of the JOIN clause?
+    The JOIN clause combines rows from two or more tables based on a related column between them.
+    Example:
+    SELECT * FROM table1 INNER JOIN table2 ON table1.id = table2.id;
+
+97. How do you implement logging in SQL?
+    You can create a logging table and insert records into it to track operations.
+    Example:
+    CREATE TABLE log_table (id INT, operation VARCHAR(50), timestamp DATETIME);
+    INSERT INTO log_table (operation, timestamp) VALUES ('insert', GETDATE());
+
+98. What is a foreign data wrapper, and how is it used?
+    A foreign data wrapper allows you to access data stored in external databases or data sources within your SQL environment.
+    Example:
+    CREATE EXTENSION postgres_fdw; -- PostgreSQL example
+
+99. How do you handle concurrent data access in SQL?
+    You can use transactions and isolation levels to manage concurrent access.
+    Example:
+    SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+
+100. How do you migrate data from one database to another?
+    You can use SQL Server Integration Services (SSIS) or the bcp utility for data migration.
+    Example:
+    bcp source_database.dbo.table_name out data_file.txt -c -T;
+

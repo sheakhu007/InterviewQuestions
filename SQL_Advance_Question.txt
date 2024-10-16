@@ -1,0 +1,513 @@
+1. What is query optimization, and how do you achieve it?
+   Query optimization involves improving the performance of SQL queries to reduce execution time and resource consumption. You can achieve it by analyzing execution plans, using appropriate indexes, and rewriting queries for efficiency.
+   Example:
+   SELECT * FROM table_name WHERE indexed_column = 'value';
+
+2. How do you implement row-level security in SQL Server?
+   Row-level security restricts access to rows in a table based on the characteristics of the user executing a query. You implement it using security policies.
+   Example:
+   CREATE SECURITY POLICY policy_name ADD FILTER PREDICATE fn_securitypredicate(user_id) ON dbo.table_name;
+
+3. Explain how indexing works and its impact on performance.
+   Indexing creates a data structure that improves the speed of data retrieval operations. It can significantly enhance performance for SELECT queries but may slow down INSERT and UPDATE operations due to the overhead of maintaining the index.
+   Example:
+   CREATE INDEX idx_name ON table_name(column_name);
+
+4. What is a database partition, and how is it used?
+   Database partitioning divides a database into smaller, more manageable pieces, enhancing performance and simplifying maintenance. It's commonly used for large tables to improve query performance and data management.
+   Example:
+   CREATE PARTITION FUNCTION partition_function_name (int) AS RANGE LEFT FOR VALUES (100, 200);
+
+5. How do you write a recursive query in SQL?
+   Recursive queries are written using Common Table Expressions (CTEs) to perform hierarchical data retrieval.
+   Example:
+   WITH RecursiveCTE AS (
+       SELECT id, parent_id FROM table_name WHERE parent_id IS NULL
+       UNION ALL
+       SELECT t.id, t.parent_id FROM table_name t
+       INNER JOIN RecursiveCTE r ON t.parent_id = r.id
+   )
+   SELECT * FROM RecursiveCTE;
+
+6. What are the advantages and disadvantages of stored procedures?
+   Advantages: Improved performance, reusability, and security. Disadvantages: Complexity, reduced portability, and maintenance challenges.
+   Example:
+   CREATE PROCEDURE procedure_name AS BEGIN -- SQL code END;
+
+7. How do you manage transactions across multiple databases?
+   You can use distributed transactions to manage transactions across multiple databases, ensuring that either all operations succeed or none do.
+   Example:
+   BEGIN DISTRIBUTED TRANSACTION; 
+   -- SQL commands 
+   COMMIT;
+
+8. What is the purpose of a hash index?
+   A hash index provides fast lookups for equality comparisons by hashing the key values. It's useful for high-volume read operations.
+   Example:
+   CREATE INDEX idx_hash ON table_name USING HASH (column_name);
+
+9. Explain how to implement full-text search in SQL.
+   Full-text search allows you to search for complex data types like text. You set up full-text indexes and use CONTAINS or FREETEXT functions.
+   Example:
+   SELECT * FROM table_name WHERE CONTAINS(column_name, 'search_term');
+
+10. What is a database schema, and how do you design one?
+    A database schema defines the structure of a database, including tables, fields, and relationships. You design one by identifying the data requirements and creating an ER diagram.
+    Example:
+    CREATE TABLE table_name (id INT PRIMARY KEY, name VARCHAR(50));
+
+11. How do you implement cross-database queries?
+    You can perform cross-database queries by referencing tables in another database using the syntax: database_name.schema_name.table_name.
+    Example:
+    SELECT * FROM database1.dbo.table_name;
+
+12. What are the trade-offs of normalization vs. denormalization?
+    Normalization reduces data redundancy and improves data integrity but can lead to complex queries. Denormalization improves read performance at the cost of data redundancy and potential inconsistency.
+    Example:
+    Normalization: 3NF, Denormalization: combining tables for faster access.
+
+13. How do you handle large-scale data migrations in SQL?
+    Use ETL processes to extract, transform, and load data into the new system, ensuring data integrity and minimal downtime.
+    Example:
+    Using SQL Server Integration Services (SSIS) for migration tasks.
+
+14. What is a ghost record, and how do you deal with it?
+    Ghost records are entries in a table that have been logically deleted but are still present in the physical storage. You can manage them by rebuilding indexes or using the DBCC command.
+    Example:
+    DBCC CLEANTABLE (database_name, table_name);
+
+15. Explain how to implement a rolling window in SQL.
+    A rolling window aggregates data over a specified time frame, often using the OVER clause with PARTITION BY and ORDER BY.
+    Example:
+    SELECT column_name, SUM(value) OVER (ORDER BY date_column ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS rolling_sum FROM table_name;
+
+16. What is the purpose of a bitmap index?
+    A bitmap index is used to quickly answer queries involving multiple dimensions, especially in read-heavy environments. It uses a bitmap for each key value.
+    Example:
+    CREATE BITMAP INDEX idx_bitmap ON table_name(column_name);
+
+17. How do you set up database replication?
+    Database replication involves copying and maintaining database objects in multiple databases. You can set it up using SQL Server Replication tools.
+    Example:
+    EXEC sp_addpublication @publication = 'PublicationName';
+
+18. How do you create a composite index, and what are its benefits?
+    A composite index includes multiple columns, improving query performance for searches involving those columns. You create it using the CREATE INDEX statement.
+    Example:
+    CREATE INDEX idx_composite ON table_name(column1, column2);
+
+19. What is an execution plan, and how do you analyze it?
+    An execution plan outlines how SQL Server will execute a query. You can analyze it using the SQL Server Management Studio (SSMS) to identify performance issues.
+    Example:
+    SET SHOWPLAN_XML ON; SELECT * FROM table_name;
+
+20. How do you implement data archiving in SQL?
+    Data archiving involves moving older data to a separate storage for performance improvement and compliance. You can create an archive table and move data periodically.
+    Example:
+    INSERT INTO archive_table SELECT * FROM main_table WHERE archive_date < '2020-01-01';
+
+21. What are the differences between SQL Server and Oracle databases?
+    SQL Server is a Microsoft product focused on Windows environments, while Oracle is a cross-platform database known for its advanced features and scalability.
+    Example:
+    SQL Server uses T-SQL; Oracle uses PL/SQL for procedural extensions.
+
+22. Explain the concept of eventual consistency.
+    Eventual consistency is a model where updates to a database will propagate and eventually all copies of the data will become consistent. It’s common in distributed systems.
+    Example:
+    NoSQL databases like Cassandra support eventual consistency.
+
+23. How do you use partitioned tables for performance optimization?
+    Partitioned tables improve performance by dividing data into smaller, manageable segments, speeding up query processing and maintenance tasks.
+    Example:
+    CREATE TABLE partitioned_table (id INT) PARTITION BY RANGE (id) (PARTITION p1 VALUES LESS THAN (1000));
+
+24. What is a surrogate key, and why is it preferred in some cases?
+    A surrogate key is a unique identifier that has no business meaning, often used as a primary key. It's preferred because it simplifies relationships and avoids issues with natural keys.
+    Example:
+    CREATE TABLE table_name (id INT PRIMARY KEY IDENTITY, name VARCHAR(50));
+
+25. How do you implement database versioning?
+    Database versioning tracks changes in database schema over time, often using migration scripts or version control tools.
+    Example:
+    CREATE TABLE version_history (version_number INT, description VARCHAR(255));
+
+26. Explain the use of a data lake in relation to SQL databases.
+    A data lake is a centralized repository that stores large volumes of structured and unstructured data. It can complement SQL databases by providing raw data storage for analytics.
+    Example:
+    Storing JSON files in a data lake for later processing with SQL queries.
+
+27. How do you manage schema changes in production?
+    You can use version control systems and migration scripts to manage schema changes while ensuring minimal disruption to production environments.
+    Example:
+    Use Flyway or Liquibase for tracking changes.
+
+28. What are the benefits of using a NoSQL database alongside SQL?
+    NoSQL databases can handle large volumes of unstructured data, provide flexibility in data models, and scale horizontally. They complement SQL databases for specific use cases.
+    Example:
+    Using MongoDB for JSON-like document storage alongside a relational SQL database.
+
+29. How do you perform data validation in SQL?
+    Data validation ensures the accuracy and quality of data in a database, often implemented through constraints, triggers, or stored procedures.
+    Example:
+    CREATE TABLE table_name (id INT PRIMARY KEY, age INT CHECK (age > 0));
+
+30. What is a deadlock, and how do you resolve it?
+    A deadlock occurs when two transactions are waiting for each other to release locks, preventing progress. You resolve it by detecting and killing one of the transactions.
+    Example:
+    Use SET DEADLOCK_PRIORITY to manage which transaction to terminate.
+
+31. Explain how you can use dynamic SQL safely.
+    Dynamic SQL allows execution of SQL commands constructed at runtime. To use it safely, always use parameterized queries to prevent SQL injection attacks.
+    Example:
+    EXEC sp_executesql N'SELECT * FROM table_name WHERE column_name = @param', N'@param INT', @param = value;
+
+32. How do you implement data governance in SQL databases?
+    Data governance ensures data availability, usability, and integrity by establishing policies and standards for data management.
+    Example:
+    Create data stewardship roles and implement data quality metrics.
+
+33. What is the significance of the INSTEAD OF trigger?
+    An INSTEAD OF trigger allows you to override the default action of a data modification statement (INSERT, UPDATE, DELETE) on a view or table.
+    Example:
+    CREATE TRIGGER trigger_name ON view_name INSTEAD OF INSERT AS BEGIN -- custom insert logic END;
+
+34. How do you create a custom data type in SQL?
+    Custom data types extend SQL Server's built-in types to suit specific needs, created using the CREATE TYPE statement.
+    Example:
+    CREATE TYPE CustomType AS TABLE (id INT, name VARCHAR(50));
+
+35. Explain how to use database auditing for compliance.
+    Database auditing tracks database activities and changes, useful for compliance and security monitoring. You can configure SQL Server Audit to capture events.
+    Example:
+    CREATE SERVER AUDIT audit_name TO FILE ('C:\Audit\auditfile.aud');
+
+36. What are the differences between synchronous and asynchronous replication?
+    Synchronous replication ensures that data is written to both primary and secondary databases before confirming a transaction, while asynchronous replication allows for lag in data transfer.
+    Example:
+    Synchronous: High availability; Asynchronous: Better performance with potential data loss risk.
+
+37. How do you implement a multi-tenant architecture in SQL?
+    Multi-tenancy allows a single instance of a database to serve multiple clients. You can achieve it by partitioning data or using a shared schema with tenant identifiers.
+    Example:
+    CREATE TABLE tenant_data (tenant_id INT, data_column VARCHAR(50));
+
+38. What is the role of a database administrator (DBA)?
+    A DBA is responsible for managing, maintaining, and securing databases, ensuring performance, availability, and data integrity.
+    Example:
+    Daily tasks include backups, monitoring performance, and applying updates.
+
+39. How do you monitor database performance in real-time?
+    You can use performance monitoring tools and SQL Server Dynamic Management Views (DMVs) to track metrics like CPU usage, memory, and query performance.
+    Example:
+    SELECT * FROM sys.dm_exec_query_stats;
+
+40. Explain the use of logical backups versus physical backups.
+    Logical backups capture the database structure and data, while physical backups save the entire database files. Logical backups are useful for partial restores, while physical backups are faster for full restores.
+    Example:
+    BACKUP DATABASE database_name TO DISK = 'C:\Backup\database.bak';
+
+41. What is the impact of isolation levels on transactions?
+    Isolation levels control the visibility of changes made by one transaction to other transactions, affecting concurrency and data integrity. Higher isolation levels reduce concurrency.
+    Example:
+    SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+
+42. How do you write a SQL query for a pivot table?
+    You can create a pivot table to summarize data using the PIVOT operator.
+    Example:
+    SELECT * FROM (SELECT column1, column2, value FROM table_name) AS SourceTable 
+    PIVOT (SUM(value) FOR column2 IN ([Value1], [Value2])) AS PivotTable;
+
+43. What is a SQL injection attack, and how can it be prevented?
+    SQL injection is a security vulnerability that allows attackers to execute arbitrary SQL code. It can be prevented by using parameterized queries and stored procedures.
+    Example:
+    SELECT * FROM table_name WHERE id = @id; -- Using parameterized queries.
+
+44. How do you create a data model that supports scalability?
+    A scalable data model is designed to accommodate growth by ensuring normalized structures, indexing strategies, and partitioning.
+    Example:
+    Use sharding for horizontal scalability.
+
+45. Explain the use of aggregate functions in reporting.
+    Aggregate functions summarize data for reporting, such as SUM, AVG, COUNT, etc., allowing for analysis of large datasets.
+    Example:
+    SELECT department, COUNT(*) FROM employees GROUP BY department;
+
+46. How do you implement data masking in SQL?
+    Data masking replaces sensitive data with fictional data to protect it. You can achieve this through views or triggers.
+    Example:
+    CREATE VIEW masked_view AS SELECT id, '****' AS name FROM table_name;
+
+47. What are the differences between row-based and column-based storage?
+    Row-based storage stores data in rows, optimizing for transactional queries, while column-based storage organizes data by columns, enhancing analytical queries.
+    Example:
+    SQL databases typically use row-based, while data warehouses may use column-based storage.
+
+48. How do you optimize read-heavy queries?
+    You can optimize read-heavy queries by creating indexes, using caching mechanisms, and reducing the number of joins.
+    Example:
+    SELECT column_name FROM table_name WITH (NOLOCK);
+
+49. What is a data dictionary, and how is it used?
+    A data dictionary is a collection of metadata that describes the structure, relationships, and constraints of data in a database. It aids in data management and governance.
+    Example:
+    SELECT * FROM INFORMATION_SCHEMA.COLUMNS;
+
+50. How do you configure a high-availability SQL environment?
+    High-availability configurations like Always On Availability Groups in SQL Server ensure continuous database availability through redundancy and failover mechanisms.
+    Example:
+    CREATE AVAILABILITY GROUP ag_name FOR DATABASE db_name;
+
+51. What is a spatial index, and when would you use it?
+    A spatial index optimizes queries on spatial data types, enhancing performance for geographic or geometric data queries.
+    Example:
+    CREATE SPATIAL INDEX idx_spatial ON spatial_table(geo_column);
+
+52. How do you design an ETL process using SQL?
+    An ETL process extracts data from source systems, transforms it into the desired format, and loads it into a target system, often using SQL scripts.
+    Example:
+    Use SQL Server Integration Services (SSIS) for ETL tasks.
+
+53. Explain the purpose of a CROSS APPLY.
+    CROSS APPLY allows you to join a table with a table-valued function, providing a way to pass each row of the outer query to the function.
+    Example:
+    SELECT a.*, b.* FROM table_a a CROSS APPLY table_function(b.column) b;
+
+54. How do you perform version control for SQL scripts?
+    You can use Git or other version control systems to track changes in SQL scripts, ensuring collaboration and history management.
+    Example:
+    git init; git add script.sql; git commit -m "Initial version of script";
+
+55. What is a non-blocking read, and how is it achieved?
+    A non-blocking read allows a query to read data without acquiring locks that prevent other transactions from writing. It can be achieved using the READ UNCOMMITTED isolation level.
+    Example:
+    SELECT * FROM table_name WITH (NOLOCK);
+
+56. Explain the differences between horizontal and vertical scaling.
+    Horizontal scaling involves adding more machines to distribute load, while vertical scaling means upgrading existing machines to improve performance.
+    Example:
+    Horizontal: Sharding; Vertical: Upgrading CPU/RAM.
+
+57. How do you use the TRANSACTION keyword in advanced queries?
+    The TRANSACTION keyword manages a series of SQL operations as a single unit, ensuring all or none are executed.
+    Example:
+    BEGIN TRANSACTION; -- SQL commands; COMMIT;
+
+58. What is the significance of data integrity in SQL?
+    Data integrity ensures the accuracy and reliability of data throughout its lifecycle, maintained through constraints and validation rules.
+    Example:
+    CREATE TABLE table_name (id INT PRIMARY KEY, email VARCHAR(100) UNIQUE);
+
+59. How do you create a custom aggregate function in SQL?
+    Custom aggregate functions can be created using the CREATE AGGREGATE statement to define specific aggregation logic.
+    Example:
+    CREATE AGGREGATE custom_aggregate (@input INT) RETURNS INT AS BEGIN -- custom logic END;
+
+60. What are the challenges of maintaining historical data in SQL?
+    Challenges include data storage limitations, performance issues with large datasets, and ensuring data integrity over time.
+    Example:
+    Implementing archiving strategies to manage historical data effectively.
+
+61. Explain how to use JSON data in SQL queries.
+    SQL databases can handle JSON data types, allowing for storage and querying of JSON documents directly within SQL.
+    Example:
+    SELECT * FROM table_name WHERE JSON_VALUE(column_name, '$.key') = 'value';
+
+62. What is the impact of data fragmentation on performance?
+    Data fragmentation occurs when data is not stored contiguously, leading to slower read and write performance. Regular maintenance like defragmentation can help mitigate this.
+    Example:
+    ALTER INDEX index_name ON table_name REORGANIZE;
+
+63. How do you implement error logging in SQL?
+    Error logging tracks errors during query execution, often using TRY...CATCH blocks and logging errors to a dedicated table.
+    Example:
+    BEGIN TRY
+        -- SQL code
+    END TRY
+    BEGIN CATCH
+        INSERT INTO error_log (error_message) VALUES (ERROR_MESSAGE());
+    END CATCH;
+
+64. What are the differences between SQL and PL/SQL?
+    SQL is a standard language for querying databases, while PL/SQL is Oracle's procedural extension for SQL, allowing for more complex logic and control structures.
+    Example:
+    PL/SQL supports variables, loops, and exception handling.
+
+65. How do you leverage analytical functions in SQL?
+    Analytical functions perform calculations across a set of rows related to the current row, enhancing reporting and data analysis capabilities.
+    Example:
+    SELECT employee_id, RANK() OVER (ORDER BY salary DESC) AS salary_rank FROM employees;
+
+66. Explain the concept of schema evolution in databases.
+    Schema evolution refers to the process of adapting the database schema to meet changing data requirements over time, often involving migrations and version control.
+    Example:
+    ALTER TABLE table_name ADD new_column VARCHAR(50);
+
+67. What is a connection pool, and how does it work?
+    A connection pool is a cache of database connections maintained to improve performance and resource utilization by reusing connections.
+    Example:
+    Use a connection pooling library in your application to manage database connections efficiently.
+
+68. How do you integrate SQL with a programming language?
+    You can integrate SQL with programming languages using libraries or frameworks that allow for database connections and query execution.
+    Example:
+    Using Python's `sqlite3` or `SQLAlchemy` to execute SQL commands.
+
+69. What is the difference between optimistic and pessimistic concurrency control?
+    Optimistic concurrency control assumes multiple transactions can complete without conflict, while pessimistic concurrency control locks resources to prevent conflicts.
+    Example:
+    Optimistic: Check for updates before committing; Pessimistic: Lock records during transaction.
+
+70. How do you implement complex business logic in SQL?
+    Complex business logic can be implemented using stored procedures, triggers, and user-defined functions to encapsulate the logic within the database.
+    Example:
+    CREATE PROCEDURE complex_logic AS BEGIN -- logic END;
+
+71. What are the limitations of traditional RDBMS?
+    Limitations include scalability issues, rigid schemas, and difficulty handling unstructured data compared to NoSQL databases.
+    Example:
+    RDBMS may struggle with high-velocity data ingestion.
+
+72. How do you use XML data types in SQL?
+    SQL Server supports XML data types for storing and querying XML data. You can use the XML data type to store XML documents.
+    Example:
+    CREATE TABLE xml_table (data XML);
+
+73. Explain how to optimize write-heavy queries.
+    You can optimize write-heavy queries by using batch inserts, proper indexing, and minimizing locking contention.
+    Example:
+    INSERT INTO table_name (column1, column2) VALUES (value1, value2), (value3, value4);
+
+74. What is a clustered columnstore index, and when would you use it?
+    A clustered columnstore index is optimized for data warehousing scenarios, allowing for efficient storage and retrieval of large datasets in a columnar format.
+    Example:
+    CREATE CLUSTERED COLUMNSTORE INDEX idx_columnstore ON table_name;
+
+75. How do you handle nullability in database design?
+    Nullability refers to whether a column can contain NULL values. Proper design requires defining columns with NOT NULL constraints where applicable.
+    Example:
+    CREATE TABLE table_name (id INT NOT NULL, name VARCHAR(50));
+
+76. What are the challenges of integrating SQL with big data technologies?
+    Challenges include data compatibility, performance issues, and the need for specialized skills to manage the integration effectively.
+    Example:
+    Using tools like Apache Spark for ETL processes with SQL databases.
+
+77. How do you design a reporting database using SQL?
+    A reporting database is designed for analytical queries, often involving denormalized structures for faster query performance.
+    Example:
+    Create summary tables to store aggregated data for reporting.
+
+78. What is a data warehouse, and how does it relate to SQL?
+    A data warehouse is a centralized repository for storing large volumes of structured data, often using SQL for querying and analysis.
+    Example:
+    Use SQL to extract data from various sources and load it into a data warehouse.
+
+79. How do you implement automated testing for SQL queries?
+    Automated testing can be implemented using frameworks or tools that allow for testing SQL queries against expected results.
+    Example:
+    Use tools like tSQLt for unit testing in SQL Server.
+
+80. Explain how to use the SPLIT function in SQL.
+    The SPLIT function separates a string into a table based on a delimiter, allowing for easier data manipulation.
+    Example:
+    SELECT value FROM STRING_SPLIT('a,b,c', ','); -- SQL Server 2016+ syntax.
+
+81. What are the implications of data latency in SQL databases?
+    Data latency refers to the delay between data generation and its availability for querying, affecting real-time analysis capabilities.
+    Example:
+    Use caching mechanisms to reduce latency in reporting queries.
+
+82. How do you create a hybrid cloud SQL architecture?
+    A hybrid cloud SQL architecture combines on-premises databases with cloud databases, allowing for scalability and flexibility.
+    Example:
+    Use Azure SQL Database with an on-premises SQL Server setup.
+
+83. What are the differences between SQL Server and PostgreSQL?
+    Differences include syntax, data types, and specific features like JSON support in PostgreSQL and advanced indexing options in SQL Server.
+    Example:
+    PostgreSQL supports the JSONB data type for efficient querying.
+
+84. How do you manage versioning for database schema changes?
+    Versioning can be managed using migration tools that track changes to the schema, allowing for rollbacks and updates.
+    Example:
+    Use Flyway or Liquibase for database migrations.
+
+85. What is the significance of a performance baseline?
+    A performance baseline is a standard for measuring database performance, helping identify anomalies and performance issues over time.
+    Example:
+    Regularly monitor query response times to establish baselines.
+
+86. How do you implement a change data capture mechanism in SQL?
+    Change data capture tracks changes to data in SQL Server, enabling incremental data loading and replication.
+    Example:
+    ENABLE CHANGE DATA CAPTURE FOR table_name;
+
+87. What is the purpose of an advisory lock in SQL?
+    Advisory locks are application-level locks that prevent conflicts during concurrent operations without blocking other transactions.
+    Example:
+    SELECT pg_advisory_lock(1); -- PostgreSQL syntax.
+
+88. How do you integrate SQL with RESTful APIs?
+    You can use SQL queries in combination with application code to interact with RESTful APIs, allowing for data exchange between SQL databases and web services.
+    Example:
+    Use a server-side language like Python to query a SQL database and send results to a RESTful API.
+
+89. What are the challenges of distributed databases?
+    Challenges include data consistency, latency, and complexity in managing multiple database instances across different locations.
+    Example:
+    Implementing distributed consensus algorithms like Raft or Paxos.
+
+90. Explain the concept of sharding and its advantages.
+    Sharding involves dividing a database into smaller, more manageable pieces, improving performance and scalability.
+    Example:
+    Distributing user data across multiple database servers based on user ID ranges.
+
+91. How do you manage database configurations in production?
+    Manage database configurations using tools and scripts to ensure consistency, tracking changes, and applying updates.
+    Example:
+    Use configuration management tools like Ansible or Puppet.
+
+92. What is a data model, and how do you create one?
+    A data model defines how data is structured and organized in a database, created using Entity-Relationship diagrams or normalization techniques.
+    Example:
+    Use tools like Lucidchart to create a data model diagram.
+
+93. How do you write a SQL query to perform advanced analytics?
+    Use analytical functions and complex joins to perform advanced analytics on your data.
+    Example:
+    SELECT department, SUM(sales) OVER (PARTITION BY department) AS total_sales FROM sales_table;
+
+94. What is a foreign key and how does it impact data integrity?
+    A foreign key is a constraint that establishes a relationship between two tables, ensuring referential integrity by requiring values in one table to match values in another.
+    Example:
+    CREATE TABLE orders (id INT, customer_id INT, FOREIGN KEY (customer_id) REFERENCES customers(id));
+
+95. How do you design a secure database architecture?
+    A secure database architecture includes access controls, encryption, and regular security audits to protect sensitive data.
+    Example:
+    Implement role-based access control (RBAC) for user permissions.
+
+96. What is a query store, and how does it help in performance tuning?
+    A query store tracks query performance over time, helping identify slow-running queries and enabling performance tuning.
+    Example:
+    Enable query store for a database using: ALTER DATABASE database_name SET QUERY_STORE = ON;
+
+97. Explain how to use the CLUSTERED INDEX.
+    A clustered index determines the physical order of data storage, improving performance for range queries.
+    Example:
+    CREATE CLUSTERED INDEX idx_clustered ON table_name(column_name);
+
+98. What is the role of a data steward in database management?
+    A data steward ensures data quality and compliance with regulations, managing data governance policies.
+    Example:
+    Define data standards and oversee data management processes.
+
+99. How do you use WITH clause for better readability in complex queries?
+    The WITH clause defines temporary result sets, improving query readability and maintainability.
+    Example:
+    WITH CTE AS (SELECT * FROM table_name) SELECT * FROM CTE;
+
+100. How do you set up automated database backups?
+    Automated backups can be configured using SQL Server Agent jobs or scripts to ensure regular backups of databases.
+    Example:
+    BACKUP DATABASE database_name TO DISK = 'C:\Backup\database.bak' WITH COPY_ONLY; -- Set up as a job. 

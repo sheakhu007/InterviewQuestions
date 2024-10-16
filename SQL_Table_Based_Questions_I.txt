@@ -1,0 +1,907 @@
+General Questions About Tables
+1. What is a table in a database?
+   A table is a collection of related data entries that consists of rows and columns. Each row represents a record, and each column represents a field within the record.
+   Example:
+   CREATE TABLE students (
+       student_id INT PRIMARY KEY,
+       name VARCHAR(100),
+       age INT
+   );
+
+2. What are the different types of tables in a database?
+   The types include:
+   - Base tables: actual data storage.
+   - Views: virtual tables based on queries.
+   - Temporary tables: store data temporarily during a session.
+   Example:
+   CREATE TEMPORARY TABLE temp_students AS SELECT * FROM students WHERE age > 18;
+
+3. What is the difference between a fact table and a dimension table?
+   A fact table stores quantitative data for analysis, while a dimension table contains descriptive attributes related to the facts.
+   Example:
+   Fact table: sales (transaction_id, amount, date).
+   Dimension table: products (product_id, product_name, category).
+
+4. How do you create a table in SQL?
+   You use the CREATE TABLE statement followed by the table definition.
+   Example:
+   CREATE TABLE orders (
+       order_id INT PRIMARY KEY,
+       order_date DATE,
+       customer_id INT
+   );
+
+5. What are the different constraints that can be applied to a table?
+   Constraints include:
+   - PRIMARY KEY: unique identifier for a row.
+   - FOREIGN KEY: links to another table.
+   - UNIQUE: ensures all values in a column are different.
+   Example:
+   CREATE TABLE products (
+       product_id INT PRIMARY KEY,
+       product_name VARCHAR(100) UNIQUE
+   );
+
+6. What is the primary key of a table?
+   The primary key is a unique identifier for each record in a table. It ensures that no two rows have the same value.
+   Example:
+   student_id in the students table is a primary key.
+
+7. What is a foreign key, and how is it used in a table?
+   A foreign key is a column or set of columns in one table that references the primary key in another table, establishing a relationship.
+   Example:
+   CREATE TABLE orders (
+       order_id INT PRIMARY KEY,
+       customer_id INT,
+       FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+   );
+
+8. What are composite keys, and when would you use them?
+   Composite keys consist of two or more columns that together uniquely identify a record in a table. They are used when no single column can serve as a unique identifier.
+   Example:
+   CREATE TABLE enrollment (
+       student_id INT,
+       course_id INT,
+       PRIMARY KEY (student_id, course_id)
+   );
+
+9. How can you alter an existing table in SQL?
+   You can use the ALTER TABLE statement to add, modify, or drop columns.
+   Example:
+   ALTER TABLE students ADD COLUMN email VARCHAR(100);
+
+10. What is a temporary table, and when is it used?
+    A temporary table stores data temporarily during a session or transaction. It's used for intermediate calculations or data manipulation.
+    Example:
+    CREATE TEMPORARY TABLE temp_sales AS SELECT * FROM sales WHERE sales_date = '2024-01-01';
+
+Fact Tables
+11. What is a fact table?
+    A fact table is a central table in a star schema of a data warehouse that stores quantitative data for analysis.
+    Example:
+    CREATE TABLE sales_fact (
+        sale_id INT PRIMARY KEY,
+        product_id INT,
+        quantity_sold INT,
+        sales_amount DECIMAL(10, 2)
+    );
+
+12. What are measures in a fact table?
+    Measures are the numeric values that represent performance metrics or KPIs in a fact table.
+    Example: 
+    In the sales_fact table, quantity_sold and sales_amount are measures.
+
+13. How do you determine the granularity of a fact table?
+    Granularity refers to the level of detail stored in the fact table. It is determined by the business requirements.
+    Example: 
+    A sales_fact table with daily sales data has a finer granularity than one with monthly sales data.
+
+14. Can a fact table contain NULL values? Why or why not?
+    Yes, a fact table can contain NULL values, especially for measures that may not be applicable in certain scenarios.
+    Example: 
+    sales_amount can be NULL if the sale was canceled.
+
+15. How do you aggregate data in a fact table?
+    You can use SQL aggregate functions like SUM(), AVG(), COUNT() to aggregate data.
+    Example:
+    SELECT product_id, SUM(quantity_sold) FROM sales_fact GROUP BY product_id;
+
+16. Explain how to design a fact table for a sales transaction.
+    A sales fact table should include keys from dimension tables and measures relevant to sales.
+    Example:
+    CREATE TABLE sales_fact (
+        sale_id INT PRIMARY KEY,
+        customer_id INT,
+        product_id INT,
+        sale_date DATE,
+        quantity_sold INT,
+        sales_amount DECIMAL(10, 2)
+    );
+
+17. What is the role of fact tables in data warehousing?
+    Fact tables store quantitative data for reporting and analysis, facilitating decision-making processes.
+    Example:
+    Business analysts query the sales_fact table to analyze sales performance.
+
+18. How can you optimize the performance of a fact table?
+    You can optimize performance by indexing, partitioning, and using proper data types.
+    Example:
+    CREATE INDEX idx_product_id ON sales_fact(product_id);
+
+19. What are some common measures stored in a sales fact table?
+    Common measures include quantity sold, total sales amount, profit, and discount.
+    Example:
+    In the sales_fact table, you can have quantity_sold and total_revenue as measures.
+
+20. How do you handle slowly changing dimensions with fact tables?
+    You can implement different techniques like Type 1 (overwrite), Type 2 (history), and Type 3 (limited history) to manage changes.
+    Example: 
+    Use Type 2 for customer information to maintain historical records in the dimension table.
+
+Dimension Tables
+21. What is a dimension table?
+    A dimension table contains descriptive attributes related to the facts, providing context to the quantitative data in the fact table.
+    Example:
+    CREATE TABLE products (
+        product_id INT PRIMARY KEY,
+        product_name VARCHAR(100),
+        category VARCHAR(50)
+    );
+
+22. What are attributes in a dimension table?
+    Attributes are the fields or columns in a dimension table that provide detailed information about the dimension.
+    Example: 
+    Attributes in the products table include product_name and category.
+
+23. How do you design a dimension table for customer information?
+    The table should include unique identifiers and relevant attributes about customers.
+    Example:
+    CREATE TABLE customers (
+        customer_id INT PRIMARY KEY,
+        name VARCHAR(100),
+        email VARCHAR(100),
+        phone VARCHAR(15)
+    );
+
+24. What is the difference between a junk dimension and a degenerate dimension?
+    A junk dimension contains miscellaneous attributes that do not fit into any other dimension, while a degenerate dimension consists of attributes that are primary keys in the fact table but do not have a separate dimension table.
+    Example: 
+    A junk dimension might include flags like 'promotional' or 'gift', while a degenerate dimension might include the order number.
+
+25. How do you handle hierarchies in dimension tables?
+    Hierarchies can be managed using additional attributes or separate tables to represent relationships.
+    Example:
+    In a products table, you might have category and subcategory attributes to represent hierarchy.
+
+26. Can a dimension table have a composite key? Explain with an example.
+    Yes, a dimension table can have a composite key, which consists of two or more columns.
+    Example:
+    CREATE TABLE product_sales (
+        product_id INT,
+        store_id INT,
+        PRIMARY KEY (product_id, store_id)
+    );
+
+27. What is a role-playing dimension?
+    A role-playing dimension is a dimension table that can be used multiple times in different contexts.
+    Example:
+    A date dimension can play different roles such as order date, ship date, and invoice date.
+
+28. How do you maintain dimension tables in a data warehouse?
+    Dimension tables should be updated regularly to reflect changes in attributes, and you can use techniques like ETL processes for this purpose.
+    Example:
+    Use scheduled ETL jobs to refresh dimension data from source systems.
+
+29. How do you create a slowly changing dimension?
+    You can create SCDs by defining how changes to dimension attributes should be tracked.
+    Example:
+    Implement Type 2 SCD to maintain historical data:
+    CREATE TABLE customer_scd2 (
+        customer_id INT,
+        name VARCHAR(100),
+        effective_date DATE,
+        expiry_date DATE,
+        is_current BOOLEAN
+    );
+
+30. What are some best practices for designing dimension tables?
+    Best practices include ensuring unique identifiers, normalizing data, and keeping attribute names intuitive.
+    Example:
+    Ensure customer_id is unique in the customers table and use clear attribute names.
+
+Normalization and Denormalization
+31. What is normalization, and why is it important?
+    Normalization is the process of organizing data to reduce redundancy and improve data integrity.
+    Example:
+    Dividing a customer table into separate tables for contact information and billing details.
+
+32. Explain the different normal forms (1NF, 2NF, 3NF, BCNF).
+    - 1NF: Each column contains atomic values, and each record is unique.
+    - 2NF: In 1NF and all non-key attributes are fully functionally dependent on the primary key.
+    - 3NF: In 2NF and no transitive dependencies exist.
+    - BCNF: A stronger version of 3NF; every determinant is a candidate key.
+    Example:
+    1NF: Customers table with unique rows, 2NF: Product orders with unique order IDs.
+
+33. What are the advantages of normalization?
+    Advantages include reduced data redundancy, improved data integrity, and easier data maintenance.
+    Example:
+    Normalized tables allow for less storage space and easier updates.
+
+34. What is denormalization, and why would you use it?
+    Denormalization is the process of combining normalized tables to improve read performance at the cost of increased redundancy.
+    Example:
+    Combining a customer table with order history for faster queries.
+
+35. What are the trade-offs between normalization and denormalization?
+    Normalization reduces redundancy but may slow down query performance; denormalization improves performance but increases data duplication.
+    Example:
+    Choose normalization for transactional systems and denormalization for reporting systems.
+
+36. How do you identify redundant data in a table?
+    You can identify redundancy by analyzing for repeated values across rows and columns.
+    Example:
+    Using SQL queries to find duplicate entries in the customers table.
+
+37. When would you consider using denormalization in a data warehouse?
+    Denormalization is considered when performance is prioritized for read-heavy queries, such as in data warehouses.
+    Example:
+    Combining fact and dimension tables for simplified reporting queries.
+
+38. How do normalization and denormalization affect query performance?
+    Normalization can lead to slower queries due to joins; denormalization can lead to faster queries but with potential data anomalies.
+    Example:
+    Queries on a normalized database may require multiple joins, slowing down performance.
+
+39. What is a join, and how does it relate to normalized tables?
+    A join combines rows from two or more tables based on related columns, often used in normalized databases.
+    Example:
+    SELECT customers.name, orders.order_id FROM customers INNER JOIN orders ON customers.customer_id = orders.customer_id;
+
+40. Explain the concept of data integrity in the context of normalization.
+    Data integrity ensures that data is accurate and consistent, often enforced through normalization rules.
+    Example:
+    Using foreign keys to maintain integrity between related tables.
+
+Types of Joins and Relationships
+41. What are the different types of joins in SQL?
+    Types of joins include:
+    - INNER JOIN: returns matched records.
+    - LEFT JOIN: returns all records from the left table.
+    - RIGHT JOIN: returns all records from the right table.
+    - FULL OUTER JOIN: returns all records from both tables.
+    Example:
+    SELECT * FROM students LEFT JOIN enrollments ON students.student_id = enrollments.student_id;
+
+42. How do you perform an INNER JOIN between two tables?
+    You use the INNER JOIN keyword to combine records from both tables based on a common field.
+    Example:
+    SELECT students.name, courses.course_name FROM students INNER JOIN enrollments ON students.student_id = enrollments.student_id INNER JOIN courses ON enrollments.course_id = courses.course_id;
+
+43. What is an OUTER JOIN, and what types are there?
+    An OUTER JOIN returns records that have matching values in one table and all records from one or both tables regardless of matches.
+    Types include LEFT OUTER JOIN, RIGHT OUTER JOIN, and FULL OUTER JOIN.
+    Example:
+    SELECT * FROM students LEFT OUTER JOIN enrollments ON students.student_id = enrollments.student_id;
+
+44. Explain how to use a CROSS JOIN in SQL.
+    A CROSS JOIN produces a Cartesian product of two tables, combining every row from the first table with every row from the second.
+    Example:
+    SELECT * FROM students CROSS JOIN courses;
+
+45. What is a self-join, and when would you use it?
+    A self-join is a join of a table with itself to combine related records. It's used when a table has a hierarchical relationship.
+    Example:
+    SELECT a.name AS employee, b.name AS manager FROM employees a INNER JOIN employees b ON a.manager_id = b.employee_id;
+
+46. How do you implement a many-to-many relationship using junction tables?
+    You create a junction table that contains foreign keys referencing the primary keys of the two tables.
+    Example:
+    CREATE TABLE student_courses (
+        student_id INT,
+        course_id INT,
+        PRIMARY KEY (student_id, course_id)
+    );
+
+47. What are parent and child tables?
+    A parent table is a table that is referenced by foreign keys in a child table, establishing a one-to-many relationship.
+    Example:
+    Customers (parent) and Orders (child) tables.
+
+48. How does a left join differ from a right join?
+    A left join returns all records from the left table and the matched records from the right table; a right join does the opposite.
+    Example:
+    SELECT * FROM employees LEFT JOIN departments ON employees.department_id = departments.department_id;
+    SELECT * FROM employees RIGHT JOIN departments ON employees.department_id = departments.department_id;
+
+49. Can you explain how to use subqueries to join tables?
+    A subquery can be used in the WHERE clause of a main query to filter results based on conditions from another table.
+    Example:
+    SELECT name FROM students WHERE student_id IN (SELECT student_id FROM enrollments WHERE course_id = 101);
+
+50. What is a composite relationship between tables?
+    A composite relationship occurs when multiple foreign keys in a table refer to the primary keys of another table, often used in junction tables.
+    Example:
+    CREATE TABLE enrollment (
+        student_id INT,
+        course_id INT,
+        PRIMARY KEY (student_id, course_id),
+        FOREIGN KEY (student_id) REFERENCES students(student_id),
+        FOREIGN KEY (course_id) REFERENCES courses(course_id)
+    );
+
+Advanced Table Concepts
+51. What is a materialized view, and how does it differ from a regular view?
+    A materialized view stores the result of a query physically, while a regular view does not store data and is recalculated each time it is accessed.
+    Example:
+    CREATE MATERIALIZED VIEW sales_summary AS SELECT product_id, SUM(sales_amount) FROM sales GROUP BY product_id;
+
+52. How do you create a view based on multiple tables?
+    You can use a SELECT statement that joins multiple tables to define a view.
+    Example:
+    CREATE VIEW customer_orders AS SELECT customers.name, orders.order_id FROM customers JOIN orders ON customers.customer_id = orders.customer_id;
+
+53. What is the purpose of indexes in a table?
+    Indexes improve the speed of data retrieval operations on a table by providing quick access to rows.
+    Example:
+    CREATE INDEX idx_customer_name ON customers(name);
+
+54. How can you create an index on a table, and what are its benefits?
+    You can create an index using the CREATE INDEX statement to speed up query performance.
+    Example:
+    CREATE INDEX idx_order_date ON orders(order_date);
+
+55. What is a clustered index vs. a non-clustered index?
+    A clustered index determines the physical order of data in a table, while a non-clustered index creates a separate structure for the index.
+    Example:
+    CREATE CLUSTERED INDEX idx_customer_id ON customers(customer_id);
+    CREATE NONCLUSTERED INDEX idx_order_id ON orders(order_id);
+
+56. How do you use partitioning with large tables?
+    Partitioning divides a large table into smaller, more manageable pieces based on specified criteria, improving performance and maintenance.
+    Example:
+    CREATE TABLE sales (
+        sale_id INT,
+        sale_date DATE,
+        PARTITION BY RANGE (sale_date) (
+            PARTITION p1 VALUES LESS THAN ('2023-01-01'),
+            PARTITION p2 VALUES LESS THAN ('2024-01-01')
+        )
+    );
+
+57. What are temporary tables, and how do they differ from regular tables?
+    Temporary tables store data temporarily and are automatically dropped at the end of a session. Regular tables persist until explicitly deleted.
+    Example:
+    CREATE TEMPORARY TABLE temp_orders AS SELECT * FROM orders WHERE order_date = '2024-01-01';
+
+58. What is a table space in a database?
+    A table space is a storage location in a database where physical data files are stored, allowing for data organization and management.
+    Example:
+    CREATE TABLESPACE my_tablespace DATAFILE 'my_datafile.dbf' SIZE 100M;
+
+59. How do you manage schema changes in a production environment?
+    Schema changes should be carefully planned and executed with proper version control and rollback strategies.
+    Example:
+    Use migration scripts to apply incremental schema changes.
+
+60. What is the significance of the EXECUTE permission on table operations?
+    The EXECUTE permission allows users to run stored procedures or functions that perform operations on tables, ensuring proper access control.
+    Example:
+    GRANT EXECUTE ON procedure_name TO user_name;
+
+Performance and Optimization
+61. How can you improve the performance of a large table?
+    Performance can be improved through indexing, partitioning, and optimizing queries.
+    Example:
+    CREATE INDEX idx_large_table ON large_table(column_name);
+
+62. What are some common performance issues with tables?
+    Common issues include slow queries, table locks, and excessive I/O operations.
+    Example:
+    Analyzing execution plans can help identify slow queries.
+
+63. How do you analyze the execution plan of a query involving multiple tables?
+    You can use the EXPLAIN command to view the execution plan of a query.
+    Example:
+    EXPLAIN SELECT * FROM orders JOIN customers ON orders.customer_id = customers.customer_id;
+
+64. What is database indexing, and how does it improve performance?
+    Database indexing creates a data structure that allows for faster searches and retrieval of records.
+    Example:
+    CREATE INDEX idx_product_name ON products(product_name);
+
+65. How do you handle locking and concurrency issues in a multi-user environment?
+    Locking mechanisms like row-level locking and transaction isolation levels can manage concurrency.
+    Example:
+    SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+
+66. What are the implications of using large data types in table design?
+    Large data types can consume significant storage and affect performance. They should be used judiciously.
+    Example:
+    Using VARCHAR instead of TEXT for shorter strings can improve performance.
+
+67. How do you monitor the performance of a table?
+    You can monitor performance by tracking query execution times and analyzing resource usage.
+    Example:
+    Using SQL Server Profiler or similar tools to monitor table access patterns.
+
+68. What are some strategies for optimizing table joins?
+    Optimizing joins can involve using indexes, reducing the number of columns in the SELECT clause, and filtering rows early.
+    Example:
+    SELECT customer_id, SUM(order_amount) FROM orders INNER JOIN customers ON orders.customer_id = customers.customer_id GROUP BY customer_id;
+
+69. How does database design impact query performance?
+    A well-designed database minimizes redundancy and optimizes indexing, leading to faster queries.
+    Example:
+    Properly indexed tables reduce search times in queries.
+
+70. What are the best practices for managing table size?
+    Best practices include archiving old data, partitioning large tables, and regularly monitoring table growth.
+    Example:
+    Implementing a data retention policy to archive records older than a specific date.
+
+Data Warehousing Concepts
+71. What is a star schema, and how does it relate to fact and dimension tables?
+    A star schema is a type of database schema that organizes data into fact tables and dimension tables to facilitate querying.
+    Example:
+    A sales star schema might have a sales fact table and dimension tables for products, customers, and time.
+
+72. Explain the snowflake schema and its advantages over the star schema.
+    A snowflake schema normalizes dimension tables into multiple related tables, reducing redundancy and improving data integrity.
+    Example:
+    In a snowflake schema, a product dimension might be split into product categories and product details tables.
+
+73. How do you choose between a star and a snowflake schema?
+    Choosing depends on the specific use case: star for performance and simplicity, snowflake for normalization and integrity.
+    Example:
+    Use star schema for reporting and snowflake schema for complex analytical queries.
+
+74. What is a factless fact table, and when is it used?
+    A factless fact table records events without measures, often used to track many-to-many relationships.
+    Example:
+    A student enrollment table tracking students in courses without numeric measures.
+
+75. What are slowly changing dimensions (SCD), and why are they important?
+    Slowly changing dimensions track changes in dimension data over time, important for historical accuracy.
+    Example:
+    Storing customer address changes in a separate history table.
+
+76. How do you implement a type 1 slowly changing dimension?
+    In type 1, you overwrite existing data in the dimension table when changes occur.
+    Example:
+    UPDATE customers SET address = 'New Address' WHERE customer_id = 1;
+
+77. How do you implement a type 2 slowly changing dimension?
+    In type 2, you add a new record for each change, preserving historical data.
+    Example:
+    INSERT INTO customers (customer_id, address, effective_date) VALUES (1, 'New Address', '2024-01-01');
+
+78. What is a bridge table, and when would you use one?
+    A bridge table resolves many-to-many relationships by connecting two dimension tables.
+    Example:
+    A bridge table linking students and courses in an enrollment scenario.
+
+79. How do you handle historical data in dimension tables?
+    Historical data is managed through SCD methods or separate history tables to preserve past states.
+    Example:
+    Using a separate dimension table for historical addresses.
+
+80. What are aggregate tables, and how are they used?
+    Aggregate tables store pre-computed summaries of data, improving query performance for large datasets.
+    Example:
+    A sales aggregate table summarizing total sales by month.
+
+Real-world Scenarios
+81. Describe a situation where you had to redesign a table structure.
+    Redesigning occurred when new business requirements emerged, necessitating changes in relationships between tables.
+    Example:
+    Consolidating customer information from multiple tables into a single customer table.
+
+82. How do you handle changes in business requirements that affect table design?
+    Changes are managed by analyzing impacts on existing tables and modifying structures as needed.
+    Example:
+    Updating the order table to include a new field for shipping information.
+
+83. Describe a scenario where normalization caused performance issues.
+    A highly normalized database experienced slow query performance due to excessive joins, requiring a denormalization approach.
+    Example:
+    Combining several normalized tables into fewer, larger tables for reporting purposes.
+
+84. What is your approach to migrating data from legacy tables to new structures?
+    Data migration is done using ETL processes to extract, transform, and load data into new table structures.
+    Example:
+    Using Python scripts to read data from legacy databases and insert it into the new schema.
+
+85. How do you ensure data quality in tables?
+    Data quality is ensured through validation rules, constraints, and regular audits of table contents.
+    Example:
+    Implementing CHECK constraints to enforce valid data entry.
+
+86. Can you explain a situation where you used a composite key?
+    A composite key was used to uniquely identify records in a junction table connecting students and courses.
+    Example:
+    student_courses table with student_id and course_id as a composite primary key.
+
+87. How do you document table designs and relationships?
+    Documentation includes ER diagrams, data dictionaries, and version-controlled schema definitions.
+    Example:
+    Using Lucidchart to create ER diagrams for visual representation of table relationships.
+
+88. Describe how you would approach a data modeling project.
+    I would start by gathering requirements, followed by creating logical and physical models, and iterating based on feedback.
+    Example:
+    Developing a data model for a new CRM system by analyzing user needs and iterating on designs.
+
+89. What tools do you use for designing and managing database tables?
+    Tools include SQL Server Management Studio, MySQL Workbench, and ER modeling tools like ER/Studio.
+    Example:
+    Using MySQL Workbench for schema design and database administration tasks.
+
+90. How do you handle error logging and debugging with tables?
+    Error logging is implemented using audit tables or logging mechanisms in application code to capture issues.
+    Example:
+    Creating an audit table to track changes and errors in the orders table.
+
+Data Manipulation and Queries
+91. How do you insert data into a table in SQL?
+    You can use the INSERT statement to add new records to a table.
+    Example:
+    INSERT INTO customers (name, email) VALUES ('John Doe', 'john@example.com');
+
+92. What are the different ways to update records in a table?
+    Records can be updated using the UPDATE statement with SET to modify specific fields.
+    Example:
+    UPDATE customers SET email = 'john.doe@example.com' WHERE customer_id = 1;
+
+93. How do you delete records from a table safely?
+    Records can be deleted using the DELETE statement, ensuring conditions to avoid accidental data loss.
+    Example:
+    DELETE FROM customers WHERE customer_id = 1;
+
+94. How do you use the SELECT statement to retrieve data from multiple tables?
+    You can use JOIN clauses within the SELECT statement to combine data from multiple tables.
+    Example:
+    SELECT customers.name, orders.order_id FROM customers JOIN orders ON customers.customer_id = orders.customer_id;
+
+95. What is the purpose of the GROUP BY clause in SQL?
+    The GROUP BY clause is used to group rows that have the same values in specified columns.
+    Example:
+    SELECT product_id, SUM(sales) FROM sales GROUP BY product_id;
+
+96. How do you use the HAVING clause in conjunction with GROUP BY?
+    The HAVING clause filters groups based on a specified condition after aggregation.
+    Example:
+    SELECT product_id, SUM(sales) FROM sales GROUP BY product_id HAVING SUM(sales) > 1000;
+
+97. How can you use window functions to analyze data in a table?
+    Window functions perform calculations across a set of table rows related to the current row, without collapsing results.
+    Example:
+    SELECT name, AVG(salary) OVER (PARTITION BY department_id) AS avg_salary FROM employees;
+
+98. What are aggregate functions, and how do they relate to tables?
+    Aggregate functions perform calculations on multiple rows of a table and return a single value.
+    Example:
+    SELECT COUNT(*) FROM orders;
+
+99. How do you implement pagination in query results from a table?
+    Pagination is implemented using LIMIT and OFFSET in SQL queries.
+    Example:
+    SELECT * FROM orders ORDER BY order_date LIMIT 10 OFFSET 20;
+
+100. What is the DISTINCT keyword, and how is it used with tables?
+    The DISTINCT keyword filters out duplicate rows in the result set of a query.
+    Example:
+    SELECT DISTINCT city FROM customers;
+
+Data Integrity and Constraints
+101. What are the different types of constraints in SQL?
+    Types of constraints include PRIMARY KEY, FOREIGN KEY, UNIQUE, CHECK, and DEFAULT.
+    Example:
+    PRIMARY KEY (customer_id), FOREIGN KEY (order_id REFERENCES orders(order_id)).
+
+102. How do you implement referential integrity between tables?
+    Referential integrity is enforced by using FOREIGN KEY constraints to maintain relationships between tables.
+    Example:
+    CREATE TABLE orders (
+        order_id INT PRIMARY KEY,
+        customer_id INT,
+        FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+    );
+
+103. What is a check constraint, and how is it used?
+    A CHECK constraint limits the values that can be inserted into a column.
+    Example:
+    CREATE TABLE employees (salary DECIMAL CHECK (salary > 0));
+
+104. How do you handle data validation when inserting records into a table?
+    Data validation can be implemented using constraints and application-level checks before inserting records.
+    Example:
+    Ensuring email format using a regex check before inserting into the customers table.
+
+105. What are the implications of using ON DELETE CASCADE in a foreign key constraint?
+    ON DELETE CASCADE automatically deletes records in the child table when the corresponding record in the parent table is deleted.
+    Example:
+    DELETE FROM customers WHERE customer_id = 1; // Deletes associated orders if ON DELETE CASCADE is set.
+
+106. How do you prevent duplicate records in a table?
+    Preventing duplicates can be achieved using UNIQUE constraints and application logic.
+    Example:
+    CREATE TABLE products (product_id INT UNIQUE, product_name VARCHAR(255));
+
+107. What is the purpose of an index in a table?
+    An index improves the speed of data retrieval operations on a table at the cost of additional space.
+    Example:
+    CREATE INDEX idx_customer_name ON customers(name);
+
+108. How do you create a composite index, and when would you use one?
+    A composite index is created on multiple columns to optimize queries that filter on those columns.
+    Example:
+    CREATE INDEX idx_full_name ON employees(first_name, last_name);
+
+109. How do you manage index fragmentation in a database?
+    Index fragmentation can be managed through regular maintenance tasks like rebuilding or reorganizing indexes.
+    Example:
+    EXEC sp_rebuild_index 'my_index', 'my_table';
+
+110. What are the performance implications of using too many indexes on a table?
+    While indexes speed up read operations, too many can slow down write operations due to increased overhead.
+    Example:
+    Adding indexes to a frequently updated table may lead to performance degradation.
+
+Data Warehousing and ETL
+111. What is ETL, and why is it important for data warehousing?
+    ETL (Extract, Transform, Load) is a process that extracts data from source systems, transforms it into a suitable format, and loads it into a data warehouse for analysis.
+    Example:
+    Using ETL tools to gather sales data from multiple sources and load it into a central data warehouse.
+
+112. What are some common ETL tools you have used?
+    Common ETL tools include Apache Nifi, Talend, Informatica, and Microsoft SQL Server Integration Services (SSIS).
+    Example:
+    Using Talend to connect to various data sources and perform transformations.
+
+113. How do you handle data quality issues during the ETL process?
+    Data quality issues are managed through validation rules, cleansing operations, and monitoring during the ETL process.
+    Example:
+    Implementing checks to remove duplicates and correct format errors in source data.
+
+114. What is the role of staging tables in ETL?
+    Staging tables temporarily hold data during the ETL process, allowing for transformations before loading into final destination tables.
+    Example:
+    Loading raw data into a staging table before cleaning and moving it to the data warehouse.
+
+115. How do you optimize ETL processes for large datasets?
+    Optimization strategies include parallel processing, batch processing, and minimizing data movement.
+    Example:
+    Using multi-threading to handle large data loads concurrently.
+
+116. What is data profiling, and why is it important?
+    Data profiling analyzes source data to understand its structure, quality, and content, crucial for effective ETL.
+    Example:
+    Running profiling reports to identify anomalies in data before loading it into the warehouse.
+
+117. How do you manage incremental data loads in ETL?
+    Incremental loads involve loading only new or changed records, reducing processing time and resource usage.
+    Example:
+    Using timestamps to identify and load only records modified since the last ETL run.
+
+118. What are the benefits of using data lakes in conjunction with data warehouses?
+    Data lakes store vast amounts of unstructured and semi-structured data, complementing the structured data in data warehouses for a comprehensive analytics strategy.
+    Example:
+    Storing raw log files in a data lake while maintaining summarized data in a data warehouse.
+
+119. How do you handle schema changes in the source systems during ETL?
+    Schema changes are managed by implementing version control and adapting ETL mappings accordingly.
+    Example:
+    Updating the ETL process to accommodate additional columns in a source table.
+
+120. What is data lineage, and why is it important?
+    Data lineage tracks the flow of data through systems, providing transparency and facilitating impact analysis.
+    Example:
+    Using data lineage tools to visualize data transformations from source to final reporting.
+
+Data Security and Compliance
+121. What measures do you take to secure data in your tables?
+    Data security measures include encryption, access controls, and auditing to protect sensitive data.
+    Example:
+    Implementing row-level security to restrict data access based on user roles.
+
+122. How do you handle sensitive data in compliance with regulations like GDPR or HIPAA?
+    Compliance is ensured through data masking, access controls, and maintaining audit logs for sensitive data.
+    Example:
+    Masking personally identifiable information (PII) in reports to comply with GDPR.
+
+123. What is data masking, and when would you use it?
+    Data masking alters sensitive data to protect it while retaining its usability for testing or development.
+    Example:
+    Replacing real customer names with fictitious names in test databases.
+
+124. How do you implement access controls for database tables?
+    Access controls are implemented using user roles and permissions to restrict access to specific tables.
+    Example:
+    GRANT SELECT ON customers TO role_user;
+
+125. How do you handle auditing and logging of data access and modifications?
+    Auditing and logging can be done through triggers or logging mechanisms to capture data changes.
+    Example:
+    Creating triggers to log every update in the orders table.
+
+126. What is a data breach, and how do you respond to one?
+    A data breach is unauthorized access to sensitive data, and responses include containment, assessment, and notification.
+    Example:
+    Implementing incident response plans to address a data breach promptly.
+
+127. How do you manage data retention policies?
+    Data retention policies specify how long data is kept and when it is purged or archived.
+    Example:
+    Implementing policies to retain financial data for seven years.
+
+128. What is the role of encryption in securing data at rest and in transit?
+    Encryption protects data by converting it into a secure format that requires a key to access, safeguarding it from unauthorized access.
+    Example:
+    Using AES encryption for storing sensitive information in the database.
+
+129. How do you ensure compliance with industry standards and regulations?
+    Compliance is ensured through regular audits, monitoring, and implementing best practices for data handling.
+    Example:
+    Conducting quarterly audits to verify adherence to HIPAA regulations.
+
+130. What are the implications of data sharing across different systems?
+    Data sharing can lead to security risks, data integrity issues, and compliance challenges if not managed properly.
+    Example:
+    Establishing secure APIs for data sharing between systems while ensuring data validation.
+
+Database Administration
+131. What are the responsibilities of a database administrator (DBA)?
+    A DBA is responsible for database performance, security, backups, and recovery.
+    Example:
+    Monitoring database health and implementing backup strategies.
+
+132. How do you perform database backups and recovery?
+    Backups can be performed using automated tools or scripts to create full or incremental backups.
+    Example:
+    Using SQL Server Management Studio to schedule regular backups of databases.
+
+133. What is database replication, and why is it important?
+    Database replication copies data from one database to another for redundancy and high availability.
+    Example:
+    Implementing replication to ensure data availability across multiple servers.
+
+134. How do you monitor database performance?
+    Monitoring can be done using performance metrics and tools like SQL Server Profiler or native monitoring features.
+    Example:
+    Using the query execution plan to analyze slow-running queries.
+
+135. What are some common performance tuning techniques for databases?
+    Techniques include indexing, query optimization, and proper configuration of database parameters.
+    Example:
+    Analyzing slow queries and adding appropriate indexes to improve performance.
+
+136. How do you handle database migration to a new server?
+    Database migration is done through backup and restore, or data export and import methods.
+    Example:
+    Using database migration tools to transfer data from an old server to a new one.
+
+137. What are the potential risks of database migrations?
+    Risks include data loss, compatibility issues, and downtime during the migration process.
+    Example:
+    Performing thorough testing before migrating to mitigate potential issues.
+
+138. How do you implement and manage database security policies?
+    Security policies are managed through access controls, encryption, and regular audits to ensure compliance.
+    Example:
+    Developing security policies that restrict access based on user roles and responsibilities.
+
+139. How do you ensure high availability of database systems?
+    High availability is achieved through clustering, replication, and load balancing.
+    Example:
+    Implementing a failover cluster to maintain service during server outages.
+
+140. What tools do you use for database administration?
+    Tools include SQL Server Management Studio, Oracle Enterprise Manager, and open-source tools like pgAdmin.
+    Example:
+    Using pgAdmin for managing PostgreSQL databases.
+
+Data Modeling and Design
+141. What is data modeling, and why is it important?
+    Data modeling is the process of creating a conceptual representation of data structures, essential for understanding data relationships and guiding database design.
+    Example:
+    Developing an entity-relationship diagram (ERD) to visualize table relationships.
+
+142. How do you approach database normalization?
+    Database normalization involves organizing tables to minimize redundancy and improve data integrity through a series of normal forms.
+    Example:
+    Applying first normal form (1NF) by ensuring each table has a primary key and no repeating groups.
+
+143. What are the different normal forms in database design?
+    Normal forms include 1NF (First Normal Form), 2NF (Second Normal Form), 3NF (Third Normal Form), BCNF (Boyce-Codd Normal Form), and higher forms.
+    Example:
+    A table in 3NF has no transitive dependencies and is fully functionally dependent on its primary key.
+
+144. How do you denormalize a database, and when is it appropriate?
+    Denormalization involves combining tables to improve read performance at the cost of increased redundancy.
+    Example:
+    Merging related tables in a data warehouse to optimize query performance.
+
+145. What is an entity-relationship diagram (ERD), and how is it used?
+    An ERD visually represents data entities, attributes, and relationships, aiding in database design.
+    Example:
+    Creating an ERD to illustrate how customers, orders, and products are related.
+
+146. How do you manage relationships between tables?
+    Relationships are managed using primary and foreign keys to ensure referential integrity.
+    Example:
+    Defining a foreign key constraint to link an orders table to a customers table.
+
+147. What is the purpose of a surrogate key, and when would you use one?
+    A surrogate key is a unique identifier for a record, often used when natural keys are unsuitable.
+    Example:
+    Using an auto-incrementing integer as a surrogate key for a product table.
+
+148. How do you ensure data integrity in your database design?
+    Data integrity is ensured through constraints, validation rules, and referential integrity mechanisms.
+    Example:
+    Implementing check constraints to enforce valid ranges for numeric fields.
+
+149. What is the difference between a primary key and a unique key?
+    A primary key uniquely identifies records and cannot be NULL, while a unique key also ensures uniqueness but can allow NULL values.
+    Example:
+    A table can have one primary key and multiple unique keys.
+
+150. How do you manage schema evolution in your database design?
+    Schema evolution is managed by versioning schemas, implementing migration scripts, and updating applications accordingly.
+    Example:
+    Using migration tools like Flyway to track schema changes over time.
+
+Advanced SQL Concepts
+151. What is a window function, and how do you use it?
+    A window function performs calculations across a specified range of rows, enabling complex analytical queries.
+    Example:
+    SELECT name, salary, RANK() OVER (ORDER BY salary DESC) AS rank FROM employees;
+
+152. How do you use CTEs (Common Table Expressions) in SQL?
+    CTEs provide a way to create temporary result sets that can be referenced within a SELECT, INSERT, UPDATE, or DELETE statement.
+    Example:
+    WITH employee_cte AS (SELECT name, salary FROM employees) SELECT * FROM employee_cte;
+
+153. What is a recursive CTE, and when would you use it?
+    A recursive CTE allows a query to reference itself, useful for hierarchical data representation.
+    Example:
+    WITH RECURSIVE hierarchy AS (SELECT id, name, manager_id FROM employees WHERE manager_id IS NULL UNION ALL SELECT e.id, e.name, e.manager_id FROM employees e INNER JOIN hierarchy h ON e.manager_id = h.id) SELECT * FROM hierarchy;
+
+154. How do you implement pivot tables in SQL?
+    Pivot tables transform data from rows to columns for easier analysis.
+    Example:
+    SELECT * FROM (SELECT year, month, sales FROM sales_data) AS src PIVOT (SUM(sales) FOR month IN ([Jan], [Feb], [Mar])) AS pvt;
+
+155. What is a materialized view, and how does it differ from a regular view?
+    A materialized view stores the results of a query physically, providing faster access compared to regular views, which are virtual.
+    Example:
+    Creating a materialized view for pre-aggregated sales data for quick reporting.
+
+156. How do you implement full-text search in a database?
+    Full-text search enables searching within large text columns using specialized indexing.
+    Example:
+    CREATE FULLTEXT INDEX idx_search ON articles(content);
+
+157. What are the differences between UNION and UNION ALL?
+    UNION combines results from multiple queries and removes duplicates, while UNION ALL includes all results, including duplicates.
+    Example:
+    SELECT * FROM table1 UNION SELECT * FROM table2; vs. SELECT * FROM table1 UNION ALL SELECT * FROM table2;
+
+158. How do you use the CASE statement in SQL?
+    The CASE statement provides conditional logic within queries.
+    Example:
+    SELECT name, CASE WHEN salary > 50000 THEN 'High' ELSE 'Low' END AS salary_category FROM employees;
+
+159. What is an upsert operation, and how do you perform it?
+    An upsert operation inserts a record if it does not exist or updates it if it does.
+    Example:
+    INSERT INTO products (product_id, product_name) VALUES (1, 'Product A') ON DUPLICATE KEY UPDATE product_name = 'Updated Product A';
+
+160. How do you use triggers in SQL, and what are their use cases?
+    Triggers are automated actions executed in response to certain events on a table, useful for enforcing business rules or auditing changes.
+    Example:
+    CREATE TRIGGER trg_after_insert AFTER INSERT ON orders FOR EACH ROW BEGIN INSERT INTO audit_log (order_id, action) VALUES (NEW.id, 'INSERT'); END;
+
+## Conclusion
+This extensive SQL question bank covers various topics to help you prepare effectively for interviews or enhance your SQL knowledge. Whether you’re a beginner or an experienced professional, understanding these concepts will greatly benefit your career in data management and analysis.

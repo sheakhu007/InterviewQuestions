@@ -1,0 +1,399 @@
+1. What are the different types of SQL tables?
+   There are several types of SQL tables including base tables, derived tables, temporary tables, views, and partitioned tables. 
+   Example: A base table stores persistent data, while a temporary table is used for storing intermediate results.
+
+2. What is a base table?
+   A base table is a table that stores persistent data in a relational database.
+   Example: CREATE TABLE employees (id INT, name VARCHAR(50));
+
+3. What is a derived table?
+   A derived table is a temporary result set created within a query, often used in SELECT statements.
+   Example: SELECT * FROM (SELECT id, name FROM employees) AS derived_table;
+
+4. What is a temporary table?
+   A temporary table is a table that exists temporarily during a session or transaction.
+   Example: CREATE TEMPORARY TABLE temp_employees (id INT, name VARCHAR(50));
+
+5. What is a global temporary table?
+   A global temporary table is accessible by any session but only retains data for the duration of the session that created it.
+   Example: CREATE GLOBAL TEMPORARY TABLE global_temp_employees (id INT, name VARCHAR(50));
+
+6. What is a local temporary table?
+   A local temporary table is only accessible to the session that created it and is dropped automatically at the end of the session.
+   Example: CREATE LOCAL TEMPORARY TABLE local_temp_employees (id INT, name VARCHAR(50));
+
+7. What is a view?
+   A view is a virtual table based on the result of a SELECT query, which does not store data itself.
+   Example: CREATE VIEW employee_view AS SELECT id, name FROM employees;
+
+8. What is a materialized query table (MQT)?
+   A materialized query table stores the results of a query physically, allowing for faster access to precomputed results.
+   Example: CREATE MATERIALIZED VIEW sales_summary AS SELECT product_id, SUM(amount) FROM sales GROUP BY product_id;
+
+9. What is a partitioned table?
+   A partitioned table divides data into smaller, manageable pieces (partitions) based on specific criteria.
+   Example: CREATE TABLE partitioned_table (id INT, created_date DATE) PARTITION BY RANGE (created_date);
+
+10. What is a sharded table?
+    A sharded table distributes data across multiple database instances or servers to improve performance and scalability.
+    Example: Split user data across multiple tables based on user ID ranges.
+
+11. How do you create a base table?
+    A base table can be created using the CREATE TABLE statement, defining its structure and constraints.
+    Example: CREATE TABLE products (id INT PRIMARY KEY, name VARCHAR(50), price DECIMAL(10, 2));
+
+12. What are the essential components of a base table definition?
+    Essential components include the table name, column names, data types, and constraints (like PRIMARY KEY, NOT NULL).
+    Example: CREATE TABLE orders (order_id INT PRIMARY KEY, order_date DATE NOT NULL);
+
+13. How do you modify a base table?
+    A base table can be modified using the ALTER TABLE statement to add, modify, or drop columns.
+    Example: ALTER TABLE employees ADD COLUMN email VARCHAR(100);
+
+14. How do you delete a base table?
+    A base table can be deleted using the DROP TABLE statement.
+    Example: DROP TABLE temp_employees;
+
+15. What are the different types of constraints that can be applied to a base table?
+    Constraints include PRIMARY KEY, FOREIGN KEY, UNIQUE, CHECK, and DEFAULT.
+    Example: CREATE TABLE users (id INT PRIMARY KEY, email VARCHAR(100) UNIQUE);
+
+16. What is the difference between a primary key and a unique constraint?
+    A primary key uniquely identifies each record in a table and cannot contain NULL values, while a unique constraint ensures all values in a column are distinct but can contain NULLs.
+    Example: PRIMARY KEY on user_id, UNIQUE on email.
+
+17. What is a foreign key constraint?
+    A foreign key constraint enforces a relationship between two tables by requiring that values in one table correspond to values in another.
+    Example: CREATE TABLE orders (order_id INT, customer_id INT, FOREIGN KEY (customer_id) REFERENCES customers(id));
+
+18. How do you create a composite primary key?
+    A composite primary key is created using multiple columns to uniquely identify a record in a table.
+    Example: CREATE TABLE enrollments (student_id INT, course_id INT, PRIMARY KEY (student_id, course_id));
+
+19. How do you create a check constraint?
+    A check constraint ensures that all values in a column satisfy a specific condition.
+    Example: CREATE TABLE products (id INT, price DECIMAL CHECK (price > 0));
+
+20. How do you create a default constraint?
+    A default constraint assigns a default value to a column when no value is specified during insertion.
+    Example: CREATE TABLE employees (id INT, status VARCHAR(10) DEFAULT 'active');
+
+21. What is a derived table?
+    A derived table is a temporary table created within a SELECT statement, often used for complex queries.
+    Example: SELECT * FROM (SELECT id, name FROM employees WHERE salary > 50000) AS high_earners;
+
+22. How do you create a derived table?
+    A derived table is created within a query using parentheses to encapsulate a SELECT statement.
+    Example: SELECT * FROM (SELECT id, name FROM employees) AS derived;
+
+23. When are derived tables useful?
+    Derived tables are useful for simplifying complex queries by breaking them into manageable parts.
+    Example: Use a derived table to pre-filter data before applying further aggregations.
+
+24. What are the limitations of derived tables?
+    Limitations include not being able to create indexes on them and having limited scope (only within the query).
+    Example: Derived tables cannot be referenced outside their parent query.
+
+25. Can a derived table be used in a JOIN clause?
+    Yes, a derived table can be used in a JOIN clause as if it were a regular table.
+    Example: SELECT a.id, b.name FROM (SELECT id FROM employees) AS a JOIN (SELECT name FROM departments) AS b ON a.id = b.id;
+
+26. What is a temporary table?
+    A temporary table is a table that exists only for the duration of a session or a transaction.
+    Example: CREATE TEMPORARY TABLE temp_sales (id INT, amount DECIMAL);
+
+27. What are the different types of temporary tables?
+    Types of temporary tables include local temporary tables and global temporary tables.
+    Example: CREATE LOCAL TEMPORARY TABLE local_sales (id INT, amount DECIMAL);
+
+28. How do you create a temporary table?
+    A temporary table is created using the CREATE TEMPORARY TABLE statement.
+    Example: CREATE TEMPORARY TABLE temp_orders (id INT, order_date DATE);
+
+29. What is the scope of a temporary table?
+    The scope of a temporary table can be local (accessible only within the session that created it) or global (accessible to all sessions).
+    Example: A local temporary table is dropped when the session ends, while a global temporary table remains until all sessions using it are closed.
+
+30. When are temporary tables useful?
+    Temporary tables are useful for storing intermediate results during complex calculations or data processing tasks.
+    Example: Use a temporary table to hold intermediate query results before final aggregation.
+
+31. How do you delete a temporary table?
+    A temporary table can be deleted using the DROP TABLE statement, just like a regular table.
+    Example: DROP TABLE temp_sales;
+
+32. What is a view?
+    A view is a virtual table that is based on the result of a SELECT query, providing a way to simplify complex queries.
+    Example: CREATE VIEW employee_view AS SELECT id, name FROM employees WHERE active = 1;
+
+33. How do you create a view?
+    A view can be created using the CREATE VIEW statement followed by a SELECT query.
+    Example: CREATE VIEW department_view AS SELECT * FROM departments;
+
+34. What are the benefits of using views?
+    Benefits include simplifying complex queries, providing data security, and allowing for easier data management.
+    Example: Use a view to restrict access to sensitive columns in a table.
+
+35. Can a view contain DML statements?
+    Yes, views can support DML (Data Manipulation Language) statements, but with some limitations.
+    Example: You can use INSERT, UPDATE, or DELETE on a view if it is updatable.
+
+36. What is a materialized query table (MQT)?
+    A materialized query table stores the results of a query physically, allowing for faster access to precomputed results.
+    Example: CREATE MATERIALIZED VIEW sales_summary AS SELECT product_id, SUM(amount) FROM sales GROUP BY product_id;
+
+37. How do you create an MQT?
+    An MQT can be created using the CREATE MATERIALIZED VIEW statement followed by a SELECT query.
+    Example: CREATE MATERIALIZED VIEW product_sales AS SELECT product_id, COUNT(*) FROM orders GROUP BY product_id;
+
+38. When should you use an MQT instead of a view?
+    Use an MQT when you need improved performance for complex queries, as it stores results physically.
+    Example: An MQT is beneficial for reporting purposes where performance is critical.
+
+39. How do you refresh an MQT?
+    An MQT can be refreshed manually or automatically based on defined intervals or triggers.
+    Example: REFRESH MATERIALIZED VIEW sales_summary;
+
+40. What are the limitations of MQTs?
+    Limitations include potential stale data and overhead of maintaining the materialized results.
+    Example: MQTs may not reflect real-time changes in the underlying tables.
+
+41. What is a partitioned table?
+    A partitioned table divides a large table into smaller, more manageable pieces (partitions) based on specific criteria.
+    Example: CREATE TABLE sales (id INT, sale_date DATE) PARTITION BY RANGE (sale_date);
+
+42. What are the different types of partitioning?
+    Types include range partitioning, list partitioning, and hash partitioning.
+    Example: Range partitioning divides data into partitions based on a continuous range of values.
+
+43. How do you create a partitioned table?
+    A partitioned table is created using the CREATE TABLE statement with partitioning clauses.
+    Example: CREATE TABLE sales_partitioned (id INT, sale_date DATE) PARTITION BY RANGE (sale_date);
+
+44. When are partitioned tables useful?
+    Partitioned tables are useful for managing large datasets and improving query performance.
+    Example: Use partitioned tables to enhance performance in time-series data queries.
+
+45. What are the benefits of using partitioned tables?
+    Benefits include improved query performance, easier data management, and faster maintenance tasks.
+    Example: Partitioning can significantly reduce the amount of data scanned during queries.
+
+46. How do you manage partitions in a partitioned table?
+    Partitions can be managed by adding, dropping, or merging partitions as needed.
+    Example: ALTER TABLE sales_partitioned ADD PARTITION FOR VALUES LESS THAN ('2023-01-01');
+
+47. What is partition pruning?
+    Partition pruning is the process of excluding non-relevant partitions from query execution to improve performance.
+    Example: If a query filters by sale_date, only the relevant partitions will be scanned.
+
+48. How does partition pruning improve query performance?
+    By scanning only relevant partitions, partition pruning reduces the amount of data processed, leading to faster query execution.
+    Example: Queries on a partitioned table can run significantly faster due to reduced data access.
+
+49. What are the limitations of partitioned tables?
+    Limitations may include increased complexity in query design and potential performance issues if not properly managed.
+    Example: Misconfigured partitioning can lead to inefficient queries and maintenance challenges.
+
+50. When should you consider partitioning a table?
+    Consider partitioning a table when dealing with large datasets that require improved performance and manageability.
+    Example: Tables with millions of rows, such as logs or transaction data, are good candidates for partitioning.
+
+51. What is a sharded table?
+    A sharded table is a table that is distributed across multiple database instances to improve scalability and performance.
+    Example: User data can be split across different servers based on user ID ranges.
+
+52. How is sharding different from partitioning?
+    Sharding distributes data across multiple database instances, while partitioning divides data within a single database instance.
+    Example: Sharding is used for horizontal scaling across servers.
+
+53. When is sharding useful?
+    Sharding is useful when scaling out databases to handle large volumes of data and high traffic loads.
+    Example: E-commerce platforms with millions of users often implement sharding for scalability.
+
+54. What are the challenges of sharding?
+    Challenges include increased complexity in database management, potential for data consistency issues, and difficulty in performing cross-shard queries.
+    Example: Ensuring data consistency across shards can be challenging during updates.
+
+55. How do you distribute data across shards?
+    Data can be distributed based on a sharding key, such as user ID or geographical location.
+    Example: Use hash-based sharding to evenly distribute user data across shards.
+
+56. How do you handle joins across shards?
+    Joins across shards can be handled by performing the join operation at the application level or using specialized database systems that support cross-shard queries.
+    Example: Application logic may need to aggregate results from multiple shards.
+
+57. What is global indexing in sharded tables?
+    Global indexing maintains a single index across all shards, allowing for efficient lookups regardless of where the data resides.
+    Example: A global index can improve query performance by reducing the need to search multiple shards.
+
+58. What are the limitations of sharded tables?
+    Limitations may include increased complexity in query execution, challenges with data consistency, and overhead in managing multiple database instances.
+    Example: Queries requiring data from multiple shards can be slower and more complex.
+
+59. When should you consider sharding a table?
+    Consider sharding when facing scalability challenges due to high traffic and large datasets that exceed the capabilities of a single database instance.
+    Example: Large applications with high write and read demands often require sharding.
+
+60. What are the best practices for sharding?
+    Best practices include choosing the right sharding key, monitoring shard performance, and ensuring data consistency across shards.
+    Example: Regularly assess shard load and adjust distribution as needed.
+
+61. What is a materialized path table?
+    A materialized path table stores hierarchical data using a path representation to simplify queries on tree-like structures.
+    Example: CREATE TABLE categories (id INT, name VARCHAR(50), path VARCHAR(255));
+
+62. When are materialized path tables useful?
+    Materialized path tables are useful for representing and querying hierarchical data structures like categories or organizational charts.
+    Example: They can simplify queries for retrieving entire subtrees in a hierarchy.
+
+63. How do you create a materialized path table?
+    A materialized path table is created using a standard CREATE TABLE statement with a path column to store hierarchical relationships.
+    Example: CREATE TABLE org_chart (id INT, name VARCHAR(50), path VARCHAR(255));
+
+64. What are the challenges of using materialized path tables?
+    Challenges include the complexity of maintaining path integrity during updates and ensuring efficient queries on the hierarchy.
+    Example: Inserting or moving nodes requires careful updates to the path values.
+
+65. What is a nested table?
+    A nested table is a table that is defined within another table, allowing for a one-to-many relationship in a single row.
+    Example: CREATE TABLE department (id INT, employees NESTED TABLE employee_table);
+
+66. When are nested tables useful?
+    Nested tables are useful for representing complex data structures with relationships that don't fit into a flat table format.
+    Example: Use nested tables to store lists of related items directly within a parent table.
+
+67. How do you create a nested table?
+    A nested table is created by defining the nested table type and then using it as a column type in the parent table.
+    Example: CREATE TYPE employee_type AS TABLE OF employee; CREATE TABLE department (id INT, employees employee_type);
+
+68. What are the challenges of using nested tables?
+    Challenges include complexity in querying and managing nested data structures, as well as potential performance issues.
+    Example: Accessing nested data may require additional logic and could lead to slower queries.
+
+69. What is a sparse index?
+    A sparse index is an index that does not contain entries for every possible value, only for a subset of values that are considered important for query performance.
+    Example: Sparse indexes are useful in tables with a large number of NULL values.
+
+70. When are sparse indexes useful?
+    Sparse indexes are useful when most values in a column are the same or NULL, allowing for improved performance by reducing index size.
+    Example: In a large user table where many users are inactive, a sparse index on the status column can be beneficial.
+
+71. How do you create a sparse index?
+    A sparse index can be created by specifying the appropriate index options in the CREATE INDEX statement.
+    Example: CREATE INDEX sparse_index ON users (status) WHERE status IS NOT NULL;
+
+72. What are the challenges of using sparse indexes?
+    Challenges include complexity in managing and querying sparse indexes and potential performance impacts if not designed properly.
+    Example: Queries may require additional logic to handle missing values in sparse indexes.
+
+73. What is a bitmap index?
+    A bitmap index is an index that uses bitmap vectors to represent the presence or absence of values in a column, typically used for low-cardinality columns.
+    Example: Bitmap indexes are effective for columns with a limited number of distinct values.
+
+74. When are bitmap indexes useful?
+    Bitmap indexes are useful in data warehousing and analytical applications where complex queries are run on large datasets with low cardinality.
+    Example: They can significantly speed up queries on gender or status columns.
+
+75. How do you create a bitmap index?
+    A bitmap index can be created using the CREATE BITMAP INDEX statement.
+    Example: CREATE BITMAP INDEX bitmap_index ON products (category_id);
+
+76. What are the challenges of using bitmap indexes?
+    Challenges include increased storage requirements and potential performance degradation during DML operations.
+    Example: Frequent updates to a table with a bitmap index can lead to overhead in maintaining the index.
+
+77. What is a function-based index?
+    A function-based index is an index that is created based on the result of a function applied to one or more columns.
+    Example: CREATE INDEX func_based_index ON employees (LOWER(email));
+
+78. When are function-based indexes useful?
+    Function-based indexes are useful when frequently querying computed values or expressions.
+    Example: They can improve performance for case-insensitive searches on string columns.
+
+79. How do you create a function-based index?
+    A function-based index can be created using the CREATE INDEX statement with the function specified.
+    Example: CREATE INDEX upper_email_index ON users (UPPER(email));
+
+80. What are the challenges of using function-based indexes?
+    Challenges include complexity in maintenance and potential performance issues if the underlying data changes frequently.
+    Example: Frequent updates to indexed columns can lead to overhead in maintaining the function-based index.
+
+81. How do table types affect query performance?
+    Different table types can impact query performance based on their structure and how data is accessed.
+    Example: Partitioned tables can improve performance by reducing the amount of data scanned during queries.
+
+82. Which table types are generally more efficient for querying?
+    Generally, partitioned and indexed tables are more efficient for querying due to reduced data access.
+    Example: Indexed tables can speed up lookups significantly compared to non-indexed tables.
+
+83. When should you consider using a materialized query table instead of a view?
+    Consider using an MQT when performance is critical, as it stores query results physically for faster access.
+    Example: Reporting queries that require aggregation can benefit from using MQTs.
+
+84. How does partitioning impact query performance?
+    Partitioning can enhance query performance by allowing the database to scan only relevant partitions.
+    Example: A query that filters on a partitioned column can run faster due to reduced data processing.
+
+85. How does sharding impact query performance?
+    Sharding improves query performance by distributing data across multiple instances, allowing for parallel processing.
+    Example: A high-traffic application can handle more simultaneous queries with sharding.
+
+86. How can you optimize queries on partitioned tables?
+    Optimize queries by using appropriate filtering criteria on partitioned columns and avoiding full table scans.
+    Example: Use specific date ranges to target relevant partitions in queries.
+
+87. How can you optimize queries on sharded tables?
+    Optimize queries by minimizing cross-shard joins and leveraging local indexes on each shard.
+    Example: Avoiding cross-shard queries can reduce complexity and improve performance.
+
+88. What is query caching?
+    Query caching is a technique that stores the results of expensive queries in memory for faster retrieval on subsequent requests.
+    Example: Caching results of frequently executed reports can significantly speed up response times.
+
+89. How can you improve query caching performance?
+    Improve query caching performance by tuning cache size, expiration policies, and optimizing queries to increase cache hits.
+    Example: Regularly monitor and adjust cache settings based on query patterns.
+
+90. What is query rewriting?
+    Query rewriting is the process of transforming a query into a more efficient form to improve performance.
+    Example: Rewriting queries to use indexed columns can reduce execution time.
+
+91. How can you use query rewriting to optimize performance?
+    Use query rewriting techniques such as using subqueries or common table expressions (CTEs) to simplify complex queries.
+    Example: Breaking down a large query into smaller, simpler parts can enhance performance.
+
+92. What is query optimization?
+    Query optimization is the process of analyzing and modifying a query to improve its execution plan and performance.
+    Example: Using EXPLAIN to analyze the query execution plan can help identify performance bottlenecks.
+
+93. How can you improve query optimization?
+    Improve query optimization by rewriting queries, using indexes, and analyzing execution plans for inefficiencies.
+    Example: Regularly reviewing and optimizing slow-running queries can enhance overall performance.
+
+94. What is query tuning?
+    Query tuning is the process of adjusting a query's structure or parameters to achieve optimal performance.
+    Example: Tuning a query's WHERE clause for better filtering can significantly reduce execution time.
+
+95. How can you tune queries for better performance?
+    Tune queries by using proper indexing, analyzing execution plans, and rewriting queries for efficiency.
+    Example: Ensure that filtering conditions are on indexed columns to speed up searches.
+
+96. What is explain plan?
+    An explain plan is a database tool that provides insight into how a query will be executed, detailing the steps and operations involved.
+    Example: Using EXPLAIN before executing a query can reveal how the database engine processes the query.
+
+97. How can you use explain plan to analyze query performance?
+    Use explain plan to understand the execution strategy of a query and identify potential bottlenecks.
+    Example: Analyzing an explain plan can highlight areas for optimization, such as missing indexes.
+
+98. What is query profiling?
+    Query profiling is the process of measuring the performance of a query, including execution time and resource usage.
+    Example: Profiling queries can help identify which parts of the query consume the most resources.
+
+99. How can you use query profiling to identify performance bottlenecks?
+    Use query profiling results to pinpoint specific operations that are slowing down a query, allowing for targeted optimizations.
+    Example: If a join operation is taking too long, consider optimizing that part of the query.
+
+100. What are the best practices for optimizing SQL queries?
+    Best practices include indexing frequently queried columns, avoiding SELECT *, using WHERE clauses effectively, and analyzing execution plans regularly.
+    Example: Regularly tuning and optimizing queries based on performance metrics can lead to significant improvements.
