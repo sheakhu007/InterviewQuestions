@@ -487,9 +487,12 @@
    
    Example:
    WITH CTE AS (
-       SELECT *, ROW_NUMBER() OVER (PARTITION BY name ORDER BY id) AS rn FROM employees
+    SELECT id, ROW_NUMBER() OVER (PARTITION BY name ORDER BY id) AS rn 
+    FROM employees
    )
-   DELETE FROM CTE WHERE rn > 1;
+   DELETE FROM employees
+   WHERE id IN (SELECT id FROM CTE WHERE rn > 1);
+
 
 84. What does the REPLACE() function do?
    - REPLACE() replaces all occurrences of a substring within a string.
