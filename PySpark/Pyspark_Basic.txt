@@ -1,0 +1,713 @@
+1. **What is PySpark?**
+   PySpark is the Python API for Apache Spark, a distributed computing framework that processes large-scale data efficiently.
+
+2. **How does PySpark differ from Apache Spark?**
+   PySpark is the Python API for Apache Spark, while Apache Spark itself is written in Scala. PySpark allows you to write Spark applications using Python.
+
+3. **What are the main features of PySpark?**
+   Distributed computing, fault-tolerance, in-memory processing, lazy evaluation, support for multiple languages, and support for complex operations (e.g., SQL, ML, Streaming).
+
+4. **Explain the difference between RDD and DataFrame in PySpark.**
+   RDD is the fundamental data structure, offering low-level transformations. DataFrame is a higher-level abstraction with optimizations, providing easier API for data manipulation and better performance.
+
+5. **What is a DataFrame in PySpark?**
+   A DataFrame is a distributed collection of rows organized into columns, similar to a table in a relational database.
+
+6. **How do you create a DataFrame in PySpark?**
+   `df = spark.createDataFrame(data, schema)` or `df = spark.read.csv("file.csv")`
+
+7. **What are Spark transformations?**
+   Operations that return a new RDD/DataFrame without executing immediately, e.g., `map()`, `filter()`.
+
+8. **What are Spark actions?**
+   Operations that trigger the execution of transformations, e.g., `collect()`, `count()`.
+
+9. **What is lazy evaluation in PySpark?**
+   PySpark delays the execution of transformations until an action is called, which optimizes the computation.
+
+10. **What is an RDD?**
+    Resilient Distributed Dataset (RDD) is the fundamental data structure in Spark, representing an immutable distributed collection of objects.
+
+11. **How can you create an RDD in PySpark?**
+    Using `spark.sparkContext.parallelize([1, 2, 3])` or reading from files like `spark.textFile("data.txt")`.
+
+12. **What are the advantages of using DataFrame over RDD?**
+    Optimized query execution, better performance, and a higher-level API for data operations.
+
+13. **How does PySpark handle missing data in DataFrames?**
+    PySpark provides methods like `dropna()` and `fillna()` to handle missing data.
+
+14. **Explain the PySpark filter operation with an example.**
+    `df.filter(df["age"] > 18).show()`
+
+15. **How do you use the select operation in PySpark?**
+    `df.select("name", "age").show()`
+
+16. **What is SparkSession in PySpark?**
+    It is the entry point to PySpark, used to interact with Spark functionalities.
+
+17. **How do you start a SparkSession?**
+    `spark = SparkSession.builder.appName("app").getOrCreate()`
+
+18. **What is Catalyst Optimizer in PySpark?**
+    It's Spark's optimization engine for improving query execution plans.
+
+19. **What is the use of the show() method in PySpark?**
+    It displays the first few rows of a DataFrame.
+
+20. **How do you count the number of rows in a PySpark DataFrame?**
+    `df.count()`
+
+21. **What is the cache() function in PySpark, and why is it useful?**
+    `cache()` stores a DataFrame or RDD in memory to speed up future computations.
+
+22. **What is the difference between cache() and persist() in PySpark?**
+    `cache()` uses memory only, while `persist()` can use different storage levels like memory and disk.
+
+23. **Explain the use of groupBy() in PySpark.**
+    `df.groupBy("age").count().show()`, it groups data by specified columns and applies aggregate functions.
+
+24. **What are Spark SQL and its advantages?**
+    Spark SQL is a module for structured data processing, offering easy integration with SQL queries.
+
+25. **What is the purpose of withColumn() in PySpark?**
+    It is used to create a new column or modify an existing column, e.g., `df.withColumn("new_col", df["age"] + 1)`
+
+26. **How can you change the column name in PySpark?**
+    `df.withColumnRenamed("old_name", "new_name")`
+
+27. **What is a wide transformation in PySpark?**
+    A transformation that requires data shuffling across nodes, e.g., `reduceByKey()`.
+
+28. **What is a narrow transformation in PySpark?**
+    A transformation where data from one partition is processed within the same partition, e.g., `map()`.
+
+29. **Explain PySpark’s map() function.**
+    It applies a function to each element in an RDD, e.g., `rdd.map(lambda x: x*2)`.
+
+30. **What is the purpose of flatMap() in PySpark?**
+    It returns multiple outputs for each input, flattening the result, e.g., `rdd.flatMap(lambda x: [x, x*2])`.
+
+31. **Explain the reduceByKey() operation in PySpark.**
+    It merges values for each key using a function, e.g., `rdd.reduceByKey(lambda a, b: a + b)`.
+
+32. **How do you join two DataFrames in PySpark?**
+    `df1.join(df2, df1.id == df2.id, "inner")`
+
+33. **What is broadcast() in PySpark?**
+    It distributes a small dataset to all worker nodes, optimizing join operations.
+
+34. **What are accumulators in PySpark?**
+    Variables that can accumulate values across multiple nodes, often used for counters.
+
+35. **How do you handle duplicate data in PySpark?**
+    Using `dropDuplicates()` or `distinct()` methods.
+
+36. **Explain the use of the distinct() method in PySpark.**
+    It removes duplicate rows from a DataFrame, e.g., `df.distinct().show()`.
+
+37. **How do you use the union() method in PySpark?**
+    `df1.union(df2)` merges two DataFrames with the same schema.
+
+38. **What is the purpose of dropDuplicates() in PySpark?**
+    It removes duplicate rows based on specified columns, e.g., `df.dropDuplicates(["name"]).show()`.
+
+39. **How do you sort data in PySpark DataFrames?**
+    `df.orderBy("age", ascending=False).show()`
+
+40. **Explain how to handle null values in PySpark.**
+    Using methods like `dropna()`, `fillna()`, or `na.replace()`.
+
+41. **What is the difference between dropna() and fillna() in PySpark?**
+    `dropna()` removes rows with null values, while `fillna()` replaces nulls with specified values.
+
+42. **What is PySpark UDF (User Defined Function)?**
+    UDF allows users to create custom functions in PySpark.
+
+43. **How do you register a UDF in PySpark?**
+    `spark.udf.register("myUDF", my_function)`
+
+44. **What is PySpark MLlib?**
+    It is Spark's machine learning library, providing algorithms for classification, regression, clustering, etc.
+
+45. **What are some key machine learning algorithms supported by PySpark MLlib?**
+    Algorithms like logistic regression, decision trees, random forests, and K-means.
+
+46. **What is the difference between collect() and take() in PySpark?**
+    `collect()` returns the entire DataFrame/RDD, while `take(n)` returns only the first `n` rows.
+
+47. **How does PySpark handle big data processing?**
+    By distributing computations across a cluster, enabling parallel processing.
+
+48. **What are broadcast variables in PySpark?**
+    Read-only variables that are cached on each node, helping to efficiently share large datasets.
+
+49. **How do you perform a groupBy and aggregation in PySpark?**
+    `df.groupBy("age").agg({"salary": "avg"}).show()`
+
+50. **What is the default file format in PySpark?**
+    Parquet is the default file format for PySpark.
+
+51. **Explain the concept of partitions in PySpark.**
+    Partitions are chunks of data distributed across nodes to enable parallel processing.
+
+52. **How do you repartition a DataFrame in PySpark?**
+    `df.repartition(10)` changes the number of partitions.
+
+53. **What is the significance of coalesce() in PySpark?**
+    It reduces the number of partitions, optimizing performance without shuffling data.
+
+54. **How do you filter a DataFrame in PySpark?**
+    Using `filter()` or `where()` functions, e.g., `df.filter(df["age"] > 18).show()`.
+
+55. **Explain the concept of lineage graphs in PySpark.**
+    A lineage graph tracks the sequence of transformations applied to an RDD/DataFrame.
+
+56. **What is PySpark’s explode() function?**
+    It converts an array column into multiple rows, e.g., `df.select(explode(df["array_col"]))`.
+
+57. **What is PySpark’s pivot() function?**
+    It reshapes data from long format to wide format, e.g., `df.groupBy("category").pivot("year").sum("sales")`.
+
+58. **Explain the use of crossJoin() in PySpark.**
+    It performs a Cartesian product of two DataFrames, e.g., `df1.crossJoin(df2)`.
+
+59. **How do you check schema of a DataFrame in PySpark?**
+    `df.printSchema()`
+
+60. **How do you write a DataFrame to a file in PySpark?**
+    `df.write.csv("path")` or `df.write.parquet("path")`
+
+61. **What is the role of PySpark’s collect() function?**
+    - `collect()` retrieves all the elements of the DataFrame or RDD to the driver node.
+    - Should be used with caution on large datasets as it can overwhelm driver memory.
+
+62. **Explain the use of drop() in PySpark.**
+    - `drop()` removes specified columns or rows from a DataFrame.
+    - Example: `df.drop("age").show()` removes the `age` column.
+
+63. **What is PySpark SQL?**
+    - PySpark SQL is a module to work with structured data using SQL-like queries within Spark.
+    - Provides support for querying DataFrames using SQL.
+
+64. **How can you run SQL queries in PySpark?**
+    - You need to register the DataFrame as a temporary table using `createOrReplaceTempView()`.
+    - Example: 
+      ```python
+      df.createOrReplaceTempView("table")
+      spark.sql("SELECT * FROM table WHERE age > 25").show()
+      ```
+
+65. **How do you check the execution plan of a PySpark DataFrame?**
+    - Use the `explain()` method to display the logical and physical execution plan.
+    - Example: `df.explain()`
+
+66. **Explain selectExpr() in PySpark.**
+    - `selectExpr()` allows using SQL expressions in PySpark for selecting columns.
+    - Example: `df.selectExpr("age + 1 as age_plus_one").show()`
+
+67. **What is a SparkContext in PySpark?**
+    - SparkContext is the entry point to interact with Spark and its functionalities.
+    - Used for interacting with RDDs and running jobs on the cluster.
+
+68. **How do you parallelize an operation in PySpark?**
+    - Use `spark.sparkContext.parallelize(data)` to parallelize a local collection and create an RDD.
+
+69. **What is the difference between map() and flatMap() in PySpark?**
+    - `map()` applies a function to each element and returns one element for each input.
+    - `flatMap()` can return multiple elements for each input, flattening the result.
+
+70. **What are the benefits of DataFrames over SQL in PySpark?**
+    - DataFrames offer better performance through optimizations like Catalyst Optimizer.
+    - They provide more flexibility by allowing a combination of SQL-like queries and Python code.
+
+71. **What are key differences between DataFrames and Datasets in PySpark?**
+    - DataFrames are optimized, untyped APIs that represent distributed collections of data.
+    - Datasets are typed and provide compile-time type safety, but are not available in PySpark (only in Scala and Java).
+
+72. **How does PySpark handle serialization?**
+    - PySpark uses `PickleSerializer` by default to serialize objects.
+    - For large objects, it is recommended to use `KryoSerializer` for better performance.
+
+73. **What is fault tolerance in PySpark?**
+    - PySpark provides fault tolerance through RDDs by automatically recomputing lost data due to node failures.
+
+74. **Explain PySpark’s sample() method.**
+    - `sample(withReplacement, fraction)` selects a fraction of data randomly from the DataFrame/RDD.
+    - Example: `df.sample(False, 0.1).show()` selects 10% of the data without replacement.
+
+75. **How do you use PySpark with Jupyter notebooks?**
+    - Install PySpark via `pip install pyspark`.
+    - Configure SparkSession within the notebook:
+      ```python
+      from pyspark.sql import SparkSession
+      spark = SparkSession.builder.appName("app").getOrCreate()
+      ```
+
+76. **What is schema inference in PySpark?**
+    - PySpark can infer the schema of data automatically when reading from files like CSV, JSON, etc.
+    - However, it's slower compared to defining the schema explicitly.
+
+77. **How do you define a schema explicitly in PySpark?**
+    - Use `StructType` and `StructField` classes to define the schema manually.
+    - Example:
+      ```python
+      from pyspark.sql.types import StructType, StructField, IntegerType, StringType
+      schema = StructType([
+          StructField("name", StringType(), True),
+          StructField("age", IntegerType(), True)
+      ])
+      df = spark.read.schema(schema).csv("data.csv")
+      ```
+
+78. **What is the significance of the PySpark describe() method?**
+    - `describe()` provides summary statistics for numerical columns.
+    - Example: `df.describe().show()`
+
+79. **What are the key data types supported by PySpark?**
+    - PySpark supports common types like `IntegerType`, `StringType`, `FloatType`, `BooleanType`, `DateType`, and more complex types like `ArrayType` and `MapType`.
+
+80. **How do you remove rows with null values in PySpark?**
+    - Use `dropna()` to remove rows containing any null values.
+    - Example: `df.dropna().show()`
+
+81. **What is a PySpark window function?**
+    - Window functions allow performing calculations across a set of rows related to the current row, such as ranking or cumulative sums.
+
+82. **What is the row_number() function in PySpark?**
+    - `row_number()` assigns a unique number to each row within a window partition, starting from 1.
+
+83. **What is the dense_rank() function in PySpark?**
+    - `dense_rank()` gives consecutive ranks to rows, without gaps, within a window partition.
+
+84. **How do you handle date/time data in PySpark?**
+    - PySpark provides functions like `to_date()`, `to_timestamp()`, and `date_format()` for handling date/time data.
+    - Example: `df.withColumn("date_col", to_date(df["timestamp"])).show()`
+
+85. **How can you calculate correlations in PySpark?**
+    - Use the `corr()` function to calculate the correlation between two columns.
+    - Example: `df.stat.corr("age", "salary")`
+
+86. **How do you concatenate columns in PySpark?**
+    - Use `concat()` function to combine columns into a single column.
+    - Example: 
+      ```python
+      from pyspark.sql.functions import concat, lit
+      df.withColumn("full_name", concat(df["first_name"], lit(" "), df["last_name"])).show()
+      ```
+
+87. **What is the role of PySpark’s agg() method?**
+    - `agg()` is used to perform aggregate functions like sum, avg, min, max on grouped data.
+    - Example: `df.groupBy("age").agg({"salary": "avg"}).show()`
+
+88. **How do you calculate cumulative sum in PySpark?**
+    - Use the `sum()` function with windowing.
+    - Example:
+      ```python
+      from pyspark.sql.window import Window
+      from pyspark.sql.functions import sum as sum_
+      windowSpec = Window.partitionBy("category").orderBy("date")
+      df.withColumn("cumulative_sum", sum_("amount").over(windowSpec)).show()
+      ```
+
+89. **What is the purpose of the join operation in PySpark?**
+    - The `join()` operation is used to combine two DataFrames based on a common key.
+    - Example: `df1.join(df2, df1["id"] == df2["id"], "inner")`
+
+90. **What is the difference between an inner join and an outer join in PySpark?**
+    - `inner join`: Returns rows with matching keys in both DataFrames.
+    - `outer join`: Returns all rows from both DataFrames, with `null` values where there is no match.
+
+91. **Explain groupByKey() in PySpark.**
+    - `groupByKey()` groups data based on keys and allows further operations on the grouped data.
+    - Example: `rdd.groupByKey().mapValues(list).collect()`
+
+92. **What are PySpark partitions?**
+    - Partitions are chunks of data distributed across the cluster to enable parallel processing.
+
+93. **How can you increase the number of partitions in PySpark?**
+    - Use `repartition()` to increase the number of partitions, e.g., `df.repartition(10)`.
+
+94. **What are the default partitions in PySpark?**
+    - PySpark sets the default number of partitions based on the cluster configuration and the size of the input data.
+
+95. **What is PySpark’s glom() function?**
+    - `glom()` creates an RDD of arrays, where each array contains all elements in one partition.
+    - Example: `rdd.glom().collect()`
+
+96. **Explain the difference between filter() and where() in PySpark.**
+    - Both methods are used for filtering rows based on a condition, but `filter()` is preferred in PySpark as it is more intuitive.
+    - Example: `df.filter(df["age"] > 18).show()` and `df.where(df["age"] > 18).show()` are equivalent.
+
+97. **What are PySpark configuration properties?**
+    - Configuration properties control various settings of Spark, such as memory allocation, parallelism, and shuffle behavior.
+    - Can be set in `SparkSession` using `.config("key", "value")`.
+
+98. **How can you check if a column exists in a PySpark DataFrame?**
+    - Use `col in df.columns` to check if a column exists in the DataFrame.
+
+99. **Explain PySpark’s filter() method with an example.**
+    - The `filter()` method is used to filter rows in a DataFrame based on a specified condition.
+    - Example:
+      ```python
+      df.filter(df["age"] > 30).show()
+      ```
+
+100. **What is rdd.collect() in PySpark?**
+    - `collect()` retrieves all elements of an RDD back to the driver program as a list.
+    - Example:
+      ```python
+      data = rdd.collect()
+      print(data)
+      ```
+
+101. **How do you convert DataFrame to RDD in PySpark?**
+    - Use the `rdd` attribute of the DataFrame to convert it to an RDD.
+    - Example:
+      ```python
+      rdd = df.rdd
+      ```
+
+102. **What is an accumulator in PySpark, and how do you use it?**
+    - Accumulators are variables that are only added to through associative and commutative operations.
+    - Example:
+      ```python
+      from pyspark import SparkContext
+      sc = SparkContext.getOrCreate()
+      accum = sc.accumulator(0)
+      rdd.foreach(lambda x: accum.add(x))
+      print(accum.value)
+      ```
+
+103. **Explain PySpark’s alias() method with an example.**
+    - The `alias()` method is used to rename a column in a DataFrame.
+    - Example:
+      ```python
+      df.select(df["age"].alias("years")).show()
+      ```
+
+104. **What is the countDistinct() function in PySpark?**
+    - `countDistinct()` returns the count of unique values in a specified column.
+    - Example:
+      ```python
+      df.select(countDistinct("age")).show()
+      ```
+
+105. **How do you combine multiple DataFrames in PySpark?**
+    - Use the `union()` method to combine DataFrames with the same schema.
+    - Example:
+      ```python
+      combined_df = df1.union(df2)
+      ```
+
+106. **What is an action in PySpark?**
+    - Actions are operations that trigger the execution of the Spark job and return results to the driver or write data to storage.
+    - Examples of actions: `collect()`, `count()`, `take()`.
+
+107. **How does PySpark handle partitions during joins?**
+    - During joins, Spark reshuffles the data across partitions based on the join keys to ensure that matching keys are located in the same partition.
+
+108. **What is the PySpark SQL count() function?**
+    - `count()` is an aggregate function that returns the number of rows in a DataFrame.
+    - Example:
+      ```python
+      df.select(count("*")).show()
+      ```
+
+109. **How do you calculate rank over a window in PySpark?**
+    - Use the `rank()` function along with window specifications to assign ranks.
+    - Example:
+      ```python
+      from pyspark.sql.window import Window
+      windowSpec = Window.orderBy("salary")
+      df.withColumn("rank", rank().over(windowSpec)).show()
+      ```
+
+110. **What is the purpose of orderBy() in PySpark?**
+    - The `orderBy()` method is used to sort the DataFrame based on one or more columns.
+    - Example:
+      ```python
+      df.orderBy("age", ascending=False).show()
+      ```
+
+111. **What is the purpose of the unionAll() function in PySpark?**
+    - `unionAll()` combines two DataFrames, including duplicates.
+    - Note: In recent versions, `union()` is used instead of `unionAll()` as they serve the same purpose.
+
+112. **How do you remove duplicate rows from a PySpark DataFrame?**
+    - Use the `dropDuplicates()` method to remove duplicate rows based on all or specified columns.
+    - Example:
+      ```python
+      df.dropDuplicates().show()
+      ```
+
+113. **How do you create an empty DataFrame in PySpark?**
+    - Use `createDataFrame()` with an empty list and a schema.
+    - Example:
+      ```python
+      empty_df = spark.createDataFrame([], schema)
+      ```
+
+114. **What is PySpark accumulator() and how is it used?**
+    - Accumulator variables are used for aggregating information across the executors in a distributed way.
+    - Example:
+      ```python
+      accum = sc.accumulator(0)
+      rdd.foreach(lambda x: accum.add(x))
+      print("Accumulator value: ", accum.value)
+      ```
+
+115. **How can you remove columns in a PySpark DataFrame?**
+    - Use the `drop()` method to remove specified columns from a DataFrame.
+    - Example:
+      ```python
+      df.drop("age").show()
+      ```
+
+116. **What is the difference between cache() and persist() in PySpark?**
+    - `cache()` stores the DataFrame in memory only, while `persist()` allows for different storage levels (e.g., memory and disk).
+    - Example:
+      ```python
+      df.cache()  # Cache in memory
+      df.persist(StorageLevel.MEMORY_AND_DISK)  # Persist to memory and disk
+      ```
+
+117. **What is the use of PySpark’s collectAsMap()?**
+    - `collectAsMap()` collects the data as a map (dictionary) if the RDD consists of key-value pairs.
+    - Example:
+      ```python
+      rdd = sc.parallelize([(1, "a"), (2, "b")])
+      result = rdd.collectAsMap()
+      ```
+
+118. **How do you perform left outer joins in PySpark?**
+    - Use the `join()` method with "left" as the join type to perform a left outer join.
+    - Example:
+      ```python
+      df1.join(df2, df1["key"] == df2["key"], "left").show()
+      ```
+
+119. **Explain PySpark’s dropna() function.**
+    - `dropna()` removes rows with null values from the DataFrame.
+    - Example:
+      ```python
+      df.dropna().show()
+      ```
+
+120. **How do you remove rows with NaN values in PySpark?**
+    - Use `dropna()` to remove rows containing NaN values.
+    - Example:
+      ```python
+      df.na.drop().show()
+      ```
+
+121. **What are PySpark RDD partitions?**
+    - RDD partitions are the segments of data that allow Spark to perform parallel processing.
+    - Each partition can be processed independently on different nodes in the cluster.
+
+122. **What is the default storage level in PySpark?**
+    - The default storage level for caching RDDs is `MEMORY_ONLY`.
+
+123. **How do you merge DataFrames in PySpark?**
+    - Use the `union()` method to merge two DataFrames with the same schema.
+    - Example:
+      ```python
+      merged_df = df1.union(df2)
+      ```
+
+124. **What is the purpose of PySpark’s flatMap() operation?**
+    - `flatMap()` transforms each element of the RDD into zero or more elements and flattens the results.
+    - Example:
+      ```python
+      rdd.flatMap(lambda x: x.split(" ")).collect()
+      ```
+
+125. **What are window operations in PySpark?**
+    - Window operations allow calculations across rows related to the current row (e.g., running totals, rankings) without collapsing rows.
+
+126. **How does PySpark’s cache() function improve performance?**
+    - `cache()` stores the DataFrame in memory, allowing for faster access during iterative computations.
+
+127. **What is PySpark’s SQLContext?**
+    - `SQLContext` provides a way to work with structured data in Spark and allows running SQL queries.
+    - Note: `SparkSession` is recommended for new applications.
+
+128. **How do you use PySpark with HDFS?**
+    - To read/write data from/to HDFS, specify the HDFS path when loading or saving DataFrames.
+    - Example:
+      ```python
+      df = spark.read.csv("hdfs://path/to/file.csv")
+      ```
+
+129. **What is the role of PySpark in a big data ecosystem?**
+    - PySpark is used for processing large datasets in a distributed manner, providing high-level APIs for data manipulation and analysis.
+
+130. **Explain the purpose of PySpark’s repartition() method.**
+    - `repartition()` reshuffles the data across a specified number of partitions, which can help optimize processing.
+    - Example:
+      ```python
+      df.repartition(10)
+      ```
+
+131. **What are Spark cores and how do they impact performance?**
+    - Spark cores are the computational units in a Spark cluster responsible for executing tasks.
+    - More cores can lead to better parallelism and improved performance.
+
+132. **How do you concatenate DataFrames in PySpark?**
+    - Use `union()` to concatenate DataFrames with the same schema.
+    - Example:
+      ```python
+      combined_df = df1.union(df2)
+      ```
+
+133. **Explain the pivot() function in PySpark.**
+    - The `pivot()` function allows you to transform unique values from one column into multiple columns in a DataFrame.
+    - Example:
+      ```python
+      df.groupBy("date").pivot("category").sum("sales").show()
+      ```
+
+134. **How do you perform pivoting in PySpark?**
+    - Use `groupBy()` along with `pivot()` to create a pivot table.
+    - Example:
+      ```python
+      df.groupBy("date").pivot("category").sum("amount").show()
+      ```
+
+135. **What is the significance of the filter() function in PySpark?**
+    - The `filter()` function allows selective retrieval of rows based on a condition, improving data analysis and manipulation efficiency.
+    - It is useful for reducing the dataset to only those records that meet specific criteria.
+    - Example:
+      ```python
+      from pyspark.sql import SparkSession
+      
+      # Create Spark session
+      spark = SparkSession.builder.appName("Filter Example").getOrCreate()
+
+      # Sample DataFrame
+      data = [(1, "Alice", 29), (2, "Bob", 35), (3, "Cathy", 25)]
+      df = spark.createDataFrame(data, ["id", "name", "age"])
+
+      # Filter to get only records where age is greater than 30
+      filtered_df = df.filter(df.age > 30)
+      filtered_df.show()
+      ```
+
+136. **What is the purpose of the corr() function in PySpark?**
+    - The `corr()` function calculates the correlation between two columns in a DataFrame.
+    - Example:
+      ```python
+      df.stat.corr("column1", "column2")
+      ```
+
+137. **How do you find the most frequent values in a column in PySpark?**
+    - Use the `groupBy()` and `count()` functions, followed by `orderBy()` to find the most frequent values.
+    - Example:
+      ```python
+      df.groupBy("column").count().orderBy("count", ascending=False).show()
+      ```
+
+138. **Explain PySpark’s broadcast() method.**
+    - The `broadcast()` method allows you to efficiently share large datasets across all nodes in a cluster to minimize data transfer during operations.
+    - Example:
+      ```python
+      broadcast_var = sc.broadcast([1, 2, 3])
+      ```
+
+139. **How do you convert a list to a DataFrame in PySpark?**
+    - Use the `createDataFrame()` method along with a list and a schema.
+    - Example:
+      ```python
+      data = [(1, "Alice"), (2, "Bob")]
+      df = spark.createDataFrame(data, ["id", "name"])
+      ```
+
+140. **What is the purpose of PySpark’s max() function?**
+    - The `max()` function returns the maximum value of a specified column.
+    - Example:
+      ```python
+      df.agg({"age": "max"}).show()
+      ```
+
+141. **How do you perform a full outer join in PySpark?**
+    - Use the `join()` method with "outer" as the join type to perform a full outer join.
+    - Example:
+      ```python
+      df1.join(df2, df1["key"] == df2["key"], "outer").show()
+      ```
+
+142. **Explain PySpark’s reduce() function.**
+    - The `reduce()` function aggregates the elements of an RDD using a specified binary function.
+    - Example:
+      ```python
+      rdd = sc.parallelize([1, 2, 3, 4])
+      result = rdd.reduce(lambda x, y: x + y)
+      ```
+
+143. **What is the use of PySpark’s zip() operation?**
+    - The `zip()` operation combines two RDDs into a single RDD of tuples, pairing elements with the same index.
+    - Example:
+      ```python
+      rdd1 = sc.parallelize([1, 2, 3])
+      rdd2 = sc.parallelize(["a", "b", "c"])
+      zipped_rdd = rdd1.zip(rdd2)
+      ```
+
+144. **How do you create a table from a DataFrame in PySpark?**
+    - Use the `createOrReplaceTempView()` method to create a temporary view of a DataFrame for SQL queries.
+    - Example:
+      ```python
+      df.createOrReplaceTempView("table_name")
+      ```
+
+145. **How do you stop a SparkContext in PySpark?**
+    - Use the `stop()` method to stop the SparkContext.
+    - Example:
+      ```python
+      sc.stop()
+      ```
+
+146. **What is the role of mapPartitions() in PySpark?**
+    - `mapPartitions()` allows you to apply a function to each partition of the RDD, enabling more efficient processing than mapping individual elements.
+    - Example:
+      ```python
+      def process_partition(partition):
+          return sum(partition)
+      rdd.mapPartitions(process_partition).collect()
+      ```
+
+147. **Explain PySpark’s groupByKey() operation.**
+    - The `groupByKey()` operation groups the values of an RDD by keys and returns an RDD of key-value pairs.
+    - Example:
+      ```python
+      rdd = sc.parallelize([("a", 1), ("b", 2), ("a", 3)])
+      grouped_rdd = rdd.groupByKey()
+      ```
+
+148. **What is the significance of the first() function in PySpark?**
+    - The `first()` function returns the first row of the DataFrame.
+    - Example:
+      ```python
+      first_row = df.first()
+      ```
+
+149. **What is the purpose of the coalesce() function in PySpark?**
+    - The `coalesce()` function reduces the number of partitions in a DataFrame without shuffling the data, often used to optimize performance.
+    - Example:
+      ```python
+      df.coalesce(1)
+      ```
+
+150. **How do you run a Spark application in PySpark?**
+    - A Spark application can be run using the `spark-submit` command in the terminal, specifying the application file and options.
+    - Example:
+      ```bash
+      spark-submit my_spark_application.py
+      ```
+
+151. **How do you debug a PySpark job?**
+    - Use logging, the Spark UI for job metrics, and the DataFrame's `explain()` method to inspect the execution plan.
+    - Example:
+      ```python
+      df.explain()
+      ```
