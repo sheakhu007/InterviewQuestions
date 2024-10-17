@@ -1,0 +1,334 @@
+ Q 1:What is Databricks?
+ A: Databricks is a cloud-based data platform that provides a collaborative environment for data engineering, machine learning, and analytics using Apache Spark.
+
+ Q 2:What is Apache Spark?
+ A: Apache Spark is an open-source distributed computing system designed for fast computation and processing large datasets in parallel across clusters.
+
+ Q 3:What is a DataFrame in Spark?
+ A: A DataFrame is a distributed collection of data organized into named columns, allowing for optimized operations and easier manipulation compared to RDDs.
+
+ Q 4:What is the difference between RDD and DataFrame?
+ A: RDDs are the fundamental data structure in Spark, while DataFrames provide a higher-level API with optimizations, schema information, and support for SQL-like queries.
+
+ Q 5:What is Delta Lake?
+ A: Delta Lake is a storage layer that brings ACID transactions, scalable metadata handling, and unifies batch and streaming data processing on Apache Spark.
+
+ Q 6:How do you create a Spark session in Databricks?
+ A: Example:
+ Dim spark As SparkSession = SparkSession.Builder().AppName("MyApp").GetOrCreate()
+
+ Q 7:What is a Spark cluster?
+ A: A Spark cluster is a set of machines (nodes) that run Spark applications, with one node acting as the driver and the others as workers.
+
+ Q 8:What is a Spark job?
+ A: A Spark job is a high-level action executed by Spark, such as a transformation or action applied to an RDD or DataFrame.
+
+ Q 9:How do you read a CSV file in Databricks?
+ A: Example:
+ Dim df As DataFrame = spark.Read().Csv("/path/to/file.csv", True, True)
+
+ Q 10:What is the purpose of the `show()` method in Spark?
+ A: The `show()` method displays the contents of a DataFrame in a tabular format, useful for quick data inspection.
+
+ Q 11:What are the different types of joins available in Spark?
+ A: Spark supports inner join, outer join (full, left, right), cross join, and semi join.
+
+ Q 12:What is the purpose of the `groupBy()` operation?
+ A: The `groupBy()` operation is used to group DataFrame rows based on one or more columns, enabling aggregation operations.
+
+ Q 13:How do you filter data in a DataFrame?
+ A: Example:
+ Dim filteredDf As DataFrame = df.Filter(df("age") > 21)
+
+ Q 14:What is the purpose of the `select()` method?
+ A: The `select()` method is used to retrieve specific columns from a DataFrame, allowing you to project only the necessary data.
+
+ Q 15:How do you read a Delta Table in Databricks?
+ A: Example:
+ Dim df As DataFrame = spark.Read().Format("delta").Load("/path/to/delta-table")
+
+ Q 16:What is Databricks SQL?
+ A: Databricks SQL is a serverless SQL query service to run SQL queries on data stored in Databricks, especially useful for dashboards and BI tools.
+
+ Q 17:What is Apache Spark?
+ A: Apache Spark is an open-source distributed computing system that processes large datasets in parallel across a cluster.
+
+ Q 18:What is an RDD in Spark?
+ A: Resilient Distributed Dataset (RDD) is the fundamental data structure in Spark, providing fault-tolerant, distributed collections of objects that can be processed in parallel.
+
+ Q 19:How do you create an RDD in Databricks?
+ A: Example:
+ Dim rdd As RDD(Of Integer) = sc.Parallelize(New List(Of Integer) From {1, 2, 3, 4, 5})
+
+ Q 20:What are Spark DataFrames?
+ A: DataFrames are a higher-level API built on RDDs, offering more optimized operations, providing distributed collections of data organized into named columns, similar to a SQL table.
+
+ Q 21:How do you create a DataFrame in Databricks?
+ A: Example:
+ Dim df As DataFrame = spark.CreateDataFrame(New List(Of Tuple(Of String, Integer)) From {Tuple.Create("Alice", 1), Tuple.Create("Bob", 2)}, New String() {"name", "age"})
+
+ Q 22:What is the use of Spark SQL in Databricks?
+ A: Spark SQL is used to run SQL queries on DataFrames and tables stored in Databricks, enabling data exploration, manipulation, and analysis using SQL-like syntax.
+
+ Q 23:How do you execute a SQL query on a DataFrame?
+ A: Example:
+ df.CreateOrReplaceTempView("my_table")
+ spark.Sql("SELECT * FROM my_table").Show()
+
+ Q 24:What is Delta Lake?
+ A: Delta Lake is a storage layer that brings ACID transactions, scalable metadata handling, and unifies streaming and batch data processing on Apache Spark.
+
+ Q 25:How does Delta Lake support ACID transactions?
+ A: Delta Lake ensures all transactions are atomic, consistent, isolated, and durable, which helps maintain data integrity in large-scale operations.
+
+ Q 26:What is Databricks Auto-scaling?
+ A: Auto-scaling in Databricks automatically adjusts cluster sizes based on workload demand, ensuring cost-efficiency and optimal performance.
+
+ Q 27:How do you optimize Spark queries in Databricks?
+ A: Optimizing Spark queries involves techniques like caching DataFrames, avoiding shuffles, using DataFrame/Dataset APIs, and leveraging broadcast joins.
+
+ Q 28:What is the role of a Spark Executor?
+ A: A Spark Executor is a distributed agent responsible for executing tasks and storing data for a Spark application on worker nodes.
+
+ Q 29:What are Spark jobs, stages, and tasks?
+ A: A Spark job is a complete action (e.g., a Spark SQL query). A job is divided into stages based on transformations, and each stage is further divided into tasks, which are the smallest unit of work.
+
+ Q 30:How do you handle missing data in Databricks?
+ A: Missing data can be handled using methods like `dropna()` to remove rows or `fillna()` to fill in missing values with specified values.
+ Q 31:What is the purpose of the `union()` method in Spark?
+ A: The `union()` method is used to combine two DataFrames with the same schema into a single DataFrame, appending the rows from both.
+
+ Q 32:What is Spark Streaming?
+ A: Spark Streaming is an extension of Apache Spark that enables scalable and fault-tolerant stream processing of live data streams.
+
+ Q 33:How do you create a Streaming DataFrame in Databricks?
+ A: Example:
+ Dim streamingDf As DataFrame = spark.ReadStream().Format("socket").Option("host", "localhost").Option("port", 9999).Load()
+
+ Q 34:What is the purpose of the `writeStream()` method?
+ A: The `writeStream()` method is used to write the results of a streaming computation to a sink such as a file or a database.
+
+ Q 35:How do you stop a running streaming query in Databricks?
+ A: Example:
+ Dim query As StreamingQuery = streamingDf.WriteStream().Format("console").Start()
+ query.Stop()
+
+ Q 36:What is a Window function in Spark?
+ A: A Window function performs calculations across a set of rows related to the current row, allowing for operations like running totals and averages over a defined range.
+
+ Q 37:How do you define a Window specification in Spark?
+ A: Example:
+ Dim windowSpec As WindowSpec = Window.PartitionBy("category").OrderBy("date")
+
+ Q 38:What is the purpose of the `withColumn()` method?
+ A: The `withColumn()` method is used to add a new column or replace an existing column in a DataFrame.
+
+ Q 39:How do you rename a column in a DataFrame?
+ A: Example:
+ Dim renamedDf As DataFrame = df.WithColumnRenamed("oldName", "newName")
+
+ Q 40:What is Spark MLlib?
+ A: Spark MLlib is Spark's scalable machine learning library that provides algorithms and utilities for building machine learning models.
+
+ Q 41:How do you create a Logistic Regression model in Spark MLlib?
+ A: Example:
+ Dim lr As LogisticRegression = New LogisticRegression().SetMaxIter(10).SetRegParam(0.3)
+
+ Q 42:What is a Pipeline in Spark MLlib?
+ A: A Pipeline is a sequence of stages (transformers and estimators) that can be treated as a single unit for data processing and modeling.
+
+ Q 43:What is feature engineering in Spark?
+ A: Feature engineering is the process of using domain knowledge to extract features from raw data, which can improve the performance of machine learning models.
+
+ Q 44:How do you handle categorical variables in Spark MLlib?
+ A: Categorical variables can be handled using the `StringIndexer` to convert categories into numerical indices, or `OneHotEncoder` for one-hot encoding.
+
+ Q 45:What is the purpose of the `crossValidator` in Spark MLlib?
+ A: The `crossValidator` is used to evaluate the performance of a machine learning model by training it on different subsets of the data and testing it on others.
+
+ Q 46:How do you perform feature scaling in Spark MLlib?
+ A: Feature scaling can be performed using `StandardScaler` to standardize features by removing the mean and scaling to unit variance.
+
+ Q 47:What is the role of the `VectorAssembler` in Spark MLlib?
+ A: The `VectorAssembler` is used to combine multiple columns into a single vector column, which is a required format for many ML algorithms in Spark.
+
+ Q 48:What is model persistence in Spark MLlib?
+ A: Model persistence is the process of saving trained models to disk for later use, allowing you to load and use the model without retraining.
+
+ Q 49:How do you evaluate a classification model in Spark MLlib?
+ A: Example:
+ Dim evaluator As MulticlassClassificationEvaluator = New MulticlassClassificationEvaluator().SetLabelCol("label").SetPredictionCol("prediction")
+
+ Q 50:What is the purpose of the `trainValidationSplit` in Spark MLlib?
+ A: The `trainValidationSplit` is used for hyperparameter tuning, allowing you to split the data into training and validation sets to find the best model parameters.
+
+ Q 51:How do you save a DataFrame to a Delta table?
+ A: Example:
+ df.Write().Format("delta").Mode("overwrite").Save("/path/to/delta-table")
+
+ Q 52:What is the purpose of `dataframes.write.format("parquet")`?
+ A: This method is used to write a DataFrame to disk in Parquet format, which is a columnar storage format optimized for big data processing.
+
+ Q 53:What is a Data Lake?
+ A: A Data Lake is a centralized repository that allows you to store all your structured and unstructured data at scale, which can later be processed and analyzed.
+
+ Q 54:How do you create a temporary view in Spark SQL?
+ A: Example:
+ df.CreateOrReplaceTempView("temp_view")
+
+ Q 55:What is the purpose of `coalesce()` in Spark?
+ A: The `coalesce()` method reduces the number of partitions in a DataFrame, which can help optimize performance during actions.
+
+ Q 56:What is the difference between `cache()` and `persist()`?
+ A: `cache()` is a shorthand for `persist()` with the default storage level (MEMORY_ONLY). `persist()` allows for different storage levels (e.g., DISK_ONLY).
+
+ Q 57:How do you convert a DataFrame to an RDD?
+ A: Example:
+ Dim rdd As RDD(Of Row) = df.Rdd()
+
+ Q 58:What is the role of the Driver program in Spark?
+ A: The Driver program is responsible for converting the user’s code into tasks, scheduling them, and distributing them across the cluster.
+
+ Q 59:What is a Spark application?
+ A: A Spark application consists of a driver program and a set of parallel operations on data, typically defined in a single application.
+
+ Q 60:How do you monitor Spark applications in Databricks?
+ A: You can monitor Spark applications using the Databricks UI, which provides dashboards for tracking job progress, stages, and performance metrics.
+
+ Q 61:What is the difference between `count()` and `countDistinct()` in Spark?
+ A: `count()` returns the total number of rows in a DataFrame, while `countDistinct()` returns the number of unique rows based on a specified column.
+
+ Q 62:How do you handle skewed data in Spark?
+ A: Handling skewed data can be achieved by techniques such as salting the keys, repartitioning, or using custom partitioners to distribute data more evenly.
+
+ Q 63:What is the purpose of the `foreach()` action in Spark?
+ A: The `foreach()` action is used to apply a function to each element of an RDD, primarily for side effects (e.g., printing or writing to external storage).
+
+ Q 64:How do you read a JSON file in Databricks?
+ A: Example:
+ Dim df As DataFrame = spark.Read().Json("/path/to/file.json")
+
+ Q 65:What is a broadcast variable in Spark?
+ A: A broadcast variable allows the programmer to keep a read-only variable cached on each machine, rather than shipping a copy of it with tasks.
+
+ Q 66:How do you broadcast a variable in Spark?
+ A: Example:
+ Dim broadcastVar As Broadcast(Of Integer) = sc.Broadcast(100)
+
+ Q 67:What are accumulators in Spark?
+ A: Accumulators are variables that are only “added” to through an associative and commutative operation, allowing parallel operations to update them.
+
+ Q 68:How do you create an accumulator in Spark?
+ A: Example:
+ Dim accum As Accumulator(Of Long) = sc.LongAccumulator()
+
+ Q 69:What is the purpose of the `limit()` method in Spark?
+ A: The `limit()` method is used to return a new DataFrame containing only the first `n` rows of the original DataFrame.
+
+ Q 70:How do you apply a transformation to a DataFrame?
+ A: Example:
+ Dim transformedDf As DataFrame = df.WithColumn("newColumn", df("existingColumn") * 2)
+
+ Q 71:What is the significance of the Catalyst Optimizer?
+ A: The Catalyst Optimizer is a query optimization engine in Spark SQL that automatically optimizes the logical and physical execution plans for queries.
+
+ Q 72:What is the purpose of the `sample()` method in Spark?
+ A: The `sample()` method returns a random sample of the DataFrame, useful for exploratory data analysis or testing.
+
+ Q 73:How do you convert a DataFrame to a JSON string?
+ A: Example:
+ Dim jsonString As String = df.ToJSON().Collect().ToArray()
+
+ Q 74:What is the role of the DataFrame API?
+ A: The DataFrame API provides a higher-level abstraction for data manipulation, allowing for SQL-like operations while leveraging Spark's optimizations.
+
+ Q 75:How do you set a configuration property in a Spark session?
+ A: Example:
+ spark.Conf.Set("spark.sql.shuffle.partitions", "50")
+
+ Q 76:What is the purpose of the `distinct()` method in Spark?
+ A: The `distinct()` method returns a new DataFrame that contains only the unique rows from the original DataFrame.
+
+ Q 77:How do you create a DataFrame from a list of dictionaries in Spark?
+ A: Example:
+ Dim df As DataFrame = spark.CreateDataFrame(New List(Of Dictionary(Of String, Object)) From {New Dictionary(Of String, Object) From {{"name", "Alice"}, {"age", 30}}})
+
+ Q 78:What is the significance of the DataFrame schema?
+ A: The schema defines the structure of a DataFrame, including the names and types of columns, which helps Spark optimize query execution.
+
+ Q 79:How do you extract the schema of a DataFrame?
+ A: Example:
+ Dim schema As StructType = df.Schema()
+
+ Q 80:What are partitioning and its types in Spark?
+ A: Partitioning refers to dividing a DataFrame into smaller chunks. Types include hash partitioning, range partitioning, and round-robin partitioning.
+
+ Q 81:How do you repartition a DataFrame in Spark?
+ A: Example:
+ Dim repartitionedDf As DataFrame = df.Repartition(10)
+
+ Q 82:What is the role of the `pivot()` function in Spark?
+ A: The `pivot()` function is used to create a new DataFrame with columns representing unique values from one column, aggregating values from another.
+
+ Q 83:How do you create a DataFrame from an RDD?
+ A: Example:
+ Dim df As DataFrame = spark.CreateDataFrame(rdd, New String() {"name", "age"})
+
+ Q 84:What is the purpose of the `join()` method?
+ A: The `join()` method is used to combine two DataFrames based on a common key, allowing for relational operations similar to SQL joins.
+
+ Q 85:How do you save a DataFrame as a Parquet file?
+ A: Example:
+ df.Write().Format("parquet").Save("/path/to/file.parquet")
+
+ Q 86:What is the significance of the `DataFrameWriter`?
+ A: The `DataFrameWriter` is an API that allows you to write a DataFrame to external storage systems, such as HDFS, S3, or local file systems.
+
+ Q 87:How do you read data from a JDBC source in Spark?
+ A: Example:
+ Dim df As DataFrame = spark.Read().Format("jdbc").Option("url", "jdbc:mysql://localhost/db").Option("dbtable", "table").Load()
+
+ Q 88:What is the difference between DataFrames and Datasets?
+ A: DataFrames are untyped, while Datasets are strongly typed collections of objects that provide compile-time type safety.
+
+ Q 89:What is the purpose of the `take()` method in Spark?
+ A: The `take()` method returns an array containing the first `n` elements of the DataFrame or RDD, useful for quick data inspection.
+
+ Q 90:How do you create a view for a DataFrame?
+ A: Example:
+ df.CreateOrReplaceTempView("view_name")
+
+ Q 91:What is the difference between transformations and actions in Spark?
+ A: Transformations are lazy operations that create a new DataFrame from an existing one, while actions trigger the execution of transformations and return a value.
+
+ Q 92:How do you filter rows in a DataFrame?
+ A: Example:
+ Dim filteredDf As DataFrame = df.Filter(df("age") > 21)
+
+ Q 93:What is the purpose of the `groupBy()` method?
+ A: The `groupBy()` method is used to group the DataFrame using one or more columns, allowing for aggregate functions to be applied to each group.
+
+ Q 94:How do you aggregate data in a DataFrame?
+ A: Example:
+ Dim aggregatedDf As DataFrame = df.GroupBy("category").Agg(Sum("amount").Alias("total_amount"))
+
+ Q 95:What is the role of the `selectExpr()` method in Spark?
+ A: The `selectExpr()` method allows you to use SQL expressions to select and transform columns in a DataFrame.
+
+ Q 96:How do you create a DataFrame from a CSV file in Spark?
+ A: Example:
+ Dim df As DataFrame = spark.Read().Format("csv").Option("header", "true").Load("/path/to/file.csv")
+
+ Q 97:What is the significance of the `schema` in a DataFrame?
+ A: The schema provides a structure to the DataFrame, defining the names and types of columns, which helps with data validation and optimization.
+
+ Q 98:How do you concatenate two DataFrames?
+ A: Example:
+ Dim concatenatedDf As DataFrame = df1.Union(df2)
+
+ Q 99:What is the purpose of the `drop()` method in Spark?
+ A: The `drop()` method is used to remove one or more columns from a DataFrame.
+
+ Q 100:How do you create a temporary view from a DataFrame in Spark SQL?
+ A: Example:
+ df.CreateOrReplaceTempView("temp_view")

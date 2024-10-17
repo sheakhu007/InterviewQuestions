@@ -1,0 +1,603 @@
+Q 1:What is Delta Lake, and what are its advantages?
+
+Answer:- Delta Lake s an open-source storage layer that brings ACID transactions to Apache Spark and big data workloads.
+- Advantages include:ID transactions: Ensure data integrity.
+  - Scalable metadata handling: Supports large datasets.
+  - Schema enforcement: Prevents data corruption.
+  - Time travel: Allows querying previous versions of data.
+
+Q 2:How do you create a Delta table in Databricks?
+A- Use the following syntax:
+vbnet
+df.Write.Format("delta").Save("/path/to/delta-table")
+
+- Optionally, create a managed Delta table:
+vbnet
+spark.Sql("CREATE TABLE table_name USING DELTA LOCATION '/path/to/delta-table'")
+
+
+Q 3:What are the types of data formats supported by Databricks?
+A- Databricks supports various data formats, including:
+  - Delta
+  - Parquet
+  - JSON
+  - CSV
+  - ORC
+  - Avro
+
+Q 4:How can you perform incremental data loading using Delta Lake?
+A- Use the `MERGE` command to update existing records and insert new ones:
+vbnet
+MERGE INTO target_table USING source_table
+ON target_table.id = source_table.id
+WHEN MATCHED THEN UPDATE SET *
+WHEN NOT MATCHED THEN INSERT *
+
+
+Q 5:What is the purpose of the `OPTIMIZE` command in Delta Lake?
+A- `OPTIMIZE` improves the performance of Delta Lake by compacting small files into larger ones, reducing the number of files that need to be read during queries.
+
+Q 6:How do you perform data versioning with Delta Lake?
+A- Use the `VERSION AS OF` clause to query previous versions:
+vbnet
+SELECT * FROM delta_table VERSION AS OF 1
+
+- View changes with the `DESCRIBE HISTORY` command:
+vbnet
+DESCRIBE HISTORY delta_table
+
+
+Q 7:Explain the `VACUUM` command in Delta Lake.
+A- `VACUUM` is used to remove old files that are no longer needed, helping to manage storage and improve performance:
+vbnet
+VACUUM delta_table RETAIN 168 HOURS
+
+
+Q 8:How can you implement time travel in Delta Lake?
+A- Time travel allows you to query data as it was at a previous timestamp or version:
+vbnet
+SELECT * FROM delta_table TIMESTAMP AS OF '2022-01-01 00:00:00'
+
+
+Q 9:What is the role of Apache Spark in Databricks?
+A- Apache Spark serves as the underlying engine for big data processing in Databricks, enabling:
+  - Fast data processing
+  - Distributed computing
+  - Unified analytics for batch and streaming data
+
+Q 10:How do you configure Databricks clusters for optimal performance?
+A- Key configurations include:
+  - Choosing the right instance type (memory-optimized or compute-optimized).
+  - Configuring autoscaling based on workload.
+  - Using spot instances for cost savings.
+  - Setting appropriate cluster size based on data volume and processing requirements.
+
+Q 11:What are the key features of Databricks?
+A- Collaborative notebooks: Support for real-time collaboration.
+- Unified analytics engine: Handles batch and streaming data.
+- Managed Spark: Automatically handles cluster management.
+- Delta Lake: Supports ACID transactions and data versioning.
+
+Q 12:How can you create a streaming DataFrame in Databricks?
+A- Use the following syntax:
+vbnet
+val streamingDf = spark.ReadStream.Format("delta").Load("/path/to/delta-table")
+
+
+Q 13:What is the purpose of `foreachBatch()` in structured streaming?
+A- `foreachBatch()` allows you to apply custom operations on each micro-batch of data in structured streaming.
+Example:
+vbnet
+streamingDf.WriteStream.ForeachBatch((batchDf, batchId) => {
+  batchDf.Write.Format("delta").Mode("append").Save("/path/to/delta-table")
+}).Start()
+
+
+Q 14:How do you manage libraries in Databricks?
+A- Libraries can be managed through the Databricks UI, allowing you to install libraries from Maven, PyPI, or uploaded JAR files.
+
+Q 15:What is the `Databricks File System (DBFS)`?
+A- DBFS is a distributed file system that allows users to access and manage files in Databricks.
+- It is mounted on top of cloud storage, enabling easy file access and management.
+
+Q 16:How can you handle schema evolution in Delta Lake?
+A- Enable schema evolution when writing to a Delta table:
+vbnet
+df.Write.Format("delta").Mode("append").option("mergeSchema", "true").Save("/path/to/delta-table")
+
+
+Q 17:What is a `checkpoint` in structured streaming?
+A- A checkpoint is used to store the state of a streaming query, allowing it to recover from failures and ensuring exactly-once processing semantics.
+
+Q 18:Explain the concept of `data lineage` in Databricks.
+A- Data lineage tracks the flow of data from its origin through various transformations, providing visibility into how data is manipulated and used within the system.
+
+Q 19:How do you create a notebook workflow in Databricks?
+A- Use the Jobs feature in Databricks to create and schedule notebooks, enabling automated execution of workflows.
+
+Q 20:What is the purpose of the `cache()` function in Spark?
+A- The `cache()` function is used to store an RDD or DataFrame in memory, speeding up subsequent actions on that dataset.
+Example:
+vbnet
+df.Cache()
+
+
+Q 21:How can you perform data skew handling in Spark?
+A- Techniques for handling data skew include:
+  - Salting: Adding a random key to distribute the load.
+  - Repartitioning: Using `repartition()` to evenly distribute data across partitions.
+
+Q 22:Explain the difference between `coalesce()` and `repartition()` in Spark.
+A- `coalesce(n)`: Reduces the number of partitions to `n` without a full shuffle, more efficient for decreasing partitions.
+- `repartition(n)`: Reshuffles data across `n` partitions, can increase or decrease partitions.
+
+Q 23:What are `user-defined functions (UDFs)` in Spark?
+A- UDFs allow users to define custom functions that can be used in Spark SQL or DataFrame operations.
+Example:
+vbnet
+val myUDF = udf((s: String) => s.toUpperCase)
+df.WithColumn("upper_case", myUDF(df("column_name")))
+
+
+Q 24:How do you monitor and optimize Spark jobs in Databricks?
+A- Use the Spark UI to monitor job execution, view stages, and identify bottlenecks.
+- Optimize by adjusting configurations, tuning Spark parameters, and profiling queries.
+
+Q 25:What is the significance of `broadcast` in Spark?
+A- Broadcasting allows you to send a large dataset to all worker nodes, reducing data shuffling and improving join performance.
+Example:
+vbnet
+val broadcastVar = spark.SparkContext.Broadcast(largeDataset)
+
+
+Q 26:How can you read data from a JDBC source in Databricks?
+A- Use the `spark.read.format("jdbc")` method to read data from a JDBC source:
+vbnet
+val jdbcDf = spark.Read.Format("jdbc").Option("url", jdbcUrl).Option("dbtable", "table_name").Load()
+
+
+Q 27:What are the common data serialization formats used in Databricks?
+A- Common formats include:
+  - Avro
+  - Parquet
+  - JSON
+  - ORC
+
+Q 28:How do you implement multi-tenancy in Databricks?
+A- Multi-tenancy can be achieved by creating separate workspaces or using Unity Catalog to manage data access and security across different teams.
+
+Q 29:What is the purpose of `databricks-connect`?
+A- `databricks-connect` allows you to connect your local development environment to Databricks clusters, enabling local testing and development of Spark applications.
+
+Q 30:Explain how to use the `display()` function in Databricks notebooks.
+A- The `display()` function provides a rich visual representation of DataFrames and other datasets, enabling easy exploration and analysis.
+Example:
+vbnet
+display(df)
+
+
+Q 31:How do you use the `databricks-cli`?
+A- The `databricks-cli` is a command-line interface for managing Databricks workspaces.
+- Install using pip:
+bash
+pip install databricks-cli
+
+- Configure with:
+bash
+databricks configure --token
+
+
+Q 32:What is the function of the `dbutils` library in Databricks?
+A- `dbutils` provides utilities for file management, notebook workflows, and other tasks in Databricks.
+Example:
+vbnet
+dbutils.fs.ls("/mnt/")
+
+
+Q 33:How can you schedule jobs in Databricks?
+A- Use the Jobs feature in the Databricks UI to schedule notebooks, JAR tasks, or  scripts, specifying triggers and parameters.
+
+Q 34:What is the purpose of the `spark.sql` function?
+A- `spark.sql` allows you to run SQL queries on DataFrames and tables registered in the Spark session.
+Example:
+vbnet
+val resultDf = spark.sql("SELECT * FROM table_name")
+
+
+Q 35:How do you perform hyperparameter tuning in Databricks?
+A- Use MLflow for managing machine learning experiments and hyperparameter tuning.
+- Example with Hyperopt:
+vbnet
+from hyperopt import fmin, tpe, hp
+
+
+Q 36:Explain the concept of `adaptive query execution` in Spark.
+A- Adaptive Query Execution (AQE) optimizes query plans at runtime based on the actual data being processed, improving performance.
+
+Q 37:How do you optimize Spark jobs using `data caching`?
+A- Cache DataFrames or RDDs to memory to improve performance for repeated actions:
+vbnet
+df.cache()
+
+
+Q 38:What is the role of Unity Catalog in Databricks?
+A- Unity Catalog provides a unified governance solution for managing data and access control across Databricks workspaces.
+
+Q 39:How do you implement data security in Databricks?
+A- Use role-based access control (RBAC) with Unity Catalog to manage permissions and ensure data security.
+
+Q 40:Explain the purpose of `spark.read.option()` in Spark.
+A- `spark.read.option()` allows you to set options for reading data from various formats.
+Example:
+vbnet
+val df = spark.read.option("header", "true").csv("/path/to/file.csv")
+
+
+Q 41:What is the `merge` operation in Delta Lake?
+A- The `MERGE` operation allows you to perform upserts (update and insert) on a Delta table based on a matching condition.
+
+Q 42:How can you integrate Databricks with Azure Data Lake Storage (ADLS)?
+A- Use the Databricks UI or notebooks to mount ADLS, enabling seamless data access and storage.
+Example:
+vbnet
+dbutils.fs.mount(
+  source = "adl://<your-adls-account>.azuredatalakestore.net/<your-container>",
+  mount_point = "/mnt/adls",
+  extra_configs = {"<config-key>":dbutils.secrets.get(scope = "<scope-name>", key = "<key-name>")}
+)
+
+
+Q 43:What are the best practices for data modeling in Databricks?
+A- Use Delta Lake for data integrity.
+- Design schemas that optimize read and write performance.
+- Regularly optimize and vacuum Delta tables.
+
+Q 44:How do you use the `mlflow` library in Databricks?
+A- Use MLflow to track experiments, log parameters, and manage models.
+Example:
+vbnet
+mlflow.start_run()
+mlflow.log_param("param_name", value)
+
+
+Q 45:Explain the concept of `data pipelines` in Databricks.
+A- Data pipelines automate the data processing workflow, including extraction, transformation, and loading (ETL) of data.
+
+Q 46:How can you deploy machine learning models in Databricks?
+A- Use MLflow to register and serve models, enabling REST API access for inference.
+
+Q 47:What is the role of the `SparkSession` in Spark?
+A- `SparkSession` is the entry point for using Spark functionality, enabling access to Spark's SQL, streaming, and machine learning capabilities.
+
+Q 48:How do you create a Spark DataFrame from an RDD?
+A- Use the following syntax:
+vbnet
+val df = spark.createDataFrame(rdd, schema)
+
+
+Q 49:What are the benefits of using notebooks in Databricks?
+A- Notebooks support interactive data exploration, collaboration, and documentation, allowing users to mix code, visuals, and markdown.
+
+Q 50:How can you implement logging in Databricks?
+A- Use the `logging` library to log messages in notebooks and jobs.
+Example:
+vbnet
+import org.apache.log4j.{Level, Logger}
+Logger.getLogger("org").setLevel(Level.ERROR)
+
+
+Q 51:How do you manage secrets in Databricks?
+A- Use Databricks Secrets to store sensitive information securely.
+- Create a secret scope and access secrets using:
+
+dbutils.secrets.get(scope="scope_name", key="secret_key")
+
+
+Q 52:What is a `DataFrame` in PySpark?
+A- A DataFrame is a distributed collection of data organized into named columns, similar to a table in a relational database.
+Example:
+
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.appName("example").getOrCreate()
+df = spark.read.csv("/path/to/file.csv", header=True)
+
+
+Q 53:How can you join two DataFrames in PySpark?
+A- Use the `join()` method to combine two DataFrames based on a common key.
+Example:
+
+df1.join(df2, on="key_column", how="inner").show()
+
+
+Q 54:What is the difference between `map()` and `flatMap()` in PySpark?
+A- `map()`: Applies a function to each element and returns a new RDD.
+- `flatMap()`: Similar to `map()`, but can return multiple values for each input element, flattening the result.
+Example:
+
+rdd.flatMap(lambda x: x.split(" ")).collect()
+
+
+Q 55:How do you handle missing data in PySpark?
+A- Use the `fillna()` method to replace null values or `dropna()` to remove rows with nulls.
+Example:
+
+df.fillna(0).show()  # Replace nulls with 0
+df.dropna().show()   # Remove rows with nulls
+
+
+Q 56:How can you write data to a Delta table in PySpark?
+A- Use the following syntax to write a DataFrame to a Delta table:
+
+df.write.format("delta").mode("overwrite").save("/path/to/delta-table")
+
+
+Q 57:Explain the `groupBy()` operation in PySpark.
+A- `groupBy()` is used to group data based on one or more columns, allowing for aggregate functions to be applied.
+Example:
+
+df.groupBy("column_name").agg({"another_column": "sum"}).show()
+
+
+Q 58:What are the common performance tuning techniques in PySpark?
+A- Techniques include:
+  - Caching DataFrames
+  - Repartitioning to reduce shuffling
+  - Using `broadcast` joins for smaller datasets
+  - Tuning Spark configurations (memory, parallelism).
+
+Q 59:How do you implement window functions in PySpark?
+A- Use `Window` functions to perform operations on a subset of data based on specific criteria.
+Example:
+
+from pyspark.sql import Window
+from pyspark.sql.functions import row_number
+windowSpec = Window.partitionBy("column").orderBy("value")
+df.withColumn("row_num", row_number().over(windowSpec)).show()
+
+
+Q 60:How can you create a temporary view in PySpark?
+A- Use the `createOrReplaceTempView()` method to create a temporary view for SQL queries.
+Example:
+
+df.createOrReplaceTempView("temp_view")
+spark.sql("SELECT * FROM temp_view").show()
+
+
+Q 61:What is the purpose of `spark.sql()` in PySpark?
+A- `spark.sql()` allows you to run SQL queries on DataFrames and registered tables/views.
+Example:
+
+result_df = spark.sql("SELECT * FROM temp_view WHERE condition")
+
+
+Q 62:How do you use the `filter()` method in PySpark?
+A- `filter()` is used to filter rows based on a specified condition.
+Example:
+
+filtered_df = df.filter(df["column_name"] > 10)
+filtered_df.show()
+
+
+Q 63:Explain the difference between `DataFrame` and `RDD` in PySpark.
+A- DataFrame: Higher-level abstraction, optimized for structured data; provides built-in functions.
+- RDD: Lower-level abstraction, more flexible but less optimized; suitable for unstructured data.
+
+Q 64:How can you read data from a JSON file in PySpark?
+A- Use the `read.json()` method to load data from a JSON file into a DataFrame.
+Example:
+
+json_df = spark.read.json("/path/to/file.json")
+
+
+Q 65:What are the differences between `union()` and `unionAll()` in PySpark?
+A- `union()`: Combines two DataFrames but removes duplicate rows.
+- `unionAll()`: Combines two DataFrames without removing duplicates (deprecated, use `union()` instead).
+
+Q 66:How do you convert a DataFrame to a Pandas DataFrame in PySpark?
+A- Use the `toPandas()` method to convert a Spark DataFrame to a Pandas DataFrame.
+Example:
+
+pandas_df = df.toPandas()
+
+
+Q 67:How can you save a DataFrame as a Parquet file in PySpark?
+A- Use the following syntax:
+
+df.write.parquet("/path/to/output.parquet")
+
+
+Q 68:What is a `broadcast join` in PySpark?
+A- A broadcast join is a type of join where the smaller DataFrame is sent to all nodes, improving performance for small tables.
+Example:
+
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.appName("broadcast_example").getOrCreate()
+large_df.join(broadcast(small_df), "key").show()
+
+
+Q 69:How can you implement pagination in PySpark?
+A- Use the `limit()` and `offset` techniques to achieve pagination:
+Example:
+
+page_size = 10
+page_number = 1
+paginated_df = df.limit(page_size).offset(page_number * page_size)
+
+
+Q 70:How do you use the `withColumn()` method in PySpark?
+A- `withColumn()` is used to add a new column or replace an existing column in a DataFrame.
+Example:
+
+df = df.withColumn("new_column", df["existing_column"] + 1)
+
+
+Q 71:How can you perform aggregation operations in PySpark?
+A- Use the `agg()` method along with `groupBy()` to perform aggregation.
+Example:
+
+df.groupBy("column").agg({"another_column": "avg"}).show()
+
+
+Q 72:What is the significance of the `selectExpr()` method in PySpark?
+A- `selectExpr()` allows you to use SQL expressions to select columns or compute derived columns.
+Example:
+
+df.selectExpr("column1 + column2 AS sum").show()
+
+
+Q 73:How do you remove duplicates in a PySpark DataFrame?
+A- Use the `dropDuplicates()` method to remove duplicate rows.
+Example:
+
+df.dropDuplicates().show()
+
+
+Q 74:Explain the concept of lazy evaluation in Spark.
+A- Spark uses lazy evaluation to optimize the execution of transformations, only executing actions when necessary to minimize computation.
+
+Q 75:How can you create a new DataFrame from existing DataFrame with selected columns?
+A- Use the `select()` method to create a new DataFrame with specific columns.
+Example:
+
+selected_df = df.select("column1", "column2")
+selected_df.show()
+
+
+Q 76:What are Delta Tables in Databricks?
+A- Delta Tables are a storage format that brings ACID transactions to Apache Spark and big data workloads.
+- They enable features like time travel, schema enforcement, and unified batch and streaming data processing.
+
+Q 77:How can you perform upsert operations using Delta Lake?
+A- Use the `MERGE` command to perform upserts on Delta Tables.
+Example:
+
+from delta.tables import *
+deltaTable = DeltaTable.forPath(spark, "/path/to/delta-table")
+deltaTable.alias("t").merge(
+    source=updates.alias("s"),
+    condition="t.id = s.id"
+).whenMatchedUpdateAll().whenNotMatchedInsertAll().execute()
+
+
+Q 78:Explain the purpose of Delta Lake's time travel feature.
+A- Time travel allows users to query previous versions of Delta Tables, enabling data recovery and auditing.
+Example:
+
+df = spark.read.format("delta").option("timestampAsOf", "2022-01-01").load("/path/to/delta-table")
+
+
+Q 79:How do you optimize a Delta Table?
+A- Use the `OPTIMIZE` command to compact small files into larger ones and improve query performance.
+Example:
+
+spark.sql("OPTIMIZE delta.`/path/to/delta-table`")
+
+
+Q 80:What is the role of the Databricks Runtime?
+A- Databricks Runtime is an optimized Apache Spark environment designed for performance and compatibility with various libraries.
+
+Q 81:How can you access Spark UI in Databricks?
+A- The Spark UI can be accessed via the "Spark" tab in the Databricks workspace interface to monitor job execution and performance metrics.
+
+Q 82:What is the purpose of the `databricks-connect` tool?
+A- `databricks-connect` allows you to run Spark jobs locally and interact with a Databricks cluster as if it were local.
+
+Q 83:Explain the concept of Schema Evolution in Delta Lake.
+A- Schema Evolution allows Delta Tables to automatically adapt to changes in the data structure without requiring a complete rewrite.
+Example:
+
+df.write.format("delta").option("mergeSchema", "true").mode("append").save("/path/to/delta-table")
+
+
+Q 84:How can you create a DataFrame from a CSV file with custom options?
+A- Use the `option()` method to specify CSV options like delimiter and header.
+Example:
+
+df = spark.read.option("header", "true").option("delimiter", ";").csv("/path/to/file.csv")
+
+
+Q 85:How do you leverage Databricks Notebooks for collaboration?
+A- Databricks Notebooks allow multiple users to collaborate in real-time, share insights, and document workflows with markdown.
+
+Q 86:What are the benefits of using Databricks for machine learning?
+A- Unified platform for data engineering, machine learning, and analytics.
+- Built-in MLflow integration for experiment tracking.
+- Support for popular ML libraries like TensorFlow and PyTorch.
+
+Q 87:How can you use the `explode()` function in PySpark?
+A- `explode()` is used to transform an array column into multiple rows.
+Example:
+
+from pyspark.sql.functions import explode
+exploded_df = df.select("id", explode("array_column").alias("value"))
+
+
+Q 88:Explain the concept of `checkpointing` in Spark.
+A- Checkpointing saves the state of RDDs or DataFrames to a reliable storage, allowing for fault tolerance and lineage management.
+
+Q 89:How do you apply user-defined functions (UDF) in PySpark?
+A- Use the `udf()` function to define and apply UDFs on DataFrames.
+Example:
+
+from pyspark.sql.functions import udf
+from pyspark.sql.types import IntegerType
+def square(x):
+    return x * x
+square_udf = udf(square, IntegerType())
+df.withColumn("squared", square_udf("value")).show()
+
+
+Q 90:How can you integrate Databricks with Apache Kafka?
+A- Use the structured streaming API to read from and write to Kafka topics.
+Example:
+
+kafka_df = spark.readStream.format("kafka").option("kafka.bootstrap.servers", "server:port").option("subscribe", "topic").load()
+
+
+Q 91:What is the significance of the `foreachBatch` method in structured streaming?
+A- `foreachBatch` allows you to apply custom logic to each micro-batch of data in a streaming query.
+Example:
+
+query = kafka_df.writeStream.foreachBatch(lambda df, epochId: df.write.format("delta").mode("append").save("/path/to/delta-table")).start()
+
+
+Q 92:How do you handle schema validation in Delta Lake?
+A- Delta Lake enforces schema validation during writes to ensure data quality and consistency.
+
+Q 93:Explain the purpose of `pyspark.sql.functions`.
+A- The `pyspark.sql.functions` module provides built-in functions for DataFrame operations, including aggregations and transformations.
+
+Q 94:How can you leverage Databricks REST APIs?
+A- Use REST APIs to automate tasks, manage clusters, jobs, and workspaces programmatically.
+
+Q 95:How do you convert a DataFrame to a list of dictionaries in PySpark?
+A- Use the `collect()` method followed by converting to a list.
+Example:
+
+data_list = df.collect()
+data_dicts = [row.asDict() for row in data_list]
+
+
+Q 96:What are the advantages of using Databricks Delta over traditional data lakes?
+A- ACID transactions, schema enforcement, time travel, and improved performance with optimized storage.
+
+Q 97:How do you create a Databricks job using the UI?
+A- Go to the Jobs tab, click "Create Job", configure the task details (notebook, JAR, etc.), and set the schedule.
+
+Q 98:Explain how to use the `coalesce()` method in PySpark.
+A- `coalesce()` reduces the number of partitions in a DataFrame, improving performance for downstream operations.
+Example:
+
+df = df.coalesce(1)
+
+
+Q 99:What is the purpose of `databricks notebooks`?
+A- Notebooks are interactive environments for data exploration, visualization, and documentation of data workflows.
+
+Q 100:How can you deploy a model in Databricks using MLflow?
+A- Use MLflow's `mlflow.pyfunc.serve()` function to deploy a registered model as a REST API.
+Example:
+
+import mlflow.pyfunc
+mlflow.pyfunc.serve(model_uri="models:/model_name/staging", host="0.0.0.0", port=5000)
+

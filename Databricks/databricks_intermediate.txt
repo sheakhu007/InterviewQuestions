@@ -1,0 +1,540 @@
+ Q 1: How do you read data from a Delta table in Databricks?
+ A:- Use the Spark DataFrame reader API to load data.
+ - Delta tables provide ACID transaction support and enable versioning.
+ Example:
+ Dim df As DataFrame = spark.Read().Format("delta").Load("/path/to/delta-table")
+
+ Q 2: What is the purpose of `spark.sql.shuffle.partitions`?
+ A:- This configuration property controls the number of partitions for shuffles.
+ - Setting an appropriate number can optimize performance for join and aggregation operations.
+ Example:
+ spark.Conf.Set("spark.sql.shuffle.partitions", "200")
+
+ Q 3: How do you perform a left outer join in Spark?
+ A:- Use the `join()` method with the appropriate join type specified.
+ - Left outer join returns all records from the left DataFrame and matched records from the right.
+ Example:
+ Dim joinedDf As DataFrame = df1.Join(df2, "key", "left_outer")
+
+ Q 4: What is the role of the `DataFrame` API?
+ A:- The DataFrame API provides a higher-level abstraction for data manipulation.
+ - Allows for SQL-like operations while leveraging Spark's optimizations.
+ - It integrates seamlessly with Spark SQL for querying structured data.
+
+ Q 5: How can you create a new column in a DataFrame?
+ A:- Use the `withColumn()` method to create or replace a column.
+ - Specify the column name and a transformation to generate its values.
+ Example:
+ Dim updatedDf As DataFrame = df.WithColumn("new_column", df("existing_column") + 10)
+
+ Q 6: What is a `Window` function in Spark?
+ A:- A window function performs calculations across a set of rows that are related to the current row.
+ - Useful for operations like calculating running totals or averages.
+ Example:
+ Dim windowSpec As WindowSpec = Window.OrderBy("date").RowsBetween(-1, 1)
+
+ Q 7: How do you handle null values in a DataFrame?
+ A:- Use methods like `na.fill()`, `na.drop()`, or `na.replace()`.
+ - Helps in cleaning data before processing.
+ Example:
+ Dim cleanedDf As DataFrame = df.Na.Fill(New Dictionary(Of String, Object) From {{"column_name", 0}})
+
+ Q 8: What is the significance of the `broadcast()` function?
+ A:- The `broadcast()` function is used to send a variable to all worker nodes.
+ - It helps optimize joins by reducing the amount of data shuffled across the network.
+ Example:
+ Dim broadcastVar As Broadcast(Of DataFrame) = spark.Broadcast(df)
+
+ Q 9: How do you change the storage level of an RDD?
+ A:- Use the `persist()` method to specify a storage level for caching RDDs in memory or on disk.
+ - Different levels can help optimize resource usage based on access patterns.
+ Example:
+ rdd.Persist(StorageLevel.MEMORY_AND_DISK)
+
+ Q 10: What is the purpose of the `cache()` method in Spark?
+ A:- The `cache()` method is a shorthand for persisting an RDD or DataFrame in memory.
+ - It improves performance for iterative algorithms or when data is reused multiple times.
+ Example:
+ df.Cache()
+
+ Q 11: How do you perform a right outer join in Spark?
+ A:- Similar to left outer joins but returns all records from the right DataFrame.
+ - Useful when you want all records from the right DataFrame regardless of matches.
+ Example:
+ Dim rightJoinedDf As DataFrame = df1.Join(df2, "key", "right_outer")
+
+ Q 12: What is the purpose of the `dropDuplicates()` method?
+ A:- Removes duplicate rows from a DataFrame based on specified columns.
+ - Helps in ensuring data quality before processing.
+ Example:
+ Dim uniqueDf As DataFrame = df.DropDuplicates(New String() {"column_name"})
+
+ Q 13: How do you convert a DataFrame to an RDD?
+ A:- Use the `rdd` method to convert a DataFrame to an RDD.
+ - This is useful when you need to leverage RDD transformations or actions.
+ Example:
+ Dim rdd As RDD(Of Row) = df.Rdd()
+
+ Q 14: What is the difference between `Union` and `Concat` in Spark?
+ A:- `Union` combines two DataFrames with the same schema while removing duplicates.
+ - `Concat` can append DataFrames without removing duplicates but requires the same number of columns.
+ Example:
+ Dim unionDf As DataFrame = df1.Union(df2)  Union
+ Dim concatDf As DataFrame = df1.Concat(df2)  Concat (if applicable)
+
+ Q 15: How can you convert a DataFrame to a Pandas DataFrame?
+ A:- Use the `toPandas()` method to convert a Spark DataFrame to a Pandas DataFrame for local processing.
+ Example:
+ Dim pandasDf As DataFrame = df.ToPandas()
+
+ Q 16: What is the purpose of the `explode()` function?
+ A:- The `explode()` function transforms each element of a nested array into a new row.
+ - It helps in flattening nested structures for easier analysis.
+ Example:
+ Dim explodedDf As DataFrame = df.WithColumn("new_column", Explode(df("array_column")))
+
+ Q 17: How do you implement a user-defined function (UDF) in Spark?
+ A:- Create a function and register it using the `udf` method to apply it to DataFrame columns.
+ Example:
+ Dim myUDF As Func(Of String, Integer) = Function(x) x.Length
+ Dim udfRegistered As UserDefinedFunction = Udf(myUDF)
+ Dim transformedDf As DataFrame = df.WithColumn("length", udfRegistered(df("column_name")))
+
+ Q 18: What is the significance of checkpointing in Spark?
+ A:- Checkpointing is used to truncate the lineage of RDDs, saving their state to reliable storage.
+ - It helps in fault tolerance and recovering from failures.
+ Example:
+ spark.SetCheckpointDir("/path/to/checkpoint")
+ rdd.Checkpoint()
+
+ Q 19: How do you run SQL queries on DataFrames?
+ A:- Create a temporary view from the DataFrame and use the `sql` method to execute SQL queries.
+ Example:
+ df.CreateOrReplaceTempView("my_view")
+ Dim resultDf As DataFrame = spark.Sql("SELECT * FROM my_view WHERE age > 30")
+
+ Q 20: What is the difference between `coalesce()` and `repartition()`?
+ A:- `coalesce()` reduces the number of partitions without shuffling, which is more efficient.
+ - `repartition()` can increase or decrease partitions and requires shuffling, which can be costly.
+ Example:
+ Dim coalescedDf As DataFrame = df.Coalesce(5)
+ Dim repartitionedDf As DataFrame = df.Repartition(10)
+
+ Q 21: How do you filter rows based on multiple conditions in Spark?
+ A:- Use the `filter()` method and combine conditions with logical operators.
+ Example:
+ Dim filteredDf As DataFrame = df.Filter((df("age") > 21) And (df("salary") < 50000))
+
+ Q 22: What is the purpose of the `distinct()` method?
+ A:- Removes duplicate rows from a DataFrame.
+ - Useful for ensuring unique data before processing.
+ Example:
+ Dim distinctDf As DataFrame = df.Distinct()
+
+ Q 23: How can you write a DataFrame to a Delta table?
+ A:- Use the `write()` method with `format("delta")` and specify the path.
+ Example:
+ df.Write().Format("delta").Mode("overwrite").Save("/path/to/delta-table")
+
+ Q 24: What is `DataFrame.cache()` and when should you use it?
+ A:- `cache()` stores the DataFrame in memory for quick access.
+ - Use it when you need to perform multiple actions on the same DataFrame to save computation time.
+ Example:
+ df.Cache()
+
+ Q 25: How do you perform aggregations in Spark?
+ A:- Use the `groupBy()` method followed by an aggregate function.
+ Example:
+ Dim aggregatedDf As DataFrame = df.GroupBy("category").Agg(Sum("amount").Alias("total_amount"))
+
+ Q 26: What is the use of the `sample()` method?
+ A:- `sample()` returns a random sample of the DataFrame.
+ - Useful for testing and debugging without processing the entire dataset.
+ Example:
+ Dim sampledDf As DataFrame = df.Sample(0.1)  10% sample
+
+ Q 27: How can you rename a column in a DataFrame?
+ A:- Use the `withColumnRenamed()` method to change the name of a column.
+ Example:
+ Dim renamedDf As DataFrame = df.WithColumnRenamed("oldName", "newName")
+
+ Q 28: What are `DataFrame` partitions?
+ A:- Partitions are subsets of data in a DataFrame distributed across the Spark cluster.
+ - The number of partitions affects parallelism and performance.
+ - Use `repartition()` or `coalesce()` to adjust the number of partitions.
+
+ Q 29: How do you handle data skew in Spark?
+ A:- Techniques include salting keys, increasing parallelism, or using `repartition()` to balance data distribution.
+ - Analyze data distribution to identify skewed keys.
+
+ Q 30: What are `DataFrame` actions and transformations?
+ A:- Actions trigger execution and return results (e.g., `count()`, `collect()`).
+ - Transformations create a new DataFrame from an existing one (e.g., `select()`, `filter()`).
+
+ Q 31: How do you read JSON data into a DataFrame?
+ A:- Use the `spark.Read()` method with the `json` format.
+ Example:
+ Dim jsonDf As DataFrame = spark.Read().Json("/path/to/json-file.json")
+
+ Q 32: How can you drop a column from a DataFrame?
+ A:- Use the `drop()` method to remove a specified column.
+ Example:
+ Dim dfWithoutColumn As DataFrame = df.Drop("column_name")
+
+ Q 33: What is the purpose of the `collect()` method?
+ A:- `collect()` retrieves all elements of the DataFrame to the driver as an array.
+ - Use with caution for large datasets to avoid memory issues.
+ Example:
+ Dim dataArray As Array = df.Collect()
+
+ Q 34: How can you sort a DataFrame by a column?
+ A:- Use the `orderBy()` method to sort the DataFrame by specified columns.
+ Example:
+ Dim sortedDf As DataFrame = df.OrderBy("column_name")
+
+ Q 35: How do you convert a DataFrame to a temporary view?
+ A:- Use the `CreateOrReplaceTempView()` method to register a DataFrame as a temporary view.
+ Example:
+ df.CreateOrReplaceTempView("tempView")
+
+ Q 36: What is the difference between `groupBy()` and `agg()`?
+ A:- `groupBy()` is used to group data based on a column(s).
+ - `agg()` is used to perform aggregation on grouped data.
+ Example:
+ Dim groupedDf As DataFrame = df.GroupBy("category").Agg(Sum("amount").Alias("total"))
+
+ Q 37: How do you save a DataFrame as a Parquet file?
+ A:- Use the `write()` method with `format("parquet")` to save the DataFrame.
+ Example:
+ df.Write().Format("parquet").Save("/path/to/parquet-file")
+
+ Q 38: What is the significance of the `join()` method in Spark?
+ A:- The `join()` method combines two DataFrames based on a key or condition.
+ - It enables relational operations on structured data.
+ Example:
+ Dim joinedDf As DataFrame = df1.Join(df2, "key")
+
+ Q 39: How do you perform a full outer join in Spark?
+ A:- Use the `join()` method with the `full_outer` join type.
+ - It returns all records from both DataFrames, with matching records where available.
+ Example:
+ Dim fullOuterJoinedDf As DataFrame = df1.Join(df2, "key", "full_outer")
+
+ Q 40: How do you create a DataFrame from an RDD?
+ A:- Use the `CreateDataFrame()` method to create a DataFrame from an RDD.
+ Example:
+ Dim rdd As RDD(Of (String, Integer)) = spark.Parallelize(New List(Of (String, Integer)) From {("Alice", 30), ("Bob", 25)})
+ Dim df As DataFrame = spark.CreateDataFrame(rdd, New String() {"name", "age"})
+
+ Q 41: How do you filter out rows in a DataFrame that meet certain criteria?
+ A:- Use the `filter()` or `where()` methods to exclude specific rows.
+ Example:
+ Dim filteredDf As DataFrame = df.Filter(df("age") < 18)
+
+ Q 42: How can you create a DataFrame from a CSV file?
+ A:- Use the `spark.Read()` method with the `csv` format.
+ Example:
+ Dim csvDf As DataFrame = spark.Read().Format("csv").Option("header", "true").Load("/path/to/csv-file.csv")
+
+ Q 43: What is the `lit()` function used for?
+ A:- The `lit()` function creates a column with a constant value.
+ Example:
+ Dim dfWithLiteral As DataFrame = df.WithColumn("constant_column", Lit(1))
+
+ Q 44: How can you remove columns with all null values?
+ A:- Use the `drop()` method along with the condition to filter out such columns.
+ Example:
+ Dim cleanedDf As DataFrame = df.Drop("column_name").Where("column_name IS NOT NULL")
+
+ Q 45: What is the purpose of `foreach()` in Spark?
+ A:- The `foreach()` method is used to perform an action on each element of an RDD or DataFrame.
+ - It does not return a new RDD or DataFrame.
+ Example:
+ df.Foreach(Sub(row) Console.WriteLine(row))
+
+ Q 46: How do you handle categorical variables in Spark?
+ A:- Use `StringIndexer` to convert categorical variables into numerical format.
+ Example:
+ Dim indexer As New StringIndexer().SetInputCol("category").SetOutputCol("category_index")
+ indexer.Fit(df).Transform(df)
+
+ Q 47: What is the purpose of `pivot()` in Spark?
+ A:- The `pivot()` method is used for reshaping data, allowing you to convert unique values from one column into multiple columns.
+ Example:
+ Dim pivotedDf As DataFrame = df.GroupBy("category").Pivot("subcategory").Agg(Sum("sales"))
+
+ Q 48: How can you concatenate two DataFrames in Spark?
+ A:- Use the `union()` method to combine two DataFrames with the same schema.
+ Example:
+ Dim combinedDf As DataFrame = df1.Union(df2)
+
+ Q 49: How do you access a specific column in a DataFrame?
+ A:- Use the DataFrame's column name or the `select()` method to access specific columns.
+ Example:
+ Dim ageDf As DataFrame = df.Select("age")
+
+ Q 50: What is a `Schema` in Spark?
+ A:- A schema defines the structure of a DataFrame, including column names and types.
+ - It can be inferred from data or explicitly defined using `StructType`.
+ Example:
+ Dim schema As StructType = New StructType().Add("name", StringType).Add("age", IntegerType)
+
+ Q 51: How do you create a temporary view in Spark SQL?
+ A:- Use the `CreateOrReplaceTempView()` method to create a view from a DataFrame.
+ Example:
+ df.CreateOrReplaceTempView("temp_view")
+
+ Q 52: How can you change the data type of a column in a DataFrame?
+ A:- Use the `cast()` method to change the data type.
+ Example:
+ Dim modifiedDf As DataFrame = df.WithColumn("age", df("age").Cast("String"))
+
+ Q 53: What is the `distinct()` method used for?
+ A:- Removes duplicate rows from a DataFrame, ensuring that each row is unique.
+ Example:
+ Dim uniqueDf As DataFrame = df.Distinct()
+
+ Q 54: How do you aggregate data using multiple functions?
+ A:- Use the `agg()` method with a dictionary to specify multiple aggregation functions.
+ Example:
+ Dim aggregatedDf As DataFrame = df.GroupBy("category").Agg(New Dictionary(Of String, Column) From {{"total", Sum("amount")}, {"avg", Avg("amount")}})
+
+ Q 55: What is a `Broadcast Variable`?
+ A:- A broadcast variable allows the program to efficiently send a large read-only variable to all worker nodes.
+ Example:
+ Dim broadcastVar As Broadcast(Of DataFrame) = spark.Broadcast(df)
+
+ Q 56: How do you implement error handling in Spark applications?
+ A:- Use `try-catch` blocks to handle exceptions.
+ - Ensure to log errors for debugging.
+ Example:
+ Try
+     Dim result As DataFrame = df.Filter("age > 30")
+ Catch ex As Exception
+     Console.WriteLine("Error: " & ex.Message)
+ End Try
+
+ Q 57: How can you check the schema of a DataFrame?
+ A:- Use the `printSchema()` method to display the schema of the DataFrame.
+ Example:
+ df.PrintSchema()
+
+ Q 58: What is the `foreachPartition()` method?
+ A:- It applies a function to each partition of the DataFrame, allowing for operations at a partition level.
+ Example:
+ df.ForeachPartition(Sub(partition) Console.WriteLine("Processing partition"))
+
+ Q 59: How do you merge two DataFrames?
+ A:- Use the `join()` method to combine DataFrames based on keys or conditions.
+ Example:
+ Dim mergedDf As DataFrame = df1.Join(df2, "key")
+
+ Q 60: What is the `writeStream()` method in Spark Structured Streaming?
+ A:- It is used to write data from a streaming DataFrame to an external storage sink.
+ Example:
+ df.WriteStream().Format("console").OutputMode("append").Start()
+
+ Q 61: How do you perform a cross join in Spark?
+ A:- Use the `crossJoin()` method to create a Cartesian product of two DataFrames.
+ Example:
+ Dim crossJoinedDf As DataFrame = df1.CrossJoin(df2)
+
+ Q 62: What are the different file formats supported by Spark?
+ A:- Supported formats include Parquet, JSON, CSV, Delta, ORC, and more.
+ - Each format has its own advantages for different use cases.
+
+ Q 63: How can you use `count()` to count the number of rows in a DataFrame?
+ A:- Use the `count()` method to get the number of rows.
+ Example:
+ Dim rowCount As Long = df.Count()
+
+ Q 64: How do you read data from a SQL database using Spark?
+ A:- Use the `spark.Read()` method with `jdbc` format.
+ Example:
+ Dim jdbcDf As DataFrame = spark.Read().Format("jdbc").Option("url", "jdbc:mysql://localhost/db").Option("dbtable", "table_name").Load()
+
+ Q 65: What is the purpose of the `df.explain()` method?
+ A:- It provides a detailed execution plan of the DataFrame's transformations.
+ - Useful for debugging and optimizing performance.
+ Example:
+ df.Explain()
+
+ Q 66: How do you drop rows with null values in a DataFrame?
+ A:- Use the `na.drop()` method to remove rows containing null values.
+ Example:
+ Dim nonNullDf As DataFrame = df.Na.Drop()
+
+ Q 67: What is the `sort()` method used for?
+ A:- It sorts the DataFrame based on specified columns.
+ Example:
+ Dim sortedDf As DataFrame = df.Sort("column_name")
+
+ Q 68: How can you create a DataFrame with specific data types?
+ A:- Define a schema using `StructType` and create a DataFrame.
+ Example:
+ Dim schema As StructType = New StructType().Add("name", StringType).Add("age", IntegerType)
+ Dim data As RDD(Of Row) = spark.Parallelize(New List(Of Row) From {RowFactory.Create("Alice", 30), RowFactory.Create("Bob", 25)})
+ Dim df As DataFrame = spark.CreateDataFrame(data, schema)
+
+ Q 69: How do you group data and calculate the average?
+ A:- Use the `groupBy()` and `agg()` methods to calculate averages.
+ Example:
+ Dim avgDf As DataFrame = df.GroupBy("category").Agg(Avg("amount").Alias("average_amount"))
+
+ Q 70: What is the `limit()` method used for in a DataFrame?
+ A:- The `limit()` method restricts the number of rows returned from a DataFrame.
+ Example:
+ Dim limitedDf As DataFrame = df.Limit(10)
+
+ Q 71: How can you write a DataFrame to a Hive table?
+ A:- Use the `write()` method with `format("hive")`.
+ Example:
+ df.Write().Format("hive").SaveAsTable("hive_table_name")
+
+ Q 72: What is the purpose of `UDF` in Spark?
+ A:- User Defined Functions (UDFs) allow you to extend Spark SQL with custom functions.
+ - They enable more complex transformations on DataFrame columns.
+ Example:
+ Dim myUDF As Func(Of String, String) = Function(s) s.ToUpper()
+ spark.Udf.Register("toUpperCase", myUDF)
+
+ Q 73: How do you set configurations in a Spark session?
+ A:- Use the `config()` method to set properties for the Spark session.
+ Example:
+ Dim spark As SparkSession = SparkSession.Builder().AppName("MyApp").Config("spark.some.config.option", "config_value").GetOrCreate()
+
+ Q 74: How do you save a DataFrame as a JSON file?
+ A:- Use the `write()` method with the `json` format.
+ Example:
+ df.Write().Format("json").Save("/path/to/json-output")
+
+ Q 75: What is the `joinType` parameter in the `join()` method?
+ A:- It specifies the type of join to be performed (inner, outer, left, right, etc.).
+ Example:
+ Dim joinedDf As DataFrame = df1.Join(df2, "key", "inner")
+
+ Q 76: How can you filter DataFrame rows using SQL syntax?
+ A:- Use the `sql()` method to execute SQL queries on registered views.
+ Example:
+ Dim resultDf As DataFrame = spark.Sql("SELECT * FROM temp_view WHERE age > 30")
+
+ Q 77: What is the purpose of the `unionAll()` method?
+ A:- Combines two DataFrames including duplicates.
+ - Use `union()` for distinct rows.
+ Example:
+ Dim combinedDf As DataFrame = df1.UnionAll(df2)
+
+ Q 78: How can you get the first row of a DataFrame?
+ A:- Use the `first()` method to retrieve the first row.
+ Example:
+ Dim firstRow As Row = df.First()
+
+ Q 79: How do you use `when` and `otherwise` in Spark?
+ A:- These methods allow conditional column creation based on specified conditions.
+ Example:
+ Dim updatedDf As DataFrame = df.WithColumn("status", When(df("age") >= 18, "Adult").Otherwise("Minor"))
+
+ Q 80: What is the significance of the `repartition()` method?
+ A:- It reshuffles the data across partitions to optimize processing.
+ - Useful for balancing the load across nodes.
+ Example:
+ Dim repartitionedDf As DataFrame = df.Repartition(10)
+
+ Q 81: How can you check for duplicate rows in a DataFrame?
+ A:- Use the `groupBy()` along with `count()` to identify duplicates.
+ Example:
+ Dim duplicateDf As DataFrame = df.GroupBy("column_name").Agg(Count("*").Alias("count")).Filter("count > 1")
+
+ Q 82: What is the `na.fill()` method used for?
+ A:- It fills null values in a DataFrame with specified values.
+ Example:
+ Dim filledDf As DataFrame = df.Na.Fill(New Dictionary(Of String, Object) From {{"column_name", 0}})
+
+ Q 83: How can you get the maximum value of a column?
+ A:- Use the `agg()` method with `max()`.
+ Example:
+ Dim maxDf As DataFrame = df.Agg(Max("salary").Alias("max_salary"))
+
+ Q 84: How do you create a new DataFrame by filtering existing DataFrame?
+ A:- Use the `filter()` method to create a new DataFrame based on conditions.
+ Example:
+ Dim filteredDf As DataFrame = df.Filter(df("age") > 21)
+
+ Q 85: What is the `reduceByKey()` method in RDD?
+ A:- It combines values with the same key using a specified function.
+ Example:
+ Dim rdd As RDD(Of (String, Integer)) = spark.Parallelize(New List(Of (String, Integer)) From {("a", 1), ("b", 1), ("a", 2)})
+ Dim reducedRdd As RDD(Of (String, Integer)) = rdd.ReduceByKey(Function(a, b) a + b)
+
+ Q 86: How do you convert a DataFrame to an RDD?
+ A:- Use the `rdd` property to convert a DataFrame into an RDD.
+ Example:
+ Dim rddFromDf As RDD(Of Row) = df.Rdd
+
+ Q 87: What is the purpose of `aggregate()` in RDD?
+ A:- It aggregates the elements of an RDD using a specified function, allowing for custom aggregations.
+ Example:
+ Dim sum As Integer = rdd.Aggregate(0, Function(acc, value) acc + value)
+
+ Q 88: How can you handle missing data in Spark?
+ A:- Use methods like `na.drop()`, `na.fill()`, or `na.replace()` to manage missing values.
+ Example:
+ Dim cleanedDf As DataFrame = df.Na.Drop()
+
+ Q 89: What is a `DataFrame` in Spark?
+ A:- A DataFrame is a distributed collection of data organized into named columns.
+ - It is similar to a table in a relational database.
+
+ Q 90: How can you optimize a Spark job?
+ A:- Techniques include caching DataFrames, using efficient file formats (e.g., Parquet), and tuning the number of partitions.
+ - Profiling and analyzing the execution plan can also help identify bottlenecks.
+
+ Q 91: How do you create a new column in a DataFrame?
+ A:- Use the `withColumn()` method to add a new column.
+ Example:
+ Dim dfWithNewColumn As DataFrame = df.WithColumn("new_column", Lit(10))
+
+ Q 92: What is the significance of the `explode()` method?
+ A:- The `explode()` method creates a new row for each element in an array column, effectively flattening the data.
+ Example:
+ Dim explodedDf As DataFrame = df.WithColumn("exploded_column", Explode(df("array_column")))
+
+ Q 93: How do you create a DataFrame with random data?
+ A:- Use the `rand()` function to generate random values for the DataFrame.
+ Example:
+ Dim randomDf As DataFrame = spark.Range(0, 100).Select("id").WithColumn("random_value", Rand())
+
+ Q 94: How can you perform string operations on DataFrame columns?
+ A:- Use functions like `substring()`, `length()`, or `concat()` to manipulate string columns.
+ Example:
+ Dim modifiedDf As DataFrame = df.WithColumn("first_name", Substring(df("full_name"), 1, 5))
+
+ Q 95: How do you use `toDF()` to rename columns?
+ A:- The `toDF()` method can be used to rename all columns in the DataFrame.
+ Example:
+ Dim renamedDf As DataFrame = df.ToDF("new_col1", "new_col2")
+
+ Q 96: What is the `countDistinct()` function?
+ A:- It counts the number of distinct values in a column.
+ Example:
+ Dim distinctCount As Long = df.Select(CountDistinct("column_name")).First()(0)
+
+ Q 97: How can you perform window operations in Spark?
+ A:- Use `Window` functions to define partitions and ordering for aggregate calculations.
+ Example:
+ Dim windowSpec As WindowSpec = Window.PartitionBy("category").OrderBy("amount")
+ Dim rankedDf As DataFrame = df.WithColumn("rank", Rank().Over(windowSpec))
+
+ Q 98: How do you check if a DataFrame is empty?
+ A:- Use the `isEmpty()` method to check if a DataFrame has no rows.
+ Example:
+ Dim isEmpty As Boolean = df.IsEmpty()
+
+ Q 99: What is a `Delta Lake`?
+ A:- Delta Lake is a storage layer that provides ACID transactions and scalable metadata handling on Apache Spark.
+ - It enables reliable data lakes with features like versioning and schema enforcement.
+
+ Q 100: How can you read data from a text file in Spark?
+ A:- Use the `spark.Read().Text()` method to read a text file into a DataFrame.
+ Example:
+ Dim textDf As DataFrame = spark.Read().Text("/path/to/text-file.txt")
