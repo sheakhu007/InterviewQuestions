@@ -1,0 +1,317 @@
+# 1. What is AWS?
+# - Amazon Web Services (AWS) is a comprehensive cloud platform that offers a wide range of services including computing power, storage, databases, and machine learning, delivered on-demand.
+
+# 2. Name the core services offered by AWS.
+# - Compute (EC2, Lambda)
+# - Storage (S3, EBS, Glacier)
+# - Databases (RDS, DynamoDB, Redshift)
+# - Networking (VPC, Route 53)
+# - Analytics (Athena, EMR, Kinesis)
+
+# 3. What is EC2 in AWS?
+# - EC2 (Elastic Compute Cloud) provides scalable virtual servers (instances) in the cloud to run applications.
+
+# 4. What is an AWS region?
+# - A region is a physical location around the world where AWS data centers are clustered.
+
+# 5. What is an availability zone in AWS?
+# - An availability zone (AZ) is one or more isolated data centers within a region, designed for fault tolerance.
+
+# 6. What is S3?
+# - Amazon S3 (Simple Storage Service) is a scalable object storage service for storing and retrieving any amount of data.
+
+# 7. How does Amazon S3 store data?
+# - Data is stored as objects in buckets, which can be accessed using unique keys.
+
+# 8. What are S3 storage classes?
+# - Different pricing and performance tiers for storing data (Standard, Intelligent-Tiering, Glacier, etc.).
+
+# 9. Explain the difference between S3 Standard and S3 Glacier.
+# - S3 Standard: Frequently accessed data with low latency.
+# - S3 Glacier: Archival storage for long-term, infrequently accessed data.
+
+# 10. What is an IAM (Identity and Access Management) role?
+# - IAM roles define a set of permissions for users or services to access AWS resources securely.
+
+# 11. What is AWS Lambda?
+# - AWS Lambda is a serverless compute service that automatically runs code in response to events, without managing servers.
+
+# 12. How does Lambda pricing work?
+# - Pricing is based on the number of requests and the duration of code execution.
+
+# 13. What is an AWS security group?
+# - A security group acts as a virtual firewall for EC2 instances to control inbound and outbound traffic.
+
+# 14. How do you define a VPC (Virtual Private Cloud) in AWS?
+# - A VPC is a logically isolated network that you define in the AWS cloud, where you can launch AWS resources.
+
+# 15. What is AWS Elastic Load Balancing (ELB)?
+# - ELB automatically distributes incoming traffic across multiple EC2 instances to ensure higher availability.
+
+# 16. What is AWS RDS?
+# - Amazon RDS (Relational Database Service) is a managed database service that supports multiple database engines (MySQL, PostgreSQL, etc.).
+
+# 17. What databases are supported by AWS RDS?
+# - MySQL, PostgreSQL, Oracle, SQL Server, MariaDB, and Amazon Aurora.
+
+# 18. What is Amazon DynamoDB?
+# - DynamoDB is a fully managed NoSQL database service that provides fast and flexible scalability.
+
+# 19. What is the difference between DynamoDB and RDS?
+# - DynamoDB: NoSQL, key-value store with horizontal scaling.
+# - RDS: SQL-based relational databases with vertical scaling.
+
+# 20. What is AWS CloudFormation?
+# - CloudFormation allows users to define and provision AWS infrastructure using code in templates.
+
+# 21. Explain Auto Scaling in AWS.
+# - Auto Scaling automatically adjusts the number of EC2 instances based on demand to maintain performance and minimize costs.
+
+# 22. What is an EC2 instance?
+# - An EC2 instance is a virtual server in AWS, which can run applications in a cloud environment.
+
+# 23. How do you secure an EC2 instance?
+# - Use security groups, configure IAM roles, disable unused ports, and enable SSH key-based access.
+
+# 24. What are the pricing models for EC2?
+# - On-Demand, Reserved Instances, Spot Instances, and Dedicated Hosts.
+
+# 25. What is Amazon EBS (Elastic Block Store)?
+# - EBS provides persistent block storage for EC2 instances, which can be scaled and attached to different instances.
+
+# 26. What is the difference between EBS and S3?
+# - EBS: Block storage for EC2 instances, suitable for databases and file systems.
+# - S3: Object storage for storing files, images, backups, and archives.
+
+# 27. What is an Elastic IP in AWS?
+# - An Elastic IP is a static, public IPv4 address that you can associate with an EC2 instance.
+
+# 28. What is AWS CloudWatch?
+# - CloudWatch monitors AWS resources and applications, providing insights through logs and metrics.
+
+# 29. What is the function of AWS CloudTrail?
+# - CloudTrail records all API calls made to AWS services for auditing and security analysis.
+
+# 30. Explain AWS Elastic Beanstalk.
+# - Elastic Beanstalk is a platform-as-a-service (PaaS) that automates deployment and scaling of web applications and services.
+
+# 31. What is the difference between Elastic Beanstalk and CloudFormation?
+# - Elastic Beanstalk: Managed service for app deployment with less control.
+# - CloudFormation: Infrastructure as code for complete control over resources.
+
+# 32. What are reserved instances in AWS?
+# - Reserved instances offer discounted pricing in exchange for committing to using EC2 for a fixed period (1 or 3 years).
+
+# 33. What is AWS Route 53?
+# - Route 53 is a scalable DNS (Domain Name System) web service for routing traffic to AWS services.
+
+# 34. What are the use cases for Amazon Route 53?
+# - Domain registration, DNS routing, traffic flow management, and health checks.
+
+# 35. How is Amazon Athena different from Amazon Redshift?
+# - Athena: Serverless query service for analyzing S3 data using SQL.
+# - Redshift: Managed data warehouse for complex queries and analytics.
+
+# 36. What is the difference between a Public and a Private subnet?
+# - Public subnet: Accessible from the internet.
+# - Private subnet: Not accessible from the internet, typically used for backend services.
+
+# 37. Explain AWS Direct Connect.
+# - Direct Connect provides a dedicated network connection between on-premises infrastructure and AWS, bypassing the internet.
+
+# 38. What is AWS SQS?
+# - Simple Queue Service (SQS) is a fully managed message queuing service for decoupling and scaling microservices.
+
+# 39. What is the difference between SQS and SNS?
+# - SQS: Message queuing service for point-to-point communication.
+# - SNS: Publish/subscribe messaging service for broadcasting messages to multiple subscribers.
+
+# 40. What are the types of EC2 instances?
+# - General Purpose (t2, m5)
+# - Compute Optimized (c5, c6g)
+# - Memory Optimized (r5, x1e)
+# - Storage Optimized (i3, d2)
+
+# 41. What is AWS EFS (Elastic File System)?
+# - EFS provides scalable, fully managed file storage for use with EC2 instances.
+
+# 42. How does AWS pricing work?
+# - Pay-as-you-go pricing model, with different rates for compute, storage, and data transfer based on usage.
+
+# 43. What is Amazon Kinesis?
+# - Kinesis is a platform for real-time processing of streaming data at scale, including Kinesis Streams, Firehose, and Analytics.
+
+# 44. What is a Kinesis Data Stream?
+# - A Kinesis Data Stream captures and processes real-time data streams for analytics and reporting.
+
+# 45. What is a CloudFormation stack?
+# - A stack is a collection of AWS resources defined in a CloudFormation template that can be managed as a single unit.
+
+# 46. What is Amazon Glue?
+# - AWS Glue is a managed ETL (Extract, Transform, Load) service for preparing and transforming data for analytics.
+
+# 47. What is a Glue crawler?
+# - A Glue crawler automatically discovers data schemas in your data source and creates metadata in the Glue Data Catalog.
+
+# 48. What is AWS QuickSight?
+# - QuickSight is a cloud-powered business intelligence (BI) service for data visualization and interactive dashboards.
+
+# 49. How is CloudWatch different from CloudTrail?
+# - CloudWatch: Monitoring service for resources and applications.
+# - CloudTrail: Logging service for recording API calls and user activities.
+
+# 50. What is the AWS CLI?
+# - AWS CLI (Command Line Interface) is a tool that allows users to interact with AWS services using command-line commands.
+
+# 50. What is Amazon Aurora?
+# - Amazon Aurora is a fully managed, MySQL and PostgreSQL-compatible relational database engine designed for performance and availability.
+
+# 51. What is Amazon EMR?
+# - Amazon EMR is a cloud platform that provides managed clusters for processing big data using open-source tools like Hadoop, Spark, and HBase.
+
+# 52. What is AWS Snowball?
+# - AWS Snowball is a service that provides physical devices to transfer large amounts of data into and out of AWS, bypassing the internet.
+
+# 53. What is AWS Trusted Advisor?
+# - AWS Trusted Advisor provides real-time recommendations to help you follow AWS best practices in terms of security, cost optimization, fault tolerance, and performance.
+
+# 54. What is AWS CodeDeploy?
+# - AWS CodeDeploy is a service that automates the deployment of applications to Amazon EC2, AWS Lambda, and on-premises servers.
+
+# 55. What is Amazon Kinesis Firehose?
+# - Amazon Kinesis Data Firehose is a service for real-time data streaming that allows you to capture, transform, and deliver streaming data to destinations like Amazon S3, Redshift, and Elasticsearch.
+
+# 56. What is AWS Lambda@Edge?
+# - AWS Lambda@Edge allows you to run AWS Lambda functions at AWS edge locations worldwide, enabling low-latency response for global users.
+
+# 57. What is Amazon ElastiCache?
+# - Amazon ElastiCache is a managed service that makes it easy to deploy, operate, and scale in-memory data stores such as Redis or Memcached.
+
+# 58. How does Amazon RDS Multi-AZ work?
+# - Amazon RDS Multi-AZ automatically replicates your data to a standby instance in another Availability Zone to provide enhanced availability and failover support.
+
+# 59. What is AWS Cloud9?
+# - AWS Cloud9 is a cloud-based integrated development environment (IDE) that allows you to write, run, and debug code with a browser.
+
+# 60. What is Amazon WorkSpaces?
+# - Amazon WorkSpaces is a fully managed Desktop-as-a-Service (DaaS) solution that enables the provision of virtual, cloud-based desktops.
+
+# 61. What is Amazon Lex?
+# - Amazon Lex is a service for building conversational interfaces such as chatbots using automatic speech recognition (ASR) and natural language understanding (NLU).
+
+# 62. What is Amazon Polly?
+# - Amazon Polly is a text-to-speech service that converts text into lifelike speech using advanced deep learning techniques.
+
+# 63. What is AWS X-Ray?
+# - AWS X-Ray is a service that helps developers analyze and debug distributed applications by tracing requests as they move through the components of an application.
+
+# 64. What is Amazon Pinpoint?
+# - Amazon Pinpoint is a service for engaging users by sending targeted messages via channels like email, SMS, push notifications, and voice.
+
+# 65. What is AWS CodePipeline?
+# - AWS CodePipeline is a fully managed continuous integration and delivery service that helps automate the build, test, and deployment phases of your application.
+
+# 66. What is Amazon Macie?
+# - Amazon Macie is a security service that uses machine learning to discover, classify, and protect sensitive data in AWS.
+
+# 67. What is AWS Fargate?
+# - AWS Fargate is a serverless compute engine for containers that eliminates the need to manage servers when running containers with Amazon ECS or EKS.
+
+# 68. What is the AWS Well-Architected Framework?
+# - The AWS Well-Architected Framework provides a set of best practices to help you design and operate reliable, secure, efficient, and cost-effective systems in the cloud.
+
+# 69. What are DynamoDB Streams?
+# - DynamoDB Streams capture changes to items in a DynamoDB table and enable applications to respond to these changes by triggering events.
+
+# 70. How does AWS Lambda pricing work?
+# - AWS Lambda pricing is based on the number of requests and the compute time used (measured in GB-seconds), and there is a free tier for limited use.
+
+# 71. How does Amazon S3 Transfer Acceleration work?
+# - Amazon S3 Transfer Acceleration speeds up file uploads by routing data through Amazon CloudFront edge locations, reducing latency for users farther from an S3 bucket.
+
+# 72. What is the AWS Free Tier?
+# - The AWS Free Tier allows you to use AWS services for free up to a certain limit for 12 months after you sign up, helping you explore AWS without incurring costs.
+
+# 73. What is Amazon VPC peering?
+# - Amazon VPC peering allows you to connect two VPCs so that they can communicate privately without using the public internet.
+
+# 74. What is an Elastic IP?
+# - An Elastic IP is a static, public IPv4 address that can be associated with an instance in an AWS account, allowing it to remain reachable after stopping and restarting the instance.
+
+# 75. What is an AWS Availability Zone (AZ)?
+# - An AWS Availability Zone is a distinct, isolated location within an AWS Region that is designed for fault tolerance, offering high availability.
+
+# 76. What is Amazon Lightsail?
+# - Amazon Lightsail is a simplified cloud platform that provides pre-configured virtual private servers for quick and easy deployment of applications.
+
+# 77. What is Amazon Cognito?
+# - Amazon Cognito is a service that helps you manage user authentication, authorization, and user data for web and mobile applications.
+
+# 78. What is AWS Shield?
+# - AWS Shield is a managed Distributed Denial of Service (DDoS) protection service that helps safeguard applications running on AWS.
+
+# 79. What is Amazon Inspector?
+# - Amazon Inspector is an automated security assessment service that helps improve the security of your applications by identifying vulnerabilities and deviations from best practices.
+
+# 80. What is the AWS Marketplace?
+# - The AWS Marketplace is an online store that allows you to find, buy, and deploy third-party software and services that run on AWS.
+
+# 81. What is an EC2 Reserved Instance?
+# - EC2 Reserved Instances allow you to reserve Amazon EC2 capacity in advance, reducing costs compared to on-demand instances for a 1 or 3-year term.
+
+# 82. What is AWS Artifact?
+# - AWS Artifact is a portal that provides access to AWS security and compliance reports and allows you to review compliance information for AWS services.
+
+# 83. What is AWS Trusted Advisor?
+# - AWS Trusted Advisor offers real-time best practices and recommendations in areas like cost optimization, performance, security, and fault tolerance to help optimize your AWS usage.
+
+# 84. What are AWS Service Limits?
+# - AWS service limits are default limits on AWS resources that can be increased by submitting a request through the AWS Management Console.
+
+# 85. What is AWS CloudHSM?
+# - AWS CloudHSM is a managed service that provides hardware security modules (HSMs) to help you meet compliance and regulatory requirements for data encryption.
+
+# 86. What is AWS PrivateLink?
+# - AWS PrivateLink allows you to securely access services hosted on AWS using private IP addresses within your VPC, without exposing traffic to the public internet.
+
+# 87. What is AWS Config?
+# - AWS Config is a service that tracks configuration changes in AWS resources, providing you with a history of configuration changes and enabling compliance auditing.
+
+# 88. What is Amazon Route 53?
+# - Amazon Route 53 is a scalable Domain Name System (DNS) web service that helps you register domains, route traffic, and check the health of your resources.
+
+# 89. What is AWS CloudFront?
+# - AWS CloudFront is a content delivery network (CDN) service that delivers web content and media to users globally with low latency by caching copies at edge locations.
+
+# 90. What is AWS Service Catalog?
+# - AWS Service Catalog enables organizations to create and manage catalogs of approved IT services, ensuring compliance and governance when deploying AWS resources.
+
+# 91. What is AWS Global Accelerator?
+# - AWS Global Accelerator improves the availability and performance of applications by directing traffic through the optimal AWS edge location based on network conditions.
+
+# 92. What is Amazon EC2 Auto Scaling?
+# - Amazon EC2 Auto Scaling automatically adjusts the number of EC2 instances based on demand to ensure consistent application performance while minimizing costs.
+
+# 93. What is AWS Batch?
+# - AWS Batch is a service that enables the running of batch computing workloads across AWS resources, automatically provisioning the required compute capacity.
+
+# 94. What is AWS Secrets Manager?
+# - AWS Secrets Manager helps you securely manage, rotate, and retrieve database credentials, API keys, and other secrets without hardcoding them in your applications.
+
+# 95. What is Amazon MQ?
+# - Amazon MQ is a managed message broker service that enables you to set up and operate message brokers like Apache ActiveMQ and RabbitMQ for communication between applications.
+
+# 96. What is AWS Outposts?
+# - AWS Outposts is a service that extends AWS infrastructure, services, and APIs to your on-premises location for hybrid cloud workloads.
+
+# 97. What is AWS Control Tower?
+# - AWS Control Tower provides an easy way to set up and manage multi-account AWS environments following best practices, including governance and compliance policies.
+
+# 98. What is AWS Systems Manager?
+# - AWS Systems Manager is a service that helps manage and automate operational tasks across AWS resources, including instances, by providing monitoring, automation, and patch management tools.
+
+# 99. What are EC2 Spot Instances?
+# - EC2 Spot Instances are unused EC2 capacity that you can purchase at a discounted rate. These instances are ideal for flexible, fault-tolerant workloads.
+
+# 100. What is AWS Organizations?
+# - AWS Organizations allows you to centrally manage billing, governance, and access to multiple AWS accounts within an organization.

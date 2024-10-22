@@ -1,0 +1,299 @@
+# 1. What is the difference between an EC2 instance and an ECS container?
+# - EC2 instances are virtual machines that run on AWS hardware, whereas ECS containers are lightweight, portable units that run applications on EC2 instances or using Fargate.
+
+# 2. How does AWS Elastic Beanstalk differ from AWS Lambda?
+# - Elastic Beanstalk is a Platform-as-a-Service (PaaS) for deploying and managing applications, while Lambda is a serverless compute service that runs code in response to events without managing servers.
+
+# 3. What is Amazon RDS Read Replica?
+# - A read-only copy of the primary RDS database that helps distribute read traffic to improve performance and support high availability.
+
+# 4. How does AWS Athena query data stored in S3?
+# - AWS Athena allows you to run SQL queries directly on data stored in S3, using a serverless model and charging per query or data scanned.
+
+# 5. What is Amazon ECS?
+# - Amazon ECS (Elastic Container Service) is a fully managed container orchestration service for running Docker containers on EC2 instances or using AWS Fargate.
+
+# 6. What is AWS CloudFormation?
+# - AWS CloudFormation automates the process of provisioning AWS resources using templates written in JSON or YAML, enabling infrastructure as code (IaC).
+
+# 7. What is AWS CodeBuild?
+# - AWS CodeBuild is a fully managed build service that compiles code, runs tests, and produces deployable artifacts.
+
+# 8. How does Amazon Redshift handle large-scale data processing?
+# - Amazon Redshift uses Massively Parallel Processing (MPP) to distribute queries across multiple nodes, providing fast query performance on large datasets.
+
+# 9. What are Spot Fleet Requests in EC2?
+# - Spot Fleet allows you to manage and maintain a fleet of Spot Instances, with the ability to specify instance types and allocate capacity based on price and availability.
+
+# 10. What is AWS SQS Long Polling?
+# - Long polling allows Amazon SQS to wait for a message to be available in the queue, reducing the number of empty responses and costs associated with short polling.
+
+# 11. What is the difference between RDS Multi-AZ and Read Replicas?
+# - RDS Multi-AZ is for failover and high availability, while Read Replicas are used to scale read operations by distributing the load across additional databases.
+
+# 12. What is Amazon CloudWatch Logs?
+# - Amazon CloudWatch Logs allows you to monitor, store, and access log data from AWS services, applications, and other systems for real-time visibility.
+
+# 13. How does AWS Elastic Load Balancer (ELB) distribute traffic?
+# - ELB distributes incoming traffic to multiple targets (like EC2 instances) across different availability zones, improving availability and fault tolerance.
+
+# 14. What is Amazon Route 53 Latency-Based Routing?
+# - Latency-based routing directs user requests to the region with the lowest network latency to improve response times for global users.
+
+# 15. What is AWS Step Functions?
+# - AWS Step Functions orchestrates microservices and tasks using visual workflows, making it easier to coordinate distributed applications and track states.
+
+# 16. How does Amazon Kinesis Data Streams handle real-time data?
+# - Kinesis Data Streams captures and processes large streams of real-time data with applications such as analytics, log processing, and machine learning.
+
+# 17. What is the difference between EBS and EFS?
+# - EBS (Elastic Block Store) provides block storage for EC2 instances, while EFS (Elastic File System) offers shared, scalable file storage accessible from multiple instances.
+
+# 18. What is the purpose of Elastic Network Interfaces (ENIs)?
+# - ENIs provide additional network interfaces that can be attached to EC2 instances, enabling multiple IP addresses, security groups, and network configurations.
+
+# 19. How does AWS Auto Scaling determine when to scale resources?
+# - AWS Auto Scaling uses predefined scaling policies based on metrics such as CPU utilization, memory usage, and custom CloudWatch alarms to adjust the number of instances.
+
+# 20. What is AWS DMS?
+# - AWS Database Migration Service (DMS) helps migrate databases to AWS securely with minimal downtime, supporting homogeneous and heterogeneous migrations.
+
+# 21. What is Amazon Redshift Spectrum?
+# - Redshift Spectrum allows you to query data stored in S3 without having to load it into Redshift, enabling a more flexible, cost-efficient data lake architecture.
+
+# 22. How does Amazon Cognito secure user authentication?
+# - Cognito provides user sign-up, sign-in, and access control with multi-factor authentication, token-based authentication, and integration with external identity providers.
+
+# 23. What is the purpose of Amazon API Gateway throttling?
+# - Throttling in API Gateway limits the number of requests that clients can make to your API, helping to protect backend services from being overwhelmed.
+
+# 24. How does AWS Glue work for ETL?
+# - AWS Glue is a fully managed ETL (Extract, Transform, Load) service that automatically discovers data, generates transformation scripts, and manages dependencies.
+
+# 25. What is Amazon EC2 Placement Groups?
+# - Placement Groups are logical groupings of EC2 instances designed to ensure low-latency network communication, either through clustering or spreading instances across hardware.
+
+# 26. What is Amazon S3 Intelligent-Tiering?
+# - S3 Intelligent-Tiering automatically moves objects between two access tiers (frequent and infrequent) based on changing access patterns to optimize costs.
+
+# 27. How does AWS Transit Gateway work?
+# - AWS Transit Gateway acts as a hub for connecting VPCs, on-premises networks, and AWS accounts, simplifying network management and reducing the need for complex peering connections.
+
+# 28. What is Amazon EventBridge?
+# - Amazon EventBridge is a serverless event bus service that connects applications using events, enabling real-time data sharing between AWS services and external applications.
+
+# 29. What is AWS Cost Explorer?
+# - AWS Cost Explorer provides tools to analyze AWS usage patterns, track costs, and create forecasts, helping organizations manage cloud spending.
+
+# 30. What is Amazon Lightsail Load Balancer?
+# - The Lightsail Load Balancer distributes incoming traffic to multiple Lightsail instances to ensure high availability and fault tolerance for applications.
+
+# 31. What is Amazon Inspector used for?
+# - Amazon Inspector is an automated security assessment service that analyzes AWS resources for vulnerabilities, including network exposure and deviations from best practices.
+
+# 32. What is the difference between AWS Batch and AWS Lambda?
+# - AWS Batch is for running large-scale, batch processing jobs, while AWS Lambda is for event-driven, short-duration functions that scale automatically.
+
+# 33. How does Amazon Elastic File System (EFS) scale?
+# - EFS automatically scales as files are added or removed, offering virtually unlimited storage with performance that adjusts based on workload.
+
+# 34. What is AWS Systems Manager Parameter Store?
+# - Parameter Store provides secure storage for configuration data and secrets, allowing you to easily reference them in your applications.
+
+# 35. What is AWS Elastic Beanstalk Multi-Docker?
+# - Elastic Beanstalk Multi-Docker allows you to deploy multiple Docker containers on the same EC2 instance, managed by Elastic Beanstalk.
+
+# 36. How does Amazon RDS handle automated backups?
+# - RDS automatically takes backups of your database during a defined backup window, retaining them for a specified period and enabling point-in-time recovery.
+
+# 37. What is AWS Direct Connect?
+# - AWS Direct Connect establishes a dedicated network connection between your on-premises data center and AWS, providing consistent and low-latency bandwidth.
+
+# 38. What is AWS CloudFront Regional Edge Cache?
+# - Regional Edge Caches are used to cache content that does not frequently change and is not cached in global edge locations, reducing the latency of data requests.
+
+# 39. How does AWS App Mesh improve microservice communication?
+# - AWS App Mesh provides service mesh capabilities, managing service-to-service communication and visibility for microservices by abstracting the networking layer.
+
+# 40. What is Amazon WorkSpaces Gateway?
+# - Amazon WorkSpaces Gateway enables browser-based access to WorkSpaces, allowing users to connect to their virtual desktops without installing additional software.
+
+# 41. What is AWS EBS Multi-Attach?
+# - EBS Multi-Attach allows multiple EC2 instances to simultaneously access an EBS volume, providing shared block storage across instances.
+
+# 42. What is AWS Glue Data Catalog?
+# - The Glue Data Catalog is a metadata repository that stores information about data sources, tables, and schemas, making it easier to organize and query data across various sources.
+
+# 43. How does Amazon Elasticsearch Service handle scaling?
+# - Amazon Elasticsearch Service allows you to scale your cluster by adding or removing nodes, automatically adjusting based on data volume and query workload.
+
+# 44. What is AWS Lambda Cold Start?
+# - A cold start occurs when a new Lambda function is invoked after a period of inactivity, causing some delay as the function's runtime environment is initialized.
+
+# 45. How does Amazon S3 Cross-Region Replication work?
+# - Cross-Region Replication automatically replicates objects in an S3 bucket to another bucket in a different AWS region for disaster recovery and compliance.
+
+# 46. What is AWS Service Catalog?
+# - AWS Service Catalog enables organizations to create, manage, and deploy approved AWS services to maintain governance and compliance over resources.
+
+# 47. How does AWS Transit VPC architecture work?
+# - AWS Transit VPC architecture connects multiple VPCs through a central VPC that contains a virtual router, facilitating traffic management and routing between networks.
+
+# 48. What is Amazon SageMaker?
+# - Amazon SageMaker is a fully managed service that provides tools for building, training, and deploying machine learning models at scale.
+
+# 49. What is the purpose of AWS CloudTrail?
+# - AWS CloudTrail records API calls made on your account, providing logs for security analysis, resource change tracking, and compliance auditing.
+
+# 50. How does AWS Elastic Load Balancer (ELB) support HTTPS?
+# - ELB supports HTTPS by terminating SSL/TLS connections at the load balancer, allowing it to handle secure traffic and forward requests to backend instances.
+
+# 51. What is the difference between AWS Secrets Manager and AWS Parameter Store?
+# - AWS Secrets Manager is designed for managing sensitive information like API keys and passwords with automatic rotation, while Parameter Store stores configuration data, both sensitive and non-sensitive.
+
+# 52. How does AWS CodeDeploy deploy applications?
+# - AWS CodeDeploy automates application deployments across EC2 instances, on-premises servers, or Lambda functions by using deployment configurations and deployment groups.
+
+# 53. What is Amazon Kinesis Data Analytics?
+# - Amazon Kinesis Data Analytics allows you to process and analyze streaming data in real-time using standard SQL queries.
+
+# 54. What is the purpose of AWS Data Pipeline?
+# - AWS Data Pipeline is a web service that helps you automate data movement and transformation tasks between different AWS services, facilitating data workflows.
+
+# 55. How does Amazon S3 Object Lock work?
+# - Amazon S3 Object Lock allows you to enforce retention policies on objects, preventing them from being deleted or overwritten for a specified period.
+
+# 56. What is AWS Resource Access Manager (RAM)?
+# - AWS RAM enables you to share AWS resources across accounts and organizations, simplifying resource management and reducing duplication.
+
+# 57. How does AWS Global Accelerator improve application performance?
+# - AWS Global Accelerator improves application performance by directing user traffic to the nearest healthy endpoint based on latency and availability.
+
+# 58. What is AWS Budgets?
+# - AWS Budgets helps you set custom cost and usage budgets, sending alerts when your usage exceeds the specified thresholds.
+
+# 59. What is the purpose of AWS Firewall Manager?
+# - AWS Firewall Manager simplifies management of firewall rules across accounts and resources, ensuring consistent security policy enforcement.
+
+# 60. How does Amazon RDS support multi-region deployments?
+# - Amazon RDS supports multi-region deployments through cross-region read replicas and multi-region failover for high availability and disaster recovery.
+
+# 61. What is Amazon QuickSight?
+# - Amazon QuickSight is a business intelligence service that allows you to create interactive dashboards and visualizations from various data sources.
+
+# 62. How does AWS IAM manage permissions?
+# - AWS IAM manages permissions using policies that define what actions are allowed or denied on AWS resources, allowing for fine-grained access control.
+
+# 63. What is Amazon FSx?
+# - Amazon FSx is a fully managed file storage service that provides file systems optimized for specific use cases, such as Windows File Server and Lustre.
+
+# 64. What is AWS CloudFormation StackSet?
+# - AWS CloudFormation StackSet enables you to create, update, or delete stacks across multiple AWS accounts and regions from a single template.
+
+# 65. How does Amazon S3 Select work?
+# - Amazon S3 Select allows you to retrieve a subset of data from within an object, improving performance and reducing costs by retrieving only the necessary data.
+
+# 66. What is the AWS Management Console?
+# - The AWS Management Console is a web-based interface for managing AWS services, allowing users to access, configure, and monitor resources in their account.
+
+# 67. What is Amazon Rekognition?
+# - Amazon Rekognition is a service that uses machine learning to analyze images and videos for facial recognition, object detection, and scene analysis.
+
+# 68. What is Amazon RDS Proxy?
+# - Amazon RDS Proxy is a fully managed, serverless database proxy for RDS that improves application scalability and availability by managing database connections.
+
+# 69. How does AWS CodePipeline integrate with other AWS services?
+# - AWS CodePipeline integrates with AWS services like CodeCommit, CodeBuild, and CodeDeploy to automate the software release process, providing a continuous integration and delivery pipeline.
+
+# 70. What is AWS Secrets Manager's automatic rotation feature?
+# - The automatic rotation feature in AWS Secrets Manager allows you to periodically rotate secrets, such as database credentials, without downtime.
+
+# 71. How does Amazon CloudFront cache content?
+# - Amazon CloudFront caches content at edge locations based on cache behavior settings, such as time-to-live (TTL) and cache keys, improving content delivery speed.
+
+# 72. What is AWS OpsWorks?
+# - AWS OpsWorks is a configuration management service that uses Chef and Puppet to automate server configuration, deployment, and management.
+
+# 73. How does AWS DataSync work?
+# - AWS DataSync automates data transfer between on-premises storage and AWS storage services, such as S3 and EFS, using a secure, optimized connection.
+
+# 74. What is the difference between Amazon S3 Standard and S3 Infrequent Access?
+# - S3 Standard is designed for frequently accessed data with low latency, while S3 Infrequent Access is for less frequently accessed data, offering lower storage costs but higher retrieval fees.
+
+# 75. What is the AWS Well-Architected Tool?
+# - The AWS Well-Architected Tool helps you review your cloud architectures against AWS best practices, providing recommendations for improving your workloads.
+
+# 76. What is the purpose of Amazon Chime?
+# - Amazon Chime is a communications service that allows users to conduct online meetings, video conferencing, and chat, enabling collaboration in real-time.
+
+# 77. How does AWS CloudTrail support compliance?
+# - AWS CloudTrail supports compliance by providing detailed logs of all API calls made on your account, which can be used for auditing and governance purposes.
+
+# 78. What is Amazon Polly's use case?
+# - Amazon Polly converts text into lifelike speech, enabling applications such as voice-activated devices, audiobooks, and accessibility features for users.
+
+# 79. What is the purpose of AWS Step Functions' state machines?
+# - AWS Step Functions uses state machines to define workflows that coordinate microservices and tasks, managing the state and transitions of the application flow.
+
+# 80. How does Amazon EMR integrate with other AWS services?
+# - Amazon EMR integrates with AWS services like S3 for data storage, Redshift for data warehousing, and CloudWatch for monitoring and logging.
+
+# 81. What is Amazon VPC Flow Logs?
+# - VPC Flow Logs capture information about the IP traffic going to and from network interfaces in your VPC, providing insights for security and troubleshooting.
+
+# 82. How does Amazon SES handle email sending?
+# - Amazon Simple Email Service (SES) allows you to send bulk emails and transactional messages with high deliverability, including features for monitoring and feedback.
+
+# 83. What is AWS Backup?
+# - AWS Backup is a centralized backup service that automates and centrally manages backups across AWS services, ensuring compliance and data protection.
+
+# 84. How does Amazon Athena charge for queries?
+# - Amazon Athena charges based on the amount of data scanned by queries, encouraging users to optimize their queries and data formats for cost efficiency.
+
+# 85. What is the purpose of AWS Control Tower?
+# - AWS Control Tower provides a way to set up and govern a secure, multi-account AWS environment based on best practices, helping organizations manage AWS accounts.
+
+# 86. How does AWS CloudTrail log data?
+# - AWS CloudTrail logs data by recording AWS API calls made by or on behalf of an AWS account, capturing details such as the identity of the caller and the time of the request.
+
+# 87. What is AWS Snow Family?
+# - AWS Snow Family consists of services like Snowcone, Snowball, and Snowmobile, designed for physically transferring large amounts of data into and out of AWS.
+
+# 88. How does Amazon Route 53 support DNS failover?
+# - Amazon Route 53 can monitor the health of resources and automatically redirect traffic to healthy endpoints when a failure is detected, ensuring high availability.
+
+# 89. What is the purpose of AWS Elastic MapReduce (EMR)?
+# - AWS EMR is designed for processing and analyzing large amounts of data using distributed processing frameworks like Apache Hadoop and Spark.
+
+# 90. How does AWS WAF protect web applications?
+# - AWS WAF (Web Application Firewall) protects web applications by allowing you to create rules that filter and monitor HTTP requests based on specific conditions.
+
+# 91. What is the AWS Shared Responsibility Model?
+# - The AWS Shared Responsibility Model defines the security responsibilities of AWS (security of the cloud) and customers (security in the cloud) to ensure data protection.
+
+# 92. How does AWS CloudFormation handle changes to resources?
+# - AWS CloudFormation uses change sets to outline the changes to be made when updating stacks, allowing users to preview changes before applying them.
+
+# 93. What is AWS Well-Architected Framework?
+# - The AWS Well-Architected Framework provides best practices and guidelines to help cloud architects build secure, high-performing, resilient, and efficient infrastructure for applications.
+
+# 94. How does AWS Data Pipeline work with AWS Glue?
+# - AWS Data Pipeline can integrate with AWS Glue to automate data transformations and loading processes, allowing for more complex data workflows.
+
+# 95. What is AWS Snowball Edge?
+# - AWS Snowball Edge is a data transfer appliance with onboard storage and computing capabilities, enabling data processing at the edge before transferring it to AWS.
+
+# 96. How does Amazon EKS manage Kubernetes clusters?
+# - Amazon EKS (Elastic Kubernetes Service) is a managed service that simplifies deploying, managing, and scaling Kubernetes applications using AWS infrastructure.
+
+# 97. What is AWS Systems Manager Automation?
+# - AWS Systems Manager Automation enables you to create and manage automation runbooks for operational tasks, streamlining processes and reducing manual effort.
+
+# 98. How does AWS Shield protect applications?
+# - AWS Shield provides DDoS (Distributed Denial of Service) protection for applications, with two tiers: Standard for automatic protection and Advanced for more complex needs.
+
+# 99. What is the role of AWS CodeCommit?
+# - AWS CodeCommit is a fully managed source control service that enables teams to host secure Git repositories for version control of code and collaboration.
+
+# 100. How does Amazon WorkDocs support collaboration?
+# - Amazon WorkDocs provides a secure document storage and collaboration platform that allows teams to create, share, and edit documents in real time, enhancing productivity.
