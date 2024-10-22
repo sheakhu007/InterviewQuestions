@@ -1,0 +1,13 @@
+1. What is the Differnece between Data Lake and Delta Lake?
+
+# Data Lake:
+# - A data lake is a centralized repository that allows you to store all your structured and unstructured data at any scale.
+# - Data is stored in its raw form without requiring a predefined schema, making it easy to ingest large volumes of data quickly.
+# - It is designed for large-scale analytics and data exploration but may lack support for ACID transactions, which can lead to data consistency issues.
+# - Common storage formats include Parquet, Avro, or JSON, which can lead to complexities in managing data quality and performance over time.
+
+# Delta Lake:
+# - Delta Lake is an open-source storage layer that adds reliability to data lakes by providing ACID transaction support, schema enforcement, and time travel capabilities.
+# - It operates on top of existing data lakes, typically built on platforms like Apache Spark, allowing you to manage your data lake more effectively.
+# - Delta Lake improves data reliability and quality through features like upserts (update + insert), which help maintain data consistency and support streaming and batch processing.
+# - It allows for versioned data, making it easy to perform audits, rollbacks, or access historical data at specific points in time.
