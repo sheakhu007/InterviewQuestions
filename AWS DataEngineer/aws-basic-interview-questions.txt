@@ -1,5 +1,6 @@
 # 1. What is AWS?
-# - Amazon Web Services (AWS) is a comprehensive cloud platform that offers a wide range of services including computing power, storage, databases, and machine learning, delivered on-demand.
+# - Amazon Web Services (AWS) is a comprehensive cloud platform that offers a wide range of services including computing power,
+storage, databases, and machine learning, delivered on-demand.
 
 # 2. Name the core services offered by AWS.
 # - Compute (EC2, Lambda)
@@ -179,7 +180,8 @@
 # - AWS CodeDeploy is a service that automates the deployment of applications to Amazon EC2, AWS Lambda, and on-premises servers.
 
 # 55. What is Amazon Kinesis Firehose?
-# - Amazon Kinesis Data Firehose is a service for real-time data streaming that allows you to capture, transform, and deliver streaming data to destinations like Amazon S3, Redshift, and Elasticsearch.
+# - Amazon Kinesis Data Firehose is a service for real-time data streaming that allows you to capture, transform, and deliver streaming data to destinations like Amazon S3, 
+Redshift, and Elasticsearch.
 
 # 56. What is AWS Lambda@Edge?
 # - AWS Lambda@Edge allows you to run AWS Lambda functions at AWS edge locations worldwide, enabling low-latency response for global users.
@@ -308,7 +310,8 @@
 # - AWS Control Tower provides an easy way to set up and manage multi-account AWS environments following best practices, including governance and compliance policies.
 
 # 98. What is AWS Systems Manager?
-# - AWS Systems Manager is a service that helps manage and automate operational tasks across AWS resources, including instances, by providing monitoring, automation, and patch management tools.
+# - AWS Systems Manager is a service that helps manage and automate operational tasks across AWS resources, including instances, by providing monitoring, automation, 
+and patch management tools.
 
 # 99. What are EC2 Spot Instances?
 # - EC2 Spot Instances are unused EC2 capacity that you can purchase at a discounted rate. These instances are ideal for flexible, fault-tolerant workloads.
