@@ -11,3 +11,42 @@
 # - It operates on top of existing data lakes, typically built on platforms like Apache Spark, allowing you to manage your data lake more effectively.
 # - Delta Lake improves data reliability and quality through features like upserts (update + insert), which help maintain data consistency and support streaming and batch processing.
 # - It allows for versioned data, making it easy to perform audits, rollbacks, or access historical data at specific points in time.
+
+
+Solve using pysaprk and Solve using SQL:
+
+"""
+Given a DataFrame with sales data containing columns for
+ product_id, store_id, and sales_amount, write a PySpark
+   code to calculate the total sales per product, 
+   but only include stores where the total sales exceeded $10,000.
+"""
+
+#Filter the stores having sales greater then 10000
+
+filtered_table = sales.gropupBy('store_id')['sales_amount'].sum().alias('sales_stores')
+required_stores = filtered_table.filer(col('sales_stores') > 10000).select('store_id')
+required_sales = sales.join(required_stores, on = ['store_id'], how = 'inner')
+amount_per_product = required_sales.groupby('product_id').avg('sales_amount').alias('avg_amount_per')
+
+
+"""
+WITH cte as(
+    SELECT 
+    SUM(sales_amount) as total_sum,
+    store_id
+    FROM Sales_Table
+    GROUP BY store_id having SUM(sales_amount) > 10000
+),
+cte2 as(
+SELECT 
+    s.product_id,
+    sum(c.total_sum) as avg_price
+FROM sales as p
+INNER JOIN cte as c 
+ON p.store_id = c.store_id
+GROUP BY s.product_id
+)
+SELECT * FROM cte2
+
+"""
