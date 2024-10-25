@@ -1,0 +1,163 @@
+"""
+1. What is Snowflake?
+   Snowflake is a cloud-based data warehouse that allows storage, processing, and analysis of large volumes of data.
+
+2. What are the key features of Snowflake?
+   - Scalable architecture
+   - Multi-cluster warehousing
+   - Cloud-based
+   - Supports structured and semi-structured data
+   - Automatic optimization
+
+3. What is the architecture of Snowflake?
+   Snowflake has a three-tier architecture consisting of the storage layer, compute layer, and services layer.
+
+4. How does Snowflake store data?
+   Data is stored in a compressed and optimized columnar format.
+
+5. What are virtual warehouses in Snowflake?
+   Virtual warehouses are clusters of compute resources in Snowflake used to perform operations on data.
+
+6. What type of databases does Snowflake support?
+   Snowflake supports relational databases with support for structured and semi-structured data (JSON, Parquet, Avro).
+
+7. How does Snowflake handle security?
+   Snowflake supports end-to-end encryption, multi-factor authentication (MFA), and role-based access control (RBAC).
+
+8. What is a Snowflake schema?
+   A Snowflake schema is a logical arrangement of data in which a central fact table is connected to dimension tables.
+
+9. What is the difference between Snowflake and traditional databases?
+   Snowflake separates compute and storage, supports automatic scaling, and operates in the cloud.
+
+10. Can you use SQL in Snowflake?
+    Yes, Snowflake supports ANSI SQL for querying data.
+
+11. What is Time Travel in Snowflake?
+    Time Travel allows users to access historical data within a defined retention period (up to 90 days).
+
+12. What is cloning in Snowflake?
+    Cloning allows creating a copy of a database, schema, or table without duplicating the data.
+
+13. What is a Snowflake stage?
+    A stage is an object in Snowflake used to load and unload data from external sources.
+
+14. What is Snowpipe?
+    Snowpipe is Snowflake's continuous data ingestion service that allows real-time loading of data.
+
+15. How do you scale resources in Snowflake?
+    Scaling in Snowflake is done automatically with the virtual warehouse concept by adjusting the size and number of nodes.
+
+16. What are micro-partitions in Snowflake?
+    Micro-partitions are small storage units that Snowflake uses to divide data for faster access and processing.
+
+17. What is zero-copy cloning in Snowflake?
+    Zero-copy cloning allows you to create a copy of a table, schema, or database without replicating the physical data.
+
+18. How does Snowflake support semi-structured data?
+    Snowflake supports semi-structured data formats like JSON, Avro, ORC, and Parquet through its VARIANT data type.
+
+19. What are the different types of Snowflake stages?
+    - Internal stage: Snowflake-managed storage
+    - External stage: AWS S3, Azure Blob, Google Cloud Storage
+
+20. What is the purpose of a Snowflake warehouse?
+    A Snowflake warehouse is a compute resource that executes SQL queries and performs other data operations.
+
+21. How do you monitor query performance in Snowflake?
+    You can monitor query performance using the Query History view and the Query Profiler.
+
+22. What is Snowflake's Multi-Cluster Warehouse feature?
+    Multi-Cluster Warehouses automatically scale up or down depending on the workload.
+
+23. How does Snowflake optimize query performance?
+    Snowflake optimizes queries using micro-partitioning, pruning, caching, and automatic query optimization.
+
+24. What is the maximum size of a Snowflake table?
+    Snowflake tables can theoretically store petabytes of data, but practical limits depend on account and resource limits.
+
+25. What is materialized view in Snowflake?
+    A materialized view is a precomputed, stored query result that improves performance for frequently queried data.
+
+26. How do you secure data in Snowflake?
+    Data in Snowflake is secured with encryption, access controls, and network policies.
+
+27. What are tasks in Snowflake?
+    Tasks allow you to automate SQL queries or stored procedures at a scheduled time or interval.
+
+28. What is fail-safe in Snowflake?
+    Fail-safe is a 7-day period beyond Time Travel, where Snowflake can recover data in extreme cases (e.g., system failure).
+
+29. What are the advantages of using Snowflake over other data warehouses?
+    - Separation of compute and storage
+    - Auto-scaling
+    - Cloud-native
+    - Support for structured and semi-structured data
+
+30. How is Snowflake billed?
+    Snowflake is billed based on compute usage (credits) and data storage.
+
+31. What is Snowflake caching?
+    Snowflake uses different types of caching (e.g., result cache, metadata cache) to speed up query execution.
+
+32. What is the maximum retention period for Time Travel in Snowflake?
+    The maximum retention period is 90 days.
+
+33. What is a secure view in Snowflake?
+    A secure view restricts users from viewing the underlying query logic, providing additional data protection.
+
+34. What are shares in Snowflake?
+    Shares allow users to share data securely with other Snowflake accounts without moving or copying data.
+
+35. How does Snowflake ensure high availability?
+    Snowflake ensures high availability through cloud infrastructure and redundancy across regions.
+
+36. What is Snowflake’s native support for cloud platforms?
+    Snowflake natively supports AWS, Azure, and Google Cloud Platform.
+
+37. How does Snowflake handle concurrency?
+    Snowflake handles concurrency using its Multi-Cluster Warehouses and architecture that separates compute from storage.
+
+38. What is a stream in Snowflake?
+    A stream is a change-tracking mechanism for tables that captures modifications (INSERTs, UPDATEs, DELETEs).
+
+39. How do you load data into Snowflake?
+    Data can be loaded into Snowflake via:
+    - Bulk load (COPY INTO command)
+    - Continuous loading (Snowpipe)
+    - Data integration tools
+
+40. What are Snowflake Roles?
+    Roles control access to objects (tables, views, etc.) in Snowflake and help in role-based access control (RBAC).
+
+41. How do you handle data governance in Snowflake?
+    Snowflake provides governance features such as access control, auditing, and Time Travel to manage and protect data.
+
+42. What is the Snowflake Marketplace?
+    Snowflake Marketplace is a platform where users can share and acquire datasets from third-party providers.
+
+43. What is a UDF (User-Defined Function) in Snowflake?
+    A UDF allows users to define custom functions in SQL, Python, or JavaScript to extend Snowflake's functionality.
+
+44. Can you execute Python code in Snowflake?
+    Yes, with Snowflake’s Snowpark, users can execute Python code within Snowflake.
+
+45. What is Snowflake's data sharing feature?
+    Data sharing allows Snowflake customers to share data across accounts without replication or data movement.
+
+46. How do you unload data from Snowflake?
+    You can unload data using the COPY INTO command to export data to an external stage like AWS S3.
+
+47. What are Snowflake tags?
+    Tags are metadata you can attach to Snowflake objects to help with governance and categorization.
+
+48. What is the Snowflake Information Schema?
+    It is a set of system views that provide metadata about databases, schemas, tables, and other objects in Snowflake.
+
+49. How does Snowflake manage data recovery?
+    Snowflake uses features like Time Travel and Fail-safe for data recovery.
+
+50. What is an external table in Snowflake?
+    An external table references data stored outside Snowflake, such as in AWS S3, allowing it to be queried as if it were internal.
+"""
+# This is part 1, and I can provide more questions and answers if needed.
