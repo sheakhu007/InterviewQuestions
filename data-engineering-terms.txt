@@ -1,0 +1,88 @@
+"""
+1. What is Data Engineering?
+   Data Engineering involves designing, building, and maintaining the infrastructure and tools needed for collecting, storing, and processing large amounts of data. It focuses on creating data pipelines and systems to enable data analysis.
+   Example: Building ETL pipelines to move data from transactional databases to a data warehouse.
+
+2. Data Engineering Lifecycle
+   The data engineering lifecycle consists of several stages:
+   - Data Collection: Gathering raw data from various sources.
+   - Data Storage: Storing the collected data in databases or data lakes.
+   - Data Processing: Cleaning, transforming, and aggregating the data.
+   - Data Access: Enabling data analysts and data scientists to query and analyze the data.
+   - Monitoring & Maintenance: Ensuring data systems remain efficient and up-to-date.
+
+3. Data Generation & Storage
+   Data generation refers to the creation of data from various sources, such as IoT devices, web applications, and databases. Data storage refers to the systems used to store this data.
+   Example: Storing web traffic logs in a distributed file system like HDFS or a cloud service like AWS S3.
+
+4. DBMS System
+   A Database Management System (DBMS) is software used to create, retrieve, update, and manage data in a structured way. Common DBMS types include relational (SQL) and non-relational (NoSQL) systems.
+   Example: MySQL, PostgreSQL (relational), MongoDB (non-relational).
+
+5. Data Modelling
+   Data modeling involves creating a conceptual representation of data and its relationships. It is used to design database structures.
+   Example: An entity-relationship (ER) diagram showing customers, orders, and products in an e-commerce system.
+
+6. NoSQL Databases
+   NoSQL databases are non-relational databases that support structured, semi-structured, or unstructured data. They provide scalability and flexibility for handling large amounts of diverse data.
+   Example: MongoDB for document storage, Cassandra for wide-column storage.
+
+7. SQL vs NoSQL
+   - SQL databases are relational and use structured query language (SQL) for querying data. They are schema-based and are ACID-compliant.
+   - NoSQL databases are non-relational, schema-less, and support horizontal scaling.
+   Example: SQL (MySQL, PostgreSQL) vs NoSQL (MongoDB, Redis).
+
+8. OLAP vs OLTP
+   - OLAP (Online Analytical Processing): Designed for complex queries and data analysis, OLAP systems support large datasets and multidimensional queries.
+     Example: Data warehouse queries for business intelligence (BI) reporting.
+   - OLTP (Online Transaction Processing): Designed for fast, real-time transaction processing with many short queries and updates.
+     Example: Banking systems where accounts are frequently updated.
+
+9. Extract Transform Load (ETL)
+   ETL refers to the process of extracting data from various sources, transforming it into a suitable format, and loading it into a data warehouse or other storage systems.
+   Example: Extracting sales data from multiple databases, cleaning and aggregating the data, then loading it into a centralized data warehouse.
+
+10. Data Architecture
+    Data architecture refers to the framework and set of principles used to manage data, including its flow, storage, and processing within an organization.
+    Example: A company's data architecture might involve multiple layers like operational databases, a data lake, and a data warehouse for analytics.
+
+11. Data Warehouse
+    A data warehouse is a centralized repository used for storing large volumes of structured data, optimized for reporting and analysis.
+    Example: Amazon Redshift, Google BigQuery.
+
+12. Dimension Modelling
+    Dimensional modeling is a design technique used in data warehouses to structure data in fact and dimension tables for easier querying.
+    Example: A star schema where the fact table contains sales data and dimension tables hold data for customers, products, and time.
+
+13. Slowly Changing Dimensions (SCD)
+    Slowly Changing Dimensions refer to data attributes that change over time, requiring tracking of changes in dimension tables.
+    Example: A customer’s address may change, and SCD Type 2 stores historical addresses with a start and end date.
+
+14. Data Marts
+    A data mart is a subset of a data warehouse focused on a specific business area or department, providing specialized data for analysis.
+    Example: A sales data mart that contains only sales-related data from the data warehouse.
+
+15. Data Lake
+    A data lake is a large repository that stores structured, semi-structured, and unstructured data at any scale, usually in its raw format.
+    Example: An organization’s data lake storing social media feeds, sensor data, and transaction records.
+
+16. Data Lake vs Data Warehouse
+    - Data Lake: Stores raw, unstructured or semi-structured data. Suitable for big data, machine learning, and data exploration.
+    - Data Warehouse: Stores processed, structured data optimized for querying and reporting.
+    Example: A data lake might hold raw log files, while a data warehouse holds aggregated sales reports.
+
+17. Big Data
+    Big Data refers to extremely large datasets that are too complex to be processed by traditional data processing applications. It is characterized by high volume, velocity, and variety (3Vs).
+    Example: Data from social media platforms, sensor networks, and real-time financial transactions.
+
+18. Azure Data Services
+    Azure Data Services are a suite of cloud services from Microsoft Azure that offer solutions for data storage, analytics, and machine learning.
+    Example: Azure SQL Database, Azure Data Lake Storage, Azure Synapse Analytics.
+
+19. Real-world Case Study Architecture on Azure
+    Example: A retail company builds a data architecture on Azure using Azure Data Lake for raw data storage, Azure Data Factory for ETL processes, and Azure Synapse Analytics for data warehousing and reporting, with Power BI for visualization.
+
+20. Data Bricks
+    Databricks is an Apache Spark-based analytics platform that integrates with cloud services like Azure and AWS. It provides a collaborative environment for data engineering, machine learning, and data analytics.
+    Example: Using Databricks to run big data processing jobs on Spark in an Azure-based architecture.
+"""
