@@ -1,0 +1,491 @@
+# Basic Questions (1-35)
+
+# 1. What is Snowflake, and how does it differ from traditional databases?
+# Snowflake is a cloud-based data warehouse offering separate storage and compute, 
+# high scalability, and support for structured and semi-structured data. Traditional
+# databases often require scaling both together, unlike Snowflake's flexible model.
+
+# 2. Explain the Snowflake architecture. What are the three main layers?
+# Snowflake has a 3-layer architecture:
+# - Database Storage: stores data in optimized, compressed format.
+# - Query Processing: executes queries using virtual warehouses (compute).
+# - Cloud Services: handles authentication, metadata, and transactions.
+
+# 3. What are virtual warehouses in Snowflake?
+# Virtual warehouses are compute resources in Snowflake, used for processing queries
+# and performing operations. These can be scaled and run independently.
+
+# 4. How does Snowflake handle data storage?
+# Snowflake stores data in a columnar format within its cloud infrastructure, using 
+# micro-partitions and optimized for compression and query speed.
+
+# 5. What is the role of compute resources in Snowflake?
+# Compute resources, or virtual warehouses, are responsible for executing queries, 
+# data loading, and transformations.
+
+# 6. Define “separation of storage and compute” in Snowflake. Why is it important?
+# In Snowflake, storage and compute are separate, allowing for independent scaling.
+# This means storage costs and compute costs are billed independently.
+
+# 7. How is data loaded into Snowflake?
+# Data can be loaded using:
+# - COPY INTO command.
+# - Snowflake connectors (e.g., Snowflake Connector for Python).
+# - Third-party tools (e.g., Apache Kafka, AWS S3).
+# Example:
+# ```sql
+# COPY INTO my_table FROM @my_stage/file.csv FILE_FORMAT = (TYPE = 'CSV');
+# ```
+
+# 8. What file formats does Snowflake support for data loading?
+# Snowflake supports formats such as CSV, JSON, Parquet, Avro, ORC, and XML.
+
+# 9. How does Snowflake store semi-structured data?
+# Semi-structured data is stored in a VARIANT column type, allowing JSON, XML, and 
+# other formats to be stored and queried directly.
+# Example:
+# ```sql
+# CREATE TABLE my_table (id INT, data VARIANT);
+# ```
+
+# 10. What is a Snowflake “stage”?
+# A stage is a location to store files temporarily for loading into or unloading 
+# from Snowflake. Types: Internal (within Snowflake), External (e.g., AWS S3).
+
+# 11. How would you create an internal stage in Snowflake?
+# ```sql
+# CREATE STAGE my_stage;
+# ```
+
+# 12. Describe the different types of tables available in Snowflake.
+# - Permanent: regular storage, with data retention.
+# - Temporary: exists only for the session.
+# - Transient: no Fail-safe storage; useful for cost reduction.
+
+# 13. What is the “TIMESTAMP” data type in Snowflake?
+# TIMESTAMP is used for date and time data, with variations for timezone.
+# Example: TIMESTAMP_NTZ (no timezone), TIMESTAMP_TZ (with timezone).
+
+# 14. How does Snowflake handle transactions?
+# Snowflake supports ACID transactions. Commands like BEGIN, COMMIT, and ROLLBACK 
+# manage them.
+
+# 15. Explain the concept of “cloning” in Snowflake.
+# Cloning creates a new table/view/database as a snapshot of the existing data 
+# without copying data, saving storage space.
+
+# 16. How is data sharing managed in Snowflake?
+# Data sharing allows direct data access between Snowflake accounts without copying. 
+# Access is controlled by providers.
+
+# 17. Describe zero-copy cloning and its benefits.
+# Zero-copy cloning is creating a clone of a dataset without actual data duplication.
+# It saves on storage and costs.
+
+# 18. What is a “Snowflake schema”?
+# A snowflake schema is a normalized data structure, branching out from central 
+# fact tables to dimension tables.
+
+# 19. How can you create a schema in Snowflake?
+# ```sql
+# CREATE SCHEMA my_schema;
+# ```
+
+# 20. What are the main functions of Snowflake’s SQL dialect?
+# Snowflake SQL includes standard SQL functions plus semi-structured data support, 
+# regex, and analytical functions.
+
+# 21. Explain what Time Travel is in Snowflake.
+# Time Travel allows querying historical data within a specified period (up to 90 days).
+
+# 22. How does Snowflake’s data retention policy work?
+# Snowflake's policy allows setting data retention (up to 90 days) for Time Travel. 
+# Longer retention incurs higher storage costs.
+
+# 23. What is the maximum duration for Time Travel in Snowflake?
+# The maximum duration is 90 days.
+
+# 24. Describe the basic Snowflake billing model.
+# Snowflake bills storage and compute separately. Storage is charged per TB/month,
+# and compute by the second or hour.
+
+# 25. How are virtual warehouses charged in Snowflake?
+# Virtual warehouses are charged based on size and runtime (per second).
+
+# 26. What is multi-cluster warehousing?
+# It allows virtual warehouses to scale dynamically across multiple clusters, 
+# maintaining performance during high concurrency.
+
+# 27. Explain how Snowflake’s elasticity affects resource usage.
+# Elasticity allows warehouses to scale up or down automatically, adjusting resources 
+# without impacting performance.
+
+# 28. What are micro-partitions in Snowflake?
+# Micro-partitions are Snowflake's internal storage units, holding data in compressed, 
+# columnar format for efficient storage and retrieval.
+
+# 29. How is data organized within micro-partitions?
+# Data is organized based on sorted values, enabling efficient pruning and compression.
+
+# 30. Explain the purpose of result caching in Snowflake.
+# Result caching stores query results temporarily, reducing processing time for 
+# repeated queries.
+
+# 31. What types of caching are available in Snowflake?
+# - Result Cache: Stores final query results.
+# - Metadata Cache: Speeds up access to table metadata.
+# - Data Cache: Stores data locally for repeated use.
+
+# 32. How does metadata caching work in Snowflake?
+# Metadata caching stores schema and object information to speed up query planning.
+
+# 33. What is the role of Snowflake’s query optimizer?
+# The query optimizer determines the most efficient way to access data for a query, 
+# minimizing compute and data access.
+
+# 34. How is data backed up in Snowflake?
+# Data is protected by automatic replication and Fail-safe retention for additional 
+# disaster recovery.
+
+# 35. What is the Snowflake Data Marketplace?
+# The marketplace is a platform for sharing data with other Snowflake customers, 
+# enabling access to datasets across domains.
+
+
+# Intermediate Questions (36-70)
+
+# 36. Describe the process of loading JSON data into Snowflake.
+# - JSON data can be loaded by creating a VARIANT column and using the COPY INTO command.
+# Example:
+# ```sql
+# CREATE TABLE my_table (id INT, data VARIANT);
+# COPY INTO my_table FROM @my_stage/json_file.json FILE_FORMAT = (TYPE = 'JSON');
+# ```
+
+# 37. What are Snowflake’s data-sharing capabilities?
+# Snowflake allows data sharing between accounts with no data copying. Shared data 
+# is accessed directly, supporting secure and live data access.
+
+# 38. How do you configure data sharing between accounts in Snowflake?
+# - A provider creates a share and grants access to specific objects.
+# - A consumer uses the share via a reader account or their Snowflake account.
+# Example:
+# ```sql
+# CREATE SHARE my_share;
+# GRANT SELECT ON TABLE my_table TO SHARE my_share;
+# ```
+
+# 39. Explain the process of managing and monitoring Snowflake warehouses.
+# Use the `SHOW WAREHOUSES` command to view status, size, and usage. Scaling and 
+# resizing can be done with ALTER commands. Monitoring tools provide insights on 
+# credit usage and query performance.
+
+# 40. How does Snowflake enforce data security and access control?
+# Snowflake uses roles, privileges, and policies. Access control can be done on 
+# multiple levels, and permissions are managed using role-based access control (RBAC).
+
+# 41. Explain how row-level security can be implemented in Snowflake.
+# Row-level security is managed through secure views or by using conditional logic 
+# in queries to restrict data access based on user roles or attributes.
+
+# 42. Describe the use of roles and privileges in Snowflake.
+# Roles are used to assign specific permissions (SELECT, INSERT, etc.) to users. 
+# Each role has its own privileges, allowing granular access control.
+
+# 43. How do you handle user authentication in Snowflake?
+# Snowflake supports multiple authentication methods:
+# - Username/Password
+# - Multi-Factor Authentication (MFA)
+# - SSO/SAML integration
+# - OAuth tokens for app integrations
+
+# 44. What is the difference between external and internal stages in Snowflake?
+# - Internal stages: Located in Snowflake; examples include user, table, and 
+#   named stages.
+# - External stages: Located outside Snowflake, e.g., Amazon S3 or Microsoft Azure.
+
+# 45. How does Snowflake integrate with external cloud storage providers?
+# Snowflake can connect to AWS S3, Azure Blob Storage, and Google Cloud Storage for 
+# data loading and unloading. The integration is managed through external stages.
+
+# 46. What is Secure Data Sharing in Snowflake?
+# Secure Data Sharing allows sharing data without replication. Providers can share 
+# specific objects with consumers securely.
+
+# 47. Explain how to set up a data pipeline in Snowflake.
+# Use stages, streams, and tasks to load, transform, and process data.
+# Example:
+# ```sql
+# CREATE TASK my_task
+# SCHEDULE = '1 MINUTE'
+# AS
+# MERGE INTO target_table USING source_table
+# ON target_table.id = source_table.id;
+# ```
+
+# 48. How would you perform ETL in Snowflake?
+# ETL can be done using:
+# - COPY INTO for data extraction.
+# - SQL transformations.
+# - MERGE or INSERT statements for loading transformed data.
+
+# 49. Describe Snowflake’s integration with Python and SQL.
+# Snowflake provides a Python Connector and Snowpark (a Python library) for data 
+# processing. SQL is used for querying data in the warehouse.
+
+# 50. Explain the COPY command in Snowflake.
+# The COPY command loads data from an external file or stage into a table in 
+# Snowflake.
+# Example:
+# ```sql
+# COPY INTO my_table FROM @my_stage FILE_FORMAT = (TYPE = 'CSV');
+# ```
+
+# 51. What are tasks in Snowflake, and how are they used?
+# Tasks enable scheduling and automating SQL queries in Snowflake, such as data 
+# loading, transformation, and maintenance.
+
+# 52. How does Snowflake handle scheduled queries?
+# Scheduled queries are managed through tasks, which can be configured with cron 
+# schedules or time intervals.
+
+# 53. Describe the role of streams in Snowflake.
+# Streams track data changes (insertions, updates, deletions) in a table. Streams 
+# are often used with tasks for real-time data processing.
+
+# 54. How are stream offsets managed in Snowflake?
+# Stream offsets mark processed rows. By default, streams track the last read 
+# position to prevent data from being processed multiple times.
+
+# 55. What are materialized views in Snowflake?
+# Materialized views store precomputed results, allowing faster access to frequently 
+# queried data. They are automatically refreshed by Snowflake.
+
+# 56. How does Snowflake optimize materialized views?
+# Snowflake optimizes materialized views by refreshing only the affected partitions, 
+# reducing compute cost and update time.
+
+# 57. What is the purpose of clustering keys?
+# Clustering keys improve query performance by specifying a sort order for data, 
+# improving partition pruning.
+
+# 58. Describe the Snowflake approach to automatic clustering.
+# Snowflake automatically reclusters data based on usage patterns, optimizing data 
+# organization for efficient querying.
+
+# 59. What is the advantage of manually setting clustering keys?
+# Manual clustering keys provide more control over partitioning, potentially 
+# improving query performance on high-volume datasets.
+
+# 60. How does Snowflake handle duplicate data?
+# Snowflake does not automatically handle duplicates. De-duplication can be 
+# performed using DISTINCT or deduplication queries.
+
+# 61. Explain the process of deduplication in Snowflake.
+# Use the ROW_NUMBER() window function to identify and remove duplicates:
+# ```sql
+# DELETE FROM my_table WHERE id NOT IN (
+#   SELECT id FROM (
+#     SELECT id, ROW_NUMBER() OVER (PARTITION BY id ORDER BY created_at DESC) AS row_num
+#     FROM my_table
+#   ) WHERE row_num = 1
+# );
+# ```
+
+# 62. How can you optimize storage costs in Snowflake?
+# Use features like micro-partitioning, data compression, and Time Travel retention 
+# settings to reduce storage costs.
+
+# 63. What are the benefits of partition pruning in Snowflake?
+# Partition pruning improves query performance by limiting the data scanned to 
+# relevant partitions, reducing compute usage.
+
+# 64. Describe the concepts of scaling up vs. scaling out in Snowflake.
+# - Scaling up: Increasing the size of a virtual warehouse (compute power).
+# - Scaling out: Using multiple warehouses to handle high concurrency.
+
+# 65. How would you manage resource contention in Snowflake?
+# Use multi-cluster warehouses, monitor concurrency levels, and optimize queries to 
+# balance workload distribution.
+
+# 66. What is a network policy in Snowflake, and how is it used?
+# A network policy restricts access to Snowflake via allowed IP addresses, 
+# adding a layer of security for user access.
+
+# 67. Explain the integration of Snowflake with BI tools like Tableau.
+# Snowflake integrates with BI tools via connectors (JDBC/ODBC), allowing direct 
+# access to Snowflake tables for data visualization.
+
+# 68. What role does Snowflake play in the ETL vs. ELT debate?
+# Snowflake supports both ETL (extract, transform, load) and ELT (extract, load, 
+# transform) processes, allowing flexibility in data workflows.
+
+# 69. How does Snowflake’s data sharing compare to other databases?
+# Snowflake allows real-time, zero-copy data sharing, which is unique. Other 
+# databases may require exporting and importing data, adding delay and complexity.
+
+# 70. What is semi-structured data processing in Snowflake?
+# Snowflake can handle semi-structured data (JSON, XML, etc.) using VARIANT types 
+# and querying directly with SQL.
+# Example:
+# ```sql
+# SELECT data:id::INT, data:details.name::STRING FROM my_table WHERE data:status = 'active';
+# ```
+
+# Advanced Questions (71-100)
+
+# 71. How does Snowflake handle complex queries with joins across large tables?
+# Snowflake optimizes joins with efficient use of distributed compute and micro-partitioning.
+# Query performance is enhanced by leveraging pruning, caching, and optimization of join order.
+
+# 72. Describe how to use window functions in Snowflake.
+# Window functions operate over a specified range within a dataset, enabling calculations like 
+# running totals or ranking.
+# Example:
+# ```sql
+# SELECT id, amount, SUM(amount) OVER (PARTITION BY category ORDER BY date) AS running_total
+# FROM sales_data;
+# ```
+
+# 73. Explain the use of ARRAY data types in Snowflake.
+# Arrays store ordered collections of data, useful for handling complex and semi-structured 
+# data.
+# Example:
+# ```sql
+# SELECT ARRAYSIZE(ARRAY_CONSTRUCT(1, 2, 3)) AS array_length;
+# ```
+
+# 74. How would you implement a Slowly Changing Dimension (SCD) in Snowflake?
+# Use Type 1 for updates (overwrite data) or Type 2 for historical tracking (add new rows).
+# Example:
+# ```sql
+# INSERT INTO dim_table (id, attribute, start_date, end_date)
+# SELECT id, attribute, CURRENT_DATE, NULL
+# FROM new_data;
+# ```
+
+# 75. Describe Snowflake’s approach to handling time zones in data.
+# Snowflake provides TIMESTAMP_TZ data types, allowing for timezone awareness.
+# Example:
+# ```sql
+# SELECT CURRENT_TIMESTAMP AT TIME ZONE 'America/New_York';
+# ```
+
+# 76. How would you handle schema evolution in Snowflake?
+# Use ALTER TABLE commands to modify schemas. Snowflake allows flexible handling 
+# of new columns and data types without impacting existing queries.
+
+# 77. What is data masking in Snowflake?
+# Data masking allows hiding sensitive data based on role-based policies using masking 
+# policies.
+# Example:
+# ```sql
+# CREATE MASKING POLICY ssn_mask AS (val STRING) RETURNS STRING ->
+# CASE WHEN current_role() IN ('ROLE_SECURE') THEN val ELSE 'XXX-XX-XXXX' END;
+# ```
+
+# 78. Explain the process of setting up network policies for secure data access in Snowflake.
+# Network policies restrict access to specific IP addresses or ranges.
+# Example:
+# ```sql
+# CREATE NETWORK POLICY restrict_ip_policy
+# ALLOWED_IP_LIST = ('192.168.1.1/32', '10.0.0.1/32');
+# ```
+
+# 79. What are the common optimizations for improving query performance in Snowflake?
+# Use partition pruning, clustering, result caching, materialized views, and 
+# optimizing SQL queries to improve performance.
+
+# 80. How does Snowflake support machine learning workflows?
+# Snowflake integrates with Python using Snowpark, allowing model training and inference.
+# Data can be preprocessed and used directly within Snowflake for model development.
+
+# 81. Describe how external tables work in Snowflake.
+# External tables allow querying data in external storage (e.g., S3) without loading it 
+# into Snowflake. These tables reference external storage locations.
+
+# 82. How can you configure Snowflake to manage semi-structured data like JSON and Parquet?
+# Snowflake's VARIANT data type allows storing and querying semi-structured data.
+# JSON and Parquet files can be loaded directly into a VARIANT column.
+
+# 83. What are file formats in Snowflake, and how are they defined?
+# File formats define data structure (e.g., CSV, JSON) for loading/unloading data.
+# Example:
+# ```sql
+# CREATE FILE FORMAT my_csv_format TYPE = 'CSV' FIELD_OPTIONALLY_ENCLOSED_BY = '"';
+# ```
+
+# 84. Explain the concept of external functions in Snowflake.
+# External functions allow invoking code hosted outside Snowflake (e.g., AWS Lambda), 
+# expanding functionality beyond SQL.
+
+# 85. What are secure views, and how do they work in Snowflake?
+# Secure views restrict users from viewing underlying data definitions, adding a layer 
+# of security for sensitive data.
+# Example:
+# ```sql
+# CREATE SECURE VIEW secure_view AS SELECT * FROM sensitive_table;
+# ```
+
+# 86. How do you enable row-level security in Snowflake?
+# Row-level security is enabled using secure views or data masking to restrict access 
+# based on user roles.
+
+# 87. What is the difference between a materialized view and a regular view in Snowflake?
+# - Materialized view: Stores precomputed results and is updated automatically.
+# - Regular view: Computes results in real-time with each query.
+
+# 88. How do you troubleshoot query performance issues in Snowflake?
+# Use the QUERY_HISTORY and SYSTEM$EXPLAIN functions to analyze query execution 
+# plans, bottlenecks, and inefficiencies.
+
+# 89. Describe the use of the SYSTEM$CLUSTERING_INFORMATION function.
+# This function provides clustering information for a table, helping evaluate 
+# partitioning and pruning effectiveness.
+
+# 90. How do you configure multi-factor authentication (MFA) in Snowflake?
+# MFA can be enabled using Snowflake’s account settings, supporting either an 
+# authenticator app or SSO-based MFA.
+
+# 91. What is fail-safe in Snowflake, and when would you use it?
+# Fail-safe is a data recovery feature retaining historical data for 7 days 
+# after Time Travel. Used for additional backup after Time Travel expires.
+
+# 92. How can Snowflake be configured to be HIPAA or GDPR compliant?
+# Enable encryption, data masking, row-level security, and access logging. 
+# Snowflake has built-in controls to support compliance with HIPAA and GDPR.
+
+# 93. Explain Snowflake’s role in a data lake architecture.
+# Snowflake acts as a data warehouse layer within a data lake, allowing analysis of 
+# both structured and semi-structured data with SQL.
+
+# 94. How would you integrate Snowflake with Apache Spark?
+# Use the Snowflake Connector for Spark, enabling data loading and querying 
+# between Snowflake and Spark clusters.
+
+# 95. Describe the Snowflake features for enabling DevOps practices.
+# Snowflake supports automation with Terraform for infrastructure as code (IaC), 
+# CI/CD pipelines using SnowSQL for scripting, and version control with roles.
+
+# 96. How can you optimize cost efficiency in Snowflake?
+# Use resource monitoring, scale compute up/down, manage data retention settings, 
+# and optimize storage with micro-partitioning and clustering.
+
+# 97. How do Snowflake credits work, and what determines their usage?
+# Credits are units of Snowflake consumption, based on the size and runtime of 
+# compute resources. Billing occurs per-second for warehouses, scaling with usage.
+
+# 98. Explain how Snowflake handles concurrent workloads.
+# Multi-cluster warehouses allow for concurrent workloads by auto-scaling across 
+# clusters, reducing contention and maintaining performance.
+
+# 99. Describe Snowflake’s support for semi-structured data compared to other data warehouses.
+# Snowflake natively handles semi-structured data with VARIANT, providing flexibility 
+# for JSON, XML, Avro, and Parquet data, making it easier to query alongside 
+# structured data.
+
+# 100. What are Snowflake’s replication and failover capabilities?
+# Snowflake supports account and database replication across regions for disaster 
+# recovery. Failover can be configured to redirect to a secondary region if the 
+# primary is unavailable.
+
